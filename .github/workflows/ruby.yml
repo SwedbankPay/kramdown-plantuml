@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    name: Build + Publish
+    name: Build, Test and Publish
     runs-on: ubuntu-latest
 
     steps:

@@ -9,4 +9,5 @@ gem "open3"
 
 group :development, :test do
   gem "rspec"
+  gem "equivalent-xml"
 end
