@@ -4,3 +4,9 @@ source "https://rubygems.org"
 gemspec
 
 gem "rake", "~> 12.0"
+gem "kramdown"
+gem "open3"
+
+group :development, :test do
+  gem "rspec"
+end
