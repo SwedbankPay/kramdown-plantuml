@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    swedbank-pay-jekyll-plantuml (0.1.0)
+    swedbank-pay-jekyll-plantuml (0.2.0)
 
 GEM
   remote: https://rubygems.org/
@@ -26,6 +26,7 @@ GEM
 
 PLATFORMS
   ruby
+  x64-mingw32
 
 DEPENDENCIES
   kramdown
