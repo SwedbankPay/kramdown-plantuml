@@ -1,4 +1,4 @@
-require 'Kramdown'
+require 'kramdown'
 require "swedbank/pay/jekyll/plantuml/plantuml_converter"
 
 class Kramdown::Converter::Html
