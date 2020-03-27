@@ -3,6 +3,8 @@ name: Ruby Gem
 on:
   push:
     branches: [ master ]
+    tags:
+    - '*'
   pull_request:
     branches: [ master ]
 
@@ -34,6 +36,19 @@ jobs:
     - name: Test with Rake
       run: bundle exec rake
 
+    - name: Build gem
+      id: gem
+      run: |
+        GEM_BUILD_NAME=$(gem build swedbank-pay-jekyll-plantuml.gemspec | awk '/File/ {print $2}')
+        echo "Gem filename: '${GEM_BUILD_NAME}'"
+        echo "::set-output name=name::${GEM_BUILD_NAME}"
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2-preview
+      with:
+        name: ${{ steps.gem.outputs.name }}
+        path: ${{ steps.gem.outputs.name }}
+
     - name: Publish to GPR
       if: startsWith(github.ref, 'refs/tags/') # Only publish tagged commits
       run: |
@@ -41,8 +56,7 @@ jobs:
         touch $HOME/.gem/credentials
         chmod 0600 $HOME/.gem/credentials
         printf -- "---\n:github: Bearer ${GEM_HOST_API_KEY}\n" > $HOME/.gem/credentials
-        gem build *.gemspec
-        gem push --KEY github --host https://rubygems.org/ *.gem
+        gem push --KEY github --host https://rubygems.org/ ${{ steps.gem.outputs.name }}
       env:
         GEM_HOST_API_KEY: ${{secrets.SECRET_GITHUB_TOKEN}}
         OWNER: username
@@ -54,7 +68,6 @@ jobs:
         touch $HOME/.gem/credentials
         chmod 0600 $HOME/.gem/credentials
         printf -- "---\n:rubygems_api_key: ${GEM_HOST_API_KEY}\n" > $HOME/.gem/credentials
-        gem build *.gemspec
-        gem push *.gem
+        gem push ${{ steps.gem.outputs.name }}
       env:
         GEM_HOST_API_KEY: ${{secrets.RUBYGEMS_API_KEY}}
