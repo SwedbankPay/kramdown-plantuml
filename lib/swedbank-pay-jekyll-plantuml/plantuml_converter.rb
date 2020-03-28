@@ -13,6 +13,10 @@ module SwedbankPayJekyllPlantuml
         raise Error.new("'#{@plant_uml_jar_file}' does not exist")
       end
 
+      unless which("java")
+        raise Error.new("Java can not be found")
+      end
+
       puts @plant_uml_jar_file
     end
 
@@ -28,11 +32,6 @@ module SwedbankPayJekyllPlantuml
     end
 
     def convert_plantuml_to_svg(content)
-
-      unless which("java")
-        raise "Java can not be found"
-      end
-
       cmd = "java -jar #{@plant_uml_jar_file} -tsvg -pipe"
 
       stdout, stderr, status = Open3.capture3(cmd, :stdin_data => content)
