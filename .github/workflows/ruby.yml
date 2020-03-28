@@ -37,9 +37,8 @@ jobs:
         bundle config path vendor/bundle
         bundle install --jobs 4 --retry 3
 
-
     - name: Test with Rake
-      run: bundle exec rake
+      run: JAVA=1 bundle exec rake
 
     - name: Build gem
       id: gem
