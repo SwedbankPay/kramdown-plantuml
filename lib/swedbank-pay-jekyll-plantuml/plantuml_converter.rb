@@ -1,3 +1,4 @@
+require 'which'
 require 'open3'
 
 module SwedbankPayJekyllPlantuml
@@ -13,24 +14,13 @@ module SwedbankPayJekyllPlantuml
         raise Error.new("'#{@plant_uml_jar_file}' does not exist")
       end
 
-      unless which("java")
+      unless Which::which("java")
         raise IOError.new("Java can not be found")
       else
         puts 'Java found on PATH'
       end
 
       puts @plant_uml_jar_file
-    end
-
-    def which(cmd)
-      exts = ENV['PATHEXT'] ? ENV['PATHEXT'].split(';') : ['']
-      ENV['PATH'].split(File::PATH_SEPARATOR).each do |path|
-        exts.each do |ext|
-          exe = File.join(path, "#{cmd}#{ext}")
-          return exe if File.executable?(exe) && !File.directory?(exe)
-        end
-      end
-      nil
     end
 
     def convert_plantuml_to_svg(content)
