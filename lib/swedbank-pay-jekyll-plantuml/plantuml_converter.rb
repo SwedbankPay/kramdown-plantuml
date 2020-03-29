@@ -15,6 +15,8 @@ module SwedbankPayJekyllPlantuml
 
       unless which("java")
         raise IOError.new("Java can not be found")
+      else
+        puts 'Java found on PATH'
       end
 
       puts @plant_uml_jar_file
