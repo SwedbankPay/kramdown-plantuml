@@ -12,27 +12,11 @@ jobs:
   build:
     name: Test
     runs-on: ubuntu-latest
+    container:
+      image: ruby:2.7.0-alpine3.11
 
     steps:
     - uses: actions/checkout@v2
-
-    - name: Set up Ruby 2.6
-      uses: actions/setup-ruby@v1
-      with:
-        ruby-version: 2.6.x
-
-    - name: Cache dependencies
-      uses: actions/cache@v1
-      with:
-        path: vendor/bundle
-        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
-        restore-keys: ${{ runner.os }}-gems-
-
-    - name: Bundle install
-      run: |
-        gem install bundler
-        bundle config path vendor/bundle
-        bundle install --jobs 4 --retry 3
 
     - name: Test with Rake
       run: NO_JAVA=1 bundle exec rake
