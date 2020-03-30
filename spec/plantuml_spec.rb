@@ -1,7 +1,7 @@
-require "swedbank/pay/jekyll/plantuml/plantuml_converter"
+require "swedbank-pay-jekyll-plantuml/plantuml_converter"
 
-describe Swedbank::Pay::Jekyll::Plantuml::Converter do
-    converter = Swedbank::Pay::Jekyll::Plantuml::Converter.new
+describe SwedbankPayJekyllPlantuml::Converter do
+    converter = SwedbankPayJekyllPlantuml::Converter.new
     cwd = File.dirname(__FILE__)
     plantuml_file = File.join(cwd, 'diagram.plantuml')
     plantuml_content = File.read(plantuml_file)

@@ -1,8 +1,8 @@
-require_relative 'lib/swedbank/pay/jekyll/plantuml/version'
+require_relative 'lib/swedbank-pay-jekyll-plantuml/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "swedbank-pay-jekyll-plantuml"
-  spec.version       = Swedbank::Pay::Jekyll::Plantuml::VERSION
+  spec.version       = SwedbankPayJekyllPlantuml::VERSION
   spec.authors       = ["Asbjørn Ulsberg"]
   spec.email         = ["asbjorn@ulsberg.no"]
 
