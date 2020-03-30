@@ -7,6 +7,10 @@ describe SwedbankPayJekyllPlantuml::Converter do
     plantuml_content = File.read(plantuml_file)
     converter = SwedbankPayJekyllPlantuml::Converter.new
 
+    puts "ENV:JAVA: #{ENV['JAVA']}"
+    puts "ENV:NO_JAVA: #{ENV['NO_JAVA']}"
+    puts "ENV:NO_PLANTUML: #{ENV['NO_PLANTUML']}"
+
     context "generates a diagram", :requires => :java do
         converted_svg = converter.convert_plantuml_to_svg(plantuml_content).to_s
 
