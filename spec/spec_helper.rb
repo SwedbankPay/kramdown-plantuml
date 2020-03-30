@@ -44,11 +44,11 @@ RSpec.configure do |config|
   # triggering implicit auto-inclusion in groups with matching metadata.
   config.shared_context_metadata_behavior = :apply_to_host_groups
 
-  if ENV['JAVA'] == '1'
+  if ENV['REQUIRES'] == 'JAVA'
     config.filter_run_when_matching :requires => 'java'
-  elsif ENV['NO_JAVA'] == '1'
+  elsif ENV['REQUIRES'] == 'NO_JAVA'
     config.filter_run_when_matching :requires => 'no_java'
-  elsif ENV['NO_PLANTUML'] == '1'
+  elsif ENV['REQUIRES'] == 'NO_PLANTUML'
     config.filter_run_when_matching :requires => 'no_plantuml'
   end
 

@@ -39,7 +39,7 @@ jobs:
 
     - name: Test with Rake
       env:
-        JAVA: 1
+        REQUIRES: JAVA
       run: bundle exec rake
 
     - name: Build gem

@@ -25,5 +25,5 @@ jobs:
 
     - name: Test with Rake
       env:
-        NO_JAVA: 1
+        REQUIRES: NO_JAVA
       run: bundle exec rake

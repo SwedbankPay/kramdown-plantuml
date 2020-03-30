@@ -26,5 +26,5 @@ jobs:
 
     - name: Test with Rake
       env:
-        NO_PLANTUML: 1
+        REQUIRES: NO_PLANTUML
       run: bundle exec rake
