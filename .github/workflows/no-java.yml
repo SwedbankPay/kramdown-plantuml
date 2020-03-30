@@ -18,5 +18,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Bundle install
+      run: bundle install
+
     - name: Test with Rake
       run: NO_JAVA=1 bundle exec rake
