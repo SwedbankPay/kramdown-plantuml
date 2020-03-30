@@ -25,6 +25,4 @@ jobs:
       run:  rm bin/plantuml.1.2020.5.jar
 
     - name: Test with Rake
-      env:
-        REQUIRES: NO_PLANTUML
-      run: bundle exec rake
+      run: bundle exec rspec --tag no_plantuml

@@ -7,15 +7,10 @@ describe SwedbankPayJekyllPlantuml::Converter do
     plantuml_content = File.read(plantuml_file)
     converter = SwedbankPayJekyllPlantuml::Converter.new
 
-    puts "ENV:REQUIRES: #{ENV['REQUIRES']}"
-
-    context "generates a diagram", :requires => :java do
-        puts 'EXECUTING CONTEXT REQUIRING JAVA'
-
-        converted_svg = converter.convert_plantuml_to_svg(plantuml_content).to_s
-
-        puts converted_svg
-
+    context "generates a diagram", :java do
+        let(:converted_svg) {
+            converter.convert_plantuml_to_svg(plantuml_content).to_s
+        }
         it "that is not erroneous" do
             expect(converted_svg).not_to include("No @startuml/@enduml found")
         end
@@ -33,7 +28,7 @@ describe SwedbankPayJekyllPlantuml::Converter do
         end
     end
 
-    context "fails properly", :requires => :no_plantuml do
+    context "fails properly", :no_plantuml do
         it "if plantuml.jar is not present" do
             expect {
                 converter.convert_plantuml_to_svg(plantuml_content).to_s
@@ -41,7 +36,7 @@ describe SwedbankPayJekyllPlantuml::Converter do
         end
     end
 
-    context "fails properly", :requires => :no_java do
+    context "fails properly", :no_java do
         it "if Java is not installed" do
             expect {
                 converter.convert_plantuml_to_svg(plantuml_content).to_s

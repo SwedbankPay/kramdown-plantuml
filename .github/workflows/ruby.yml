@@ -38,9 +38,7 @@ jobs:
         bundle install --jobs 4 --retry 3
 
     - name: Test with Rake
-      env:
-        REQUIRES: JAVA
-      run: bundle exec rake
+      run: bundle exec rspec --tag java
 
     - name: Build gem
       id: gem
