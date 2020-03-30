@@ -19,7 +19,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Bundle install
-      run: bundle install
+      run: bundle install --jobs 4 --retry 3
 
     - name: Test with Rake
       run: NO_JAVA=1 bundle exec rake
