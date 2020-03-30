@@ -1,7 +1,7 @@
 require "spec_helper"
 require "swedbank-pay-jekyll-plantuml/plantuml_converter"
 
-describe SwedbankPayJekyllPlantuml::Converter do
+describe "PlantUml::Converter" do
     context "generates a diagram", :requires => :java do
         cwd = File.dirname(__FILE__)
         plantuml_file = File.join(cwd, 'diagram.plantuml')
