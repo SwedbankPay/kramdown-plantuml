@@ -32,7 +32,7 @@ describe SwedbankPayJekyllPlantuml::Converter do
         it "if plantuml.jar is not present" do
             expect {
                 converter.convert_plantuml_to_svg(plantuml_content).to_s
-            }.to raise_error(IOError, "'plantuml.1.2020.5.jar' not found")
+            }.to raise_error(IOError, /plantuml.1.2020.5.jar' does not exist/)
         end
     end
 
@@ -40,7 +40,7 @@ describe SwedbankPayJekyllPlantuml::Converter do
         it "if Java is not installed" do
             expect {
                 converter.convert_plantuml_to_svg(plantuml_content).to_s
-            }.to raise_error(IOError, "Java not found")
+            }.to raise_error(IOError, "Java can not be found")
         end
     end
 end
