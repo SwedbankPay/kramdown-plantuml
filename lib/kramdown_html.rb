@@ -1,5 +1,5 @@
 require 'kramdown'
-require "swedbank-pay-jekyll-plantuml/plantuml_converter"
+require "kramdown-plantuml/converter"
 
 class Kramdown::Converter::Html
     alias_method :super_convert_codeblock, :convert_codeblock
@@ -9,7 +9,7 @@ class Kramdown::Converter::Html
             return super_convert_codeblock(element, indent)
         end
 
-        converter = SwedbankPayJekyllPlantuml::Converter.new
+        converter = Kramdown::PlantUml::Converter.new
         return converter.convert_plantuml_to_svg(element.value)
     end
 end

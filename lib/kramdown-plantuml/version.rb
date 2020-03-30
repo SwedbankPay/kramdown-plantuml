@@ -1,3 +1,5 @@
-module SwedbankPayJekyllPlantuml
-  VERSION = "0.2.0"
+module Kramdown
+  module PlantUml
+    VERSION = "0.2.0"
+  end
 end

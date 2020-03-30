@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    swedbank-pay-jekyll-plantuml (0.2.0)
+    kramdown-plantuml (0.2.0)
 
 GEM
   remote: https://rubygems.org/
@@ -33,7 +33,7 @@ DEPENDENCIES
   open3
   rake (~> 12.0)
   rspec
-  swedbank-pay-jekyll-plantuml!
+  kramdown-plantuml!
 
 BUNDLED WITH
    2.1.4

@@ -1,21 +1,21 @@
 require_relative 'lib/which'
-require_relative 'lib/swedbank-pay-jekyll-plantuml/version'
+require_relative 'lib/kramdown-plantuml/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "swedbank-pay-jekyll-plantuml"
-  spec.version       = SwedbankPayJekyllPlantuml::VERSION
+  spec.name          = "kramdown-plantuml"
+  spec.version       = Kramdown::PlantUml::VERSION
   spec.authors       = ["Asbjørn Ulsberg"]
   spec.email         = ["asbjorn@ulsberg.no"]
 
   spec.summary       = "Short summary"
-  spec.homepage      = "https://github.com/SwedbankPay/swedbank-pay-jekyll-plantuml"
+  spec.homepage      = "https://github.com/SwedbankPay/kramdown-plantuml"
   spec.license       = "MIT"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
 
   spec.metadata["allowed_push_host"] = "https://rubygems.org/"
 
   spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "https://github.com/SwedbankPay/swedbank-pay-jekyll-plantuml"
+  spec.metadata["source_code_uri"] = "https://github.com/SwedbankPay/kramdown-plantuml"
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.

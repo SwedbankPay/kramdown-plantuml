@@ -1,7 +1,7 @@
-require "swedbank-pay-jekyll-plantuml/version"
-require 'swedbank-pay-jekyll-plantuml/plantuml_converter'
+require 'kramdown-plantuml/version'
+require 'kramdown-plantuml/converter'
 require 'kramdown_html'
 
-module SwedbankPayJekyllPlantuml
+module Kramdown::PlantUml
     class Error < StandardError; end
 end
