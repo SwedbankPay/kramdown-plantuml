@@ -44,9 +44,9 @@ RSpec.configure do |config|
   # triggering implicit auto-inclusion in groups with matching metadata.
   config.shared_context_metadata_behavior = :apply_to_host_groups
 
-  config.filter_run_excluding :only_if => 'no_java' unless ENV['NO_JAVA'] == 1
-  config.filter_run_excluding :only_if => 'no_plantuml' unless ENV['NO_PLANTUML'] == 1
-  config.filter_run_excluding :only_if => 'java' unless ENV['JAVA'] == 1
+  config.filter_run :exclusively => 'no_java' if ENV['NO_JAVA'] == 1
+  config.filter_run :exclusively => 'no_plantuml' if ENV['NO_PLANTUML'] == 1
+  config.filter_run :exclusively => 'java' if ENV['JAVA'] == 1
 
 # The settings below are suggested to provide a good initial experience
 # with RSpec, but feel free to customize to your heart's content.

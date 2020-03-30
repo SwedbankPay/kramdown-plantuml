@@ -1,7 +1,7 @@
 require "spec_helper"
 require "swedbank-pay-jekyll-plantuml/plantuml_converter"
 
-describe SwedbankPayJekyllPlantuml::Converter, :only_if => :no_plantuml do
+describe SwedbankPayJekyllPlantuml::Converter, :exclusively => :no_plantuml do
     converter = SwedbankPayJekyllPlantuml::Converter.new
 
     context "fails properly" do
