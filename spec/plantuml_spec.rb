@@ -2,29 +2,36 @@ require "spec_helper"
 require "swedbank-pay-jekyll-plantuml/plantuml_converter"
 
 describe SwedbankPayJekyllPlantuml::Converter do
-    cwd = File.dirname(__FILE__)
-    plantuml_file = File.join(cwd, 'diagram.plantuml')
-    plantuml_content = File.read(plantuml_file)
-    converter = SwedbankPayJekyllPlantuml::Converter.new
+    subject (:converter) {
+        SwedbankPayJekyllPlantuml::Converter.new
+    }
 
-    context "generates a diagram", :java do
-        let(:converted_svg) {
+    let (:plantuml_content) {
+        cwd = File.dirname(__FILE__)
+        plantuml_file = File.join(cwd, 'diagram.plantuml')
+        File.read(plantuml_file)
+    }
+
+    context "convert_plantuml_to_svg", :java do
+        subject {
+            # TODO: Figure out how to do convert_plantuml_to_svg just once for the entire context.
             converter.convert_plantuml_to_svg(plantuml_content).to_s
         }
-        it "that is not erroneous" do
-            expect(converted_svg).not_to include("No @startuml/@enduml found")
+
+        it "is not erroneous" do
+            is_expected.not_to include("No @startuml/@enduml found")
         end
 
-        it "that contains an ellipse" do
-            expect(converted_svg).to include("<ellipse")
+        it "contains an ellipse" do
+            is_expected.to include("<ellipse")
         end
 
-        it "that contains a polygon" do
-            expect(converted_svg).to include("<polygon")
+        it "contains a polygon" do
+            is_expected.to include("<polygon")
         end
 
-        it "that contains a path" do
-            expect(converted_svg).to include("<path")
+        it "contains a path" do
+            is_expected.to include("<path")
         end
     end
 
