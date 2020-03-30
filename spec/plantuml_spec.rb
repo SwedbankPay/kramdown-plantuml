@@ -10,6 +10,8 @@ describe SwedbankPayJekyllPlantuml::Converter do
     puts "ENV:REQUIRES: #{ENV['REQUIRES']}"
 
     context "generates a diagram", :requires => :java do
+        puts 'EXECUTING CONTEXT REQUIRING JAVA'
+
         converted_svg = converter.convert_plantuml_to_svg(plantuml_content).to_s
 
         puts converted_svg
