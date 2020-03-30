@@ -19,7 +19,7 @@ module SwedbankPayJekyllPlantuml
       puts @plant_uml_jar_file
 
       if not File.exists? @plant_uml_jar_file
-        raise Error.new("'#{@plant_uml_jar_file}' does not exist")
+        raise IOError.new("'#{@plant_uml_jar_file}' does not exist")
       end
 
       unless Which::which("java")
