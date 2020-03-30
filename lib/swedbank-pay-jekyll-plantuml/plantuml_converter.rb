@@ -8,7 +8,6 @@ module SwedbankPayJekyllPlantuml
       bin = File.join dir, "../bin"
       bin = File.expand_path bin
       @plant_uml_jar_file = File.join bin, "plantuml.1.2020.5.jar"
-      puts @plant_uml_jar_file
 
       if not File.exists? @plant_uml_jar_file
         raise IOError.new("'#{@plant_uml_jar_file}' does not exist")
@@ -16,8 +15,6 @@ module SwedbankPayJekyllPlantuml
 
       unless Which::which("java")
         raise IOError.new("Java can not be found")
-      else
-        puts 'Java found on PATH'
       end
     end
 
