@@ -44,12 +44,20 @@ RSpec.configure do |config|
   # triggering implicit auto-inclusion in groups with matching metadata.
   config.shared_context_metadata_behavior = :apply_to_host_groups
 
-  if ENV['REQUIRES'] == 'JAVA'
+  requires = ENV['REQUIRES']
+  case requires
+  when 'JAVA'
     config.filter_run_when_matching :requires => :java
-  elsif ENV['REQUIRES'] == 'NO_JAVA'
+  when 'NO_JAVA'
     config.filter_run_when_matching :requires => :no_java
-  elsif ENV['REQUIRES'] == 'NO_PLANTUML'
+  when 'NO_PLANTUML'
     config.filter_run_when_matching :requires => :no_plantuml
+  when nil
+    raise "Missing REQUIRES environment variable."
+  when ''
+    raise "Missing REQUIRES environment variable."
+  else
+    raise "Invalid REQUIRES environment variable: '#{requires}'"
   end
 
 # The settings below are suggested to provide a good initial experience
