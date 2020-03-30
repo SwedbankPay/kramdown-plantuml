@@ -45,11 +45,11 @@ RSpec.configure do |config|
   config.shared_context_metadata_behavior = :apply_to_host_groups
 
   if ENV['REQUIRES'] == 'JAVA'
-    config.filter_run_when_matching :requires => 'java'
+    config.filter_run_when_matching :requires => :java
   elsif ENV['REQUIRES'] == 'NO_JAVA'
-    config.filter_run_when_matching :requires => 'no_java'
+    config.filter_run_when_matching :requires => :no_java
   elsif ENV['REQUIRES'] == 'NO_PLANTUML'
-    config.filter_run_when_matching :requires => 'no_plantuml'
+    config.filter_run_when_matching :requires => :no_plantuml
   end
 
 # The settings below are suggested to provide a good initial experience
