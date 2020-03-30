@@ -13,26 +13,31 @@ describe SwedbankPayJekyllPlantuml::Converter do
     }
 
     context "convert_plantuml_to_svg", :java do
-        subject {
-            # TODO: Figure out how to do convert_plantuml_to_svg just once for the entire context.
+        let (:converted_svg) {
             converter.convert_plantuml_to_svg(plantuml_content).to_s
         }
 
-        it "is not erroneous" do
+        subject {
+            # TODO: This is supposed to cache the converted_svg, but it doesn't work.
+            #       https://stackoverflow.com/a/52453592/61818
+            @converted_svg ||= converted_svg.freeze
+        }
+
+        it {
             is_expected.not_to include("No @startuml/@enduml found")
-        end
+        }
 
-        it "contains an ellipse" do
+        it {
             is_expected.to include("<ellipse")
-        end
+        }
 
-        it "contains a polygon" do
+        it {
             is_expected.to include("<polygon")
-        end
+        }
 
-        it "contains a path" do
+        it {
             is_expected.to include("<path")
-        end
+        }
     end
 
     context "fails properly", :no_plantuml do
