@@ -54,7 +54,7 @@ jobs:
         path: ${{ steps.gem.outputs.name }}
 
     - name: Publish to GPR
-      if: startsWith(github.ref, 'refs/tags/') # Only publish tagged commits
+      if: 'false' # startsWith(github.ref, 'refs/tags/') # Only publish tagged commits
       run: |
         mkdir -p $HOME/.gem
         touch $HOME/.gem/credentials
