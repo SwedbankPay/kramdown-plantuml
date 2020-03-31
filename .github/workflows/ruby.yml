@@ -5,6 +5,9 @@ on:
     tags:
     - '*'
   pull_request:
+  create:
+    tags:
+    - '*'
 
 jobs:
   build:
@@ -15,7 +18,9 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Fetch all history for all tags and branches
-      run: git fetch --prune --unshallow
+      run: |
+        git fetch --prune --unshallow
+        echo "REF: ${{ github.ref }}"
 
     - name: Install GitVersion
       uses: gittools/actions/gitversion/setup@v0.9.2
