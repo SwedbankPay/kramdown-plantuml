@@ -2,11 +2,9 @@ name: Ruby Gem
 
 on:
   push:
-    branches: [ master ]
     tags:
     - '*'
   pull_request:
-    branches: [ master ]
 
 jobs:
   build:
