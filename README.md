@@ -48,6 +48,17 @@ Or install it yourself as:
 gem install kramdown-plantuml
 ```
 
+And then add the following to your Jekyll site's `_config.yml` file:
+
+```yaml
+plugins:
+  - "kramdown-plantuml"
+```
+
+Then, `bundle exec jekyll build` or `bundle exec jekyll serve` will execute
+`kramdown-plantuml`, converting code fenced PlantUML diagrams to beautiful
+SVG.
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. You can
