@@ -1,6 +1,9 @@
 # Kramdown::PlantUml
 
 [![Contributor Covenant][coc-badge]][coc]
+![Build][build-badge]
+![No Java][no-java-build-badge]
+![No PlantUML][no-plantuml-badge]
 
 `kramdown-plantuml` allows you to use [PlantUML][plantuml] syntax within fenced
 code blocks in [Jekyll] with its default [Kramdown][kramdown] Markdown parser:
@@ -70,3 +73,6 @@ Everyone interacting in the Kramdown::PlantUml project's codebases, issue tracke
 [coc]: CODE_OF_CONDUCT.md
 [coc-badge]: https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg
 [mit]: https://opensource.org/licenses/MIT
+[build-badge]: https://github.com/SwedbankPay/kramdown-plantuml/workflows/Ruby%20Gem/badge.svg?branch=master
+[no-java-build-badge]: https://github.com/SwedbankPay/kramdown-plantuml/workflows/No%20Java/badge.svg?branch=master
+[no-plantuml-badge]: https://github.com/SwedbankPay/kramdown-plantuml/workflows/No%20PlantUML/badge.svg?branch=master
