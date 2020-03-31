@@ -62,7 +62,7 @@ jobs:
         printf -- "---\n:github: Bearer ${GEM_HOST_API_KEY}\n" > $HOME/.gem/credentials
         gem push --KEY github --host https://rubygems.org/ ${{ steps.gem.outputs.name }}
       env:
-        GEM_HOST_API_KEY: ${{secrets.SECRET_GITHUB_TOKEN}}
+        GEM_HOST_API_KEY: ${{ secrets.GITHUB_TOKEN }}
         OWNER: username
 
     - name: Publish to RubyGems
@@ -74,4 +74,4 @@ jobs:
         printf -- "---\n:rubygems_api_key: ${GEM_HOST_API_KEY}\n" > $HOME/.gem/credentials
         gem push ${{ steps.gem.outputs.name }}
       env:
-        GEM_HOST_API_KEY: ${{secrets.RUBYGEMS_API_KEY}}
+        GEM_HOST_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}
