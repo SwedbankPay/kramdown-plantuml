@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: Build, Test and Publish
+    name: Build, Test and Publish Ruby Gem
     runs-on: ubuntu-latest
 
     steps:
