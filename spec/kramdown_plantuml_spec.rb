@@ -12,7 +12,7 @@ describe Kramdown::PlantUml::Converter do
         File.read(plantuml_file)
     }
 
-    context "convert_plantuml_to_svg", :java do
+    context "convert_plantuml_to_svg" do
         let (:converted_svg) {
             converter.convert_plantuml_to_svg(plantuml_content).to_s
         }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentscripttype="application/ecmascript" contentstyletype="text/css" height="75px" preserveAspectRatio="none" style="width:219px;height:75px;" version="1.1" viewBox="0 0 219 75" width="219px" zoomAndPan="magnify"><defs><filter height="300%" id="f1a8wv1ktz27hl" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"></feGaussianBlur><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"></feColorMatrix><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"></feOffset><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"></feBlend></filter></defs><g><!--MD5=[4541fb81c80c07473fe4b07432ef0971]
+entity app--><polygon fill="#FEFECE" filter="url(#f1a8wv1ktz27hl)" points="79,18,89,8,145,8,145,44.4883,135,54.4883,79,54.4883,79,18" style="stroke: #000000; stroke-width: 1.5;"></polygon><line style="stroke: #000000; stroke-width: 1.5;" x1="135" x2="144" y1="18" y2="9"></line><line style="stroke: #000000; stroke-width: 1.5;" x1="79" x2="135" y1="18" y2="18"></line><line style="stroke: #000000; stroke-width: 1.5;" x1="135" x2="135" y1="18" y2="54.4883"></line><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="26" x="94" y="41.5352">app</text><!--MD5=[7468467f3b6b392f1d176d828c753b77]
+entity db--><path d="M6,18.5 C6,8.5 25,8.5 25,8.5 C25,8.5 44,8.5 44,18.5 L44,43.9883 C44,53.9883 25,53.9883 25,53.9883 C25,53.9883 6,53.9883 6,43.9883 L6,18.5 " fill="#FEFECE" filter="url(#f1a8wv1ktz27hl)" style="stroke: #000000; stroke-width: 1.5;"></path><path d="M6,18.5 C6,28.5 25,28.5 25,28.5 C25,28.5 44,28.5 44,18.5 " fill="none" style="stroke: #000000; stroke-width: 1.5;"></path><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="18" x="16" y="46.0352">db</text><!--MD5=[4a65e84059005d12693a083370a06717]
+entity client--><ellipse cx="189" cy="31" fill="#FEFECE" filter="url(#f1a8wv1ktz27hl)" rx="8" ry="8" style="stroke: #A80036; stroke-width: 2.0;"></ellipse><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="37" x="170.5" y="61.5352">client</text><!--MD5=[73d7329ecfd8ecf321883f71d8e37ce5]
+link db to app--><path d="M44.03,31 C53.9,31 63.78,31 73.65,31 " fill="none" id="db->app" style="stroke: #A80036; stroke-width: 1.0;"></path><polygon fill="#A80036" points="78.81,31,69.81,27,73.81,31,69.81,35,78.81,31" style="stroke: #A80036; stroke-width: 1.0;"></polygon><!--MD5=[9cecf95ca18500caa5a398892473e215]
+link app to client--><path d="M145.09,31 C154.92,31 164.76,31 174.59,31 " fill="none" id="app->client" style="stroke: #A80036; stroke-width: 1.0;"></path><polygon fill="#A80036" points="179.74,31,170.74,27,174.74,31,170.74,35,179.74,31" style="stroke: #A80036; stroke-width: 1.0;"></polygon><!--MD5=[1a0081bb5addafe3dedc3501f29eaa2b]
+@startumlactor client
+node app
+database db
+db -> app
+app -> client
+@endum
+
+PlantUML version 1.2020.05(Thu Mar 19 22:17:32 CET 2020)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Java Version: 12+33
+Operating System: Mac OS X
+Default Encoding: UTF-8
+Language: en
+Country: GB
+--></g></svg>
