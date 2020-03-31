@@ -1,7 +1,8 @@
 require 'which'
 require 'open3'
+require_relative 'version'
 
-module SwedbankPayJekyllPlantuml
+module Kramdown::PlantUml
   class Converter
     def initialize
       dir = File.dirname __dir__

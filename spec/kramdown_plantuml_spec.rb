@@ -1,9 +1,9 @@
 require "spec_helper"
-require "swedbank-pay-jekyll-plantuml/plantuml_converter"
+require "kramdown-plantuml/converter"
 
-describe SwedbankPayJekyllPlantuml::Converter do
+describe Kramdown::PlantUml::Converter do
     subject (:converter) {
-        SwedbankPayJekyllPlantuml::Converter.new
+        Kramdown::PlantUml::Converter.new
     }
 
     let (:plantuml_content) {
