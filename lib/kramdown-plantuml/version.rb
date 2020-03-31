@@ -1,5 +1,6 @@
 module Kramdown
   module PlantUml
-    VERSION = "1.0.0"
+    @version = ENV['VERSION'] || '0.0.1-INVALID'
+    VERSION = @version
   end
 end
