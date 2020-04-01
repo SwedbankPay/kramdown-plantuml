@@ -4,6 +4,7 @@
 ![Build][build-badge]
 ![No Java][no-java-build-badge]
 ![No PlantUML][no-plantuml-badge]
+[![MIT License][license-badge]][license]
 [![Contributor Covenant][coc-badge]][coc]
 
 `kramdown-plantuml` allows you to use [PlantUML][plantuml] syntax within [fenced
@@ -79,7 +80,8 @@ expected to adhere to the [code of conduct][coc].
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License][mit].
+The gem is available as open source under the terms of the [MIT
+License][license].
 
 ## Code of Conduct
 
@@ -92,7 +94,8 @@ Everyone interacting in the Kramdown::PlantUml project's codebases, issue tracke
 [github]: https://github.com/SwedbankPay/kramdown-plantuml/
 [coc]: CODE_OF_CONDUCT.md
 [coc-badge]: https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg
-[mit]: https://opensource.org/licenses/MIT
+[license]: https://opensource.org/licenses/MIT
+[license-badge]: https://img.shields.io/github/license/SwedbankPay/kramdown-plantuml
 [fenced]: https://www.markdownguide.org/extended-syntax/#syntax-highlighting
 [svg]: https://developer.mozilla.org/en-US/docs/Web/SVG
 [diagram-svg]: spec/diagram.svg
