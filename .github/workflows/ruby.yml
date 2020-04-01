@@ -46,7 +46,7 @@ jobs:
 
             if (ref.startsWith(tagPrefix)) {
               // If a tag ref is being built, just return the tag verbatim
-              return ref.substring(tagPrefix.length + 1);
+              return ref.substring(tagPrefix.length);
             }
 
             const escapedBranchName = '${{ steps.gitversion.outputs.escapedBranchName }}';
