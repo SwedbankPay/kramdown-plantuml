@@ -1,5 +1,6 @@
 # Kramdown::PlantUml
 
+[![Gem Version][gem-badge]][gem-url]
 ![Build][build-badge]
 ![No Java][no-java-build-badge]
 ![No PlantUML][no-plantuml-badge]
@@ -95,6 +96,8 @@ Everyone interacting in the Kramdown::PlantUml project's codebases, issue tracke
 [fenced]: https://www.markdownguide.org/extended-syntax/#syntax-highlighting
 [svg]: https://developer.mozilla.org/en-US/docs/Web/SVG
 [diagram-svg]: spec/diagram.svg
+[gem-badge]: https://badge.fury.io/rb/kramdown-plantuml.svg
+[gem-url]: https://rubygems.org/gems/kramdown-plantuml
 [build-badge]: https://github.com/SwedbankPay/kramdown-plantuml/workflows/Ruby%20Gem/badge.svg?branch=master
 [no-java-build-badge]: https://github.com/SwedbankPay/kramdown-plantuml/workflows/No%20Java/badge.svg?branch=master
 [no-plantuml-badge]: https://github.com/SwedbankPay/kramdown-plantuml/workflows/No%20PlantUML/badge.svg?branch=master
