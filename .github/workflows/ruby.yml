@@ -18,6 +18,11 @@ jobs:
       with:
         fetch-depth: 0
 
+    - name: Fetch all history for all tags and branches
+      run: |
+        git fetch --prune --unshallow
+        echo "REF: ${{ github.ref }}"
+
     - name: Install GitVersion
       uses: gittools/actions/gitversion/setup@v0.9.2
       with:
@@ -33,7 +38,6 @@ jobs:
       env:
         LABEL: ${{ steps.gitversion.outputs.preReleaseTagWithDash }}.${{ steps.gitversion.outputs.commitsSinceVersionSourcePadded }}
       run: |
-        echo "REF: ${{ github.ref }}"
         echo "Pre-release: ${LABEL}"
         echo "::set-output name=label::${LABEL}"
 
