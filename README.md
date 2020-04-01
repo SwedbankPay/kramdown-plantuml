@@ -5,6 +5,7 @@
 ![No Java][no-java-build-badge]
 ![No PlantUML][no-plantuml-badge]
 [![MIT License][license-badge]][license]
+[![CLA assistant][cla-badge]][cla]
 [![Contributor Covenant][coc-badge]][coc]
 
 `kramdown-plantuml` allows you to use [PlantUML][plantuml] syntax within [fenced
@@ -76,7 +77,8 @@ git commits and tags, and push the `.gem` file to [rubygems.org][gems].
 
 Bug reports and pull requests are welcome on [GitHub][github]. This project is
 intended to be a safe, welcoming space for collaboration, and contributors are
-expected to adhere to the [code of conduct][coc].
+expected to adhere to the [code of conduct][coc] and sign the [contributor's
+license agreement][cla].
 
 ## License
 
@@ -94,6 +96,8 @@ Everyone interacting in the Kramdown::PlantUml project's codebases, issue tracke
 [github]: https://github.com/SwedbankPay/kramdown-plantuml/
 [coc]: CODE_OF_CONDUCT.md
 [coc-badge]: https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg
+[cla]: https://cla-assistant.io/SwedbankPay/kramdown-plantuml
+[cla-badge]: https://cla-assistant.io/readme/badge/SwedbankPay/design.swedbankpay.com
 [license]: https://opensource.org/licenses/MIT
 [license-badge]: https://img.shields.io/github/license/SwedbankPay/kramdown-plantuml
 [fenced]: https://www.markdownguide.org/extended-syntax/#syntax-highlighting
