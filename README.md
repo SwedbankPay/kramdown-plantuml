@@ -1,9 +1,9 @@
 # Kramdown::PlantUml
 
-[![Contributor Covenant][coc-badge]][coc]
 ![Build][build-badge]
 ![No Java][no-java-build-badge]
 ![No PlantUML][no-plantuml-badge]
+[![Contributor Covenant][coc-badge]][coc]
 
 `kramdown-plantuml` allows you to use [PlantUML][plantuml] syntax within [fenced
 code blocks][fenced] in [Jekyll] with its default [Kramdown][kramdown] Markdown
