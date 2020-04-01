@@ -40,12 +40,13 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          const createGemVersion = function() {
+          const gemVersion = (function() {
             const ref = '${{ github.ref }}';
+            const tagPrefix = 'refs/tags/';
 
-            if (ref.startsWith('refs/tags/')) {
+            if (ref.startsWith(tagPrefix)) {
               // If a tag ref is being built, just return the tag verbatim
-              return ref.replace(/\/refs\/tags\//, '');
+              return ref.substring(tagPrefix.length + 1);
             }
 
             const escapedBranchName = '${{ steps.gitversion.outputs.escapedBranchName }}';
@@ -53,9 +54,8 @@ jobs:
             const preReleaseLabel = escapedBranchName + '.' + commitsSinceVersionSource;
             const majorMinorPatch = '${{ steps.gitversion.outputs.majorMinorPatch }}';
             return majorMinorPatch + preReleaseLabel;
-          }
+          })();
 
-          const gemVersion = createGemVersion();
           core.debug('Gem version: ' + gemVersion);
           core.setOutput('version', gemVersion);
 
