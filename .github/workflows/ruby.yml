@@ -25,29 +25,39 @@ jobs:
 
     - name: Install GitVersion
       uses: gittools/actions/gitversion/setup@v0.9.2
+      if: startsWith(github.ref, 'refs/tags/') != true # Only use GitVersion for unstable builds
       with:
         versionSpec: '5.2.x'
 
     - name: Execute GitVersion
       id: gitversion
-      uses: gittools/actions/gitversion/execute@v0.9.2
-
-    - name: Version variables for unstable builds
-      id: unstable
       if: startsWith(github.ref, 'refs/tags/') != true
-      env:
-        LABEL: ${{ steps.gitversion.outputs.preReleaseTagWithDash }}.${{ steps.gitversion.outputs.commitsSinceVersionSourcePadded }}
-      run: |
-        echo "Pre-release: ${LABEL}"
-        echo "::set-output name=label::${LABEL}"
+      uses: gittools/actions/gitversion/execute@v0.9.2
 
     - name: Create gem version number
       id: gemversion
-      env:
-        GEM_VERSION: "${{ steps.gitversion.outputs.majorMinorPatch }}${{ steps.unstable.outputs.label }}"
-      run: |
-        echo "Gem version: ${GEM_VERSION}"
-        echo "::set-output name=version::${GEM_VERSION}"
+      uses: actions/github-script@0.9.0
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const createGemVersion = function() {
+            const ref = '${{ github.ref }}';
+
+            if (ref.startsWith('refs/tags/')) {
+              // If a tag ref is being built, just return the tag verbatim
+              return ref.replace(/\/refs\/tags\//, '');
+            }
+
+            const escapedBranchName = '${{ steps.gitversion.outputs.escapedBranchName }}';
+            const commitsSinceVersionSource = '${{ steps.gitversion.outputs.commitsSinceVersionSourcePadded }}';
+            const preReleaseLabel = escapedBranchName + '.' + commitsSinceVersionSource;
+            const majorMinorPatch = '${{ steps.gitversion.outputs.majorMinorPatch }}';
+            return majorMinorPatch + preReleaseLabel;
+          }
+
+          const gemVersion = createGemVersion();
+          core.debug('Gem version: ' + gemVersion);
+          core.setOutput('version', gemVersion);
 
     - name: Set up Ruby 2.6
       uses: actions/setup-ruby@v1
