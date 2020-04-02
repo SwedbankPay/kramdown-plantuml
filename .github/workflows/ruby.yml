@@ -49,11 +49,7 @@ jobs:
               return ref.substring(tagPrefix.length);
             }
 
-            const escapedBranchName = '${{ steps.gitversion.outputs.escapedBranchName }}';
-            const commitsSinceVersionSource = '${{ steps.gitversion.outputs.commitsSinceVersionSourcePadded }}';
-            const preReleaseLabel = escapedBranchName + '.' + commitsSinceVersionSource;
-            const majorMinorPatch = '${{ steps.gitversion.outputs.majorMinorPatch }}';
-            return majorMinorPatch + preReleaseLabel;
+            return '${{ steps.gitversion.outputs.legacySemVerPadded }}';
           })();
 
           core.debug('Gem version: ' + gemVersion);
