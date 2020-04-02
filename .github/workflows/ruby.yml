@@ -49,14 +49,9 @@ jobs:
               return ref.substring(tagPrefix.length);
             }
 
-            const escapedBranchName = '${{ steps.gitversion.outputs.escapedBranchName }}';
-            const commitsSinceVersionSource = '${{ steps.gitversion.outputs.commitsSinceVersionSourcePadded }}';
-            const preReleaseLabel = escapedBranchName + '.' + commitsSinceVersionSource;
-            const majorMinorPatch = '${{ steps.gitversion.outputs.majorMinorPatch }}';
-            return majorMinorPatch + preReleaseLabel;
+            return '${{ steps.gitversion.outputs.legacySemVerPadded }}';
           })();
 
-          core.debug('Gem version: ' + gemVersion);
           core.setOutput('version', gemVersion);
 
     - name: Set up Ruby 2.6
@@ -109,7 +104,11 @@ jobs:
         touch $HOME/.gem/credentials
         chmod 0600 $HOME/.gem/credentials
         printf -- "---\n:github: Bearer ${GITHUB_TOKEN}\n" > $HOME/.gem/credentials
-        gem push --KEY github --host https://rubygems.pkg.github.com/${OWNER} ${{ steps.gem.outputs.name }}
+        set -e
+        gem push --KEY github \
+                 --host https://rubygems.pkg.github.com/${OWNER} \
+                 ${{ steps.gem.outputs.name }} \
+          || echo "push failed ($?) probably due to version '${{ steps.gemversion.outputs.version }}' already existing in GPR."
 
     - name: Publish to RubyGems
       if: startsWith(github.ref, 'refs/tags/') # Only publish tagged commits
