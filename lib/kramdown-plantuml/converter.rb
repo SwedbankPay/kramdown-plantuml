@@ -32,7 +32,7 @@ module Kramdown::PlantUml
       remove_to = "--></g>"
 
       start_index = stdout.index(remove_from) + remove_from.length
-      end_index = stdout.index(, remove_to)
+      end_index = stdout.index(start_index, remove_to)
 
       stdout.slice! start_index, end_index
 
