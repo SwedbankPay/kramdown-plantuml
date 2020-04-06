@@ -28,6 +28,16 @@ module Kramdown::PlantUml
         raise stderr
       end
 
+      remove_from = "@endum"
+      remove_to = "--></g>"
+
+      start_index = stdout.index(remove_from) + remove_from.length
+      end_index = stdout.index(, remove_to)
+
+      stdout.slice! start_index, end_index
+
+      puts stdout
+
       return stdout
     end
   end
