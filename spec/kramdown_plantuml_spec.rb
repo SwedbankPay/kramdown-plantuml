@@ -36,6 +36,10 @@ describe Kramdown::PlantUml::Converter do
         it {
             is_expected.to include("</div>")
         }
+
+        it {
+            is_expected.not_to include("<?xml version=")
+        }
     end
 
     context "fails properly" do
