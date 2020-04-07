@@ -36,17 +36,7 @@ module Kramdown::PlantUml
 
       stdout.slice! start_index, end_index
 
-      #puts stdout
-
-      remove_from = "@endum"
-      remove_to = "--></g>"
-
-      start_index = stdout.index(remove_from) + remove_from.length
-      end_index = stdout.index(remove_to,start_index)
-
-      stdout.slice! start_index, end_index
-
-      wrapper_element_start = "<div>"
+      wrapper_element_start = "<div class=\"plantuml\">"
       wrapper_element_end = "</div>"
 
       return "#{wrapper_element_start}#{stdout}#{wrapper_element_end}"

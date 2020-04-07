@@ -10,4 +10,14 @@ database db
 db -> app
 app -> client
 @endum
+
+PlantUML version 1.2020.05(Thu Mar 19 22:17:32 CET 2020)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Java Version: 12+33
+Operating System: Mac OS X
+Default Encoding: UTF-8
+Language: en
+Country: GB
 --></g></svg>

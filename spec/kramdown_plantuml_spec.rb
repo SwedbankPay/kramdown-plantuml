@@ -40,6 +40,10 @@ describe Kramdown::PlantUml::Converter do
         it {
             is_expected.not_to include("<?xml version=")
         }
+
+        it {
+            is_expected.to include("class=\"plantuml\"")
+        }
     end
 
     context "fails properly" do
