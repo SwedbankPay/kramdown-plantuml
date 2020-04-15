@@ -27,8 +27,19 @@ module Kramdown::PlantUml
       unless stderr.empty?
         raise stderr
       end
+      
+      xml_prologue_start = "<?xml"
+      xml_prologue_end = "?>"
 
-      return stdout
+      start_index = stdout.index(xml_prologue_start)
+      end_index = stdout.index(xml_prologue_end, xml_prologue_start.length) + xml_prologue_end.length
+
+      stdout.slice! start_index, end_index
+
+      wrapper_element_start = "<div class=\"plantuml\">"
+      wrapper_element_end = "</div>"
+
+      return "#{wrapper_element_start}#{stdout}#{wrapper_element_end}"
     end
   end
 end
