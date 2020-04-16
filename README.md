@@ -27,7 +27,17 @@ app -> client
 Using the `plantuml` language identifier in fenced code blocks will allow
 `kramdown-plantuml` to pick it up and replace it with a rendered [SVG][svg]
 diagram when the Markdown is rendered to HTML. The above diagram will be
-replaced with the following:
+replaced with the following (abbreviated) HTML code:
+
+```html
+<div class="plantuml">
+  <svg>
+    <!-- Snip converted SVG code -->
+  </svg>
+</div>
+```
+
+Which in place will be rendered as the following:
 
 ![Rendered SVG Diagram][diagram-svg]
 
