@@ -104,7 +104,7 @@ Everyone interacting in the Kramdown::PlantUml project's codebases, issue tracke
 [kramdown]: https://kramdown.gettalong.org/
 [gems]: https://rubygems.org
 [github]: https://github.com/SwedbankPay/kramdown-plantuml/
-[coc]: CODE_OF_CONDUCT.md
+[coc]: ./CODE_OF_CONDUCT.md
 [coc-badge]: https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg
 [cla]: https://cla-assistant.io/SwedbankPay/kramdown-plantuml
 [cla-badge]: https://cla-assistant.io/readme/badge/SwedbankPay/design.swedbankpay.com
