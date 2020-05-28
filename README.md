@@ -87,17 +87,14 @@ git commits and tags, and push the `.gem` file to [rubygems.org][gems].
 
 Bug reports and pull requests are welcome on [GitHub][github]. This project is
 intended to be a safe, welcoming space for collaboration, and contributors are
-expected to adhere to the [code of conduct][coc] and sign the [contributor's
-license agreement][cla].
+expected to adhere to the [code of conduct][coc] and sign the
+[contributor's license agreement][cla].
 
 ## License
 
-The gem is available as open source under the terms of the [MIT
-License][license].
-
-## Code of Conduct
-
-Everyone interacting in the Kramdown::PlantUml project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct][coc].
+The code within this repository is available as open source under the terms of
+the [Apache 2.0 License][license] and the [contributor's license
+agreement][cla].
 
 [plantuml]: https://plantuml.com/
 [jekyll]: https://jekyllrb.com/
