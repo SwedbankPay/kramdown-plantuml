@@ -2,26 +2,16 @@ require "spec_helper"
 require "kramdown-plantuml/converter"
 
 describe Kramdown::PlantUml::Converter do
-    subject (:converter) {
-        Kramdown::PlantUml::Converter.new
-    }
-
-    let (:plantuml_content) {
-        cwd = File.dirname(__FILE__)
-        plantuml_file = File.join(cwd, 'diagram.plantuml')
-        File.read(plantuml_file)
-    }
+    cwd = File.dirname(__FILE__)
+    plantuml_file = File.join(cwd, 'diagram.plantuml')
+    plantuml_content = File.read(plantuml_file)
 
     context "convert_plantuml_to_svg" do
-        let (:converted_svg) {
-            converter.convert_plantuml_to_svg(plantuml_content).to_s
+        before(:all) {
+            converter = Kramdown::PlantUml::Converter.new
+            @converted_svg = converter.convert_plantuml_to_svg(plantuml_content)
         }
-
-        subject {
-            # TODO: This is supposed to cache the converted_svg, but it doesn't work.
-            #       https://stackoverflow.com/a/52453592/61818
-            @converted_svg ||= converted_svg.freeze
-        }
+        subject { @converted_svg }
 
         it {
             is_expected.not_to include("No @startuml/@enduml found")
@@ -38,18 +28,36 @@ describe Kramdown::PlantUml::Converter do
         it {
             is_expected.to include("<path")
         }
+
+        it {
+            is_expected.to include("<div")
+        }
+
+        it {
+            is_expected.to include("</div>")
+        }
+
+        it {
+            is_expected.not_to include("<?xml version=")
+        }
+
+        it {
+            is_expected.to include("class=\"plantuml\"")
+        }
     end
 
-    context "fails properly", :no_plantuml do
-        it "if plantuml.jar is not present" do
+    context "fails properly" do
+        subject(:converter) {
+            Kramdown::PlantUml::Converter.new
+        }
+
+        it "if plantuml.jar is not present", :no_plantuml do
             expect {
                 converter.convert_plantuml_to_svg(plantuml_content).to_s
             }.to raise_error(IOError, /plantuml.1.2020.5.jar' does not exist/)
         end
-    end
 
-    context "fails properly", :no_java do
-        it "if Java is not installed" do
+        it "if Java is not installed", :no_java do
             expect {
                 converter.convert_plantuml_to_svg(plantuml_content).to_s
             }.to raise_error(IOError, "Java can not be found")

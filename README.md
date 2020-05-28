@@ -1,9 +1,12 @@
 # Kramdown::PlantUml
 
-[![Contributor Covenant][coc-badge]][coc]
+[![Gem Version][gem-badge]][gem-url]
 ![Build][build-badge]
 ![No Java][no-java-build-badge]
 ![No PlantUML][no-plantuml-badge]
+[![MIT License][license-badge]][license]
+[![CLA assistant][cla-badge]][cla]
+[![Contributor Covenant][coc-badge]][coc]
 
 `kramdown-plantuml` allows you to use [PlantUML][plantuml] syntax within [fenced
 code blocks][fenced] in [Jekyll] with its default [Kramdown][kramdown] Markdown
@@ -24,7 +27,17 @@ app -> client
 Using the `plantuml` language identifier in fenced code blocks will allow
 `kramdown-plantuml` to pick it up and replace it with a rendered [SVG][svg]
 diagram when the Markdown is rendered to HTML. The above diagram will be
-replaced with the following:
+replaced with the following (abbreviated) HTML code:
+
+```html
+<div class="plantuml">
+  <svg>
+    <!-- Snip converted SVG code -->
+  </svg>
+</div>
+```
+
+Which in place will be rendered as the following:
 
 ![Rendered SVG Diagram][diagram-svg]
 
@@ -74,27 +87,34 @@ git commits and tags, and push the `.gem` file to [rubygems.org][gems].
 
 Bug reports and pull requests are welcome on [GitHub][github]. This project is
 intended to be a safe, welcoming space for collaboration, and contributors are
-expected to adhere to the [code of conduct][coc].
+expected to adhere to the [code of conduct][coc] and sign the [contributor's
+license agreement][cla].
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License][mit].
+The gem is available as open source under the terms of the [MIT
+License][license].
 
 ## Code of Conduct
 
-Everyone interacting in the Kramdown::PlantUml project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/kramdown-plantuml/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Kramdown::PlantUml project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct][coc].
 
 [plantuml]: https://plantuml.com/
 [jekyll]: https://jekyllrb.com/
 [kramdown]: https://kramdown.gettalong.org/
 [gems]: https://rubygems.org
 [github]: https://github.com/SwedbankPay/kramdown-plantuml/
-[coc]: CODE_OF_CONDUCT.md
+[coc]: ./CODE_OF_CONDUCT.md
 [coc-badge]: https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg
-[mit]: https://opensource.org/licenses/MIT
+[cla]: https://cla-assistant.io/SwedbankPay/kramdown-plantuml
+[cla-badge]: https://cla-assistant.io/readme/badge/SwedbankPay/design.swedbankpay.com
+[license]: https://opensource.org/licenses/MIT
+[license-badge]: https://img.shields.io/github/license/SwedbankPay/kramdown-plantuml
 [fenced]: https://www.markdownguide.org/extended-syntax/#syntax-highlighting
 [svg]: https://developer.mozilla.org/en-US/docs/Web/SVG
 [diagram-svg]: spec/diagram.svg
+[gem-badge]: https://badge.fury.io/rb/kramdown-plantuml.svg
+[gem-url]: https://rubygems.org/gems/kramdown-plantuml
 [build-badge]: https://github.com/SwedbankPay/kramdown-plantuml/workflows/Ruby%20Gem/badge.svg?branch=master
 [no-java-build-badge]: https://github.com/SwedbankPay/kramdown-plantuml/workflows/No%20Java/badge.svg?branch=master
 [no-plantuml-badge]: https://github.com/SwedbankPay/kramdown-plantuml/workflows/No%20PlantUML/badge.svg?branch=master
