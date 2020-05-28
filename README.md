@@ -27,7 +27,17 @@ app -> client
 Using the `plantuml` language identifier in fenced code blocks will allow
 `kramdown-plantuml` to pick it up and replace it with a rendered [SVG][svg]
 diagram when the Markdown is rendered to HTML. The above diagram will be
-replaced with the following:
+replaced with the following (abbreviated) HTML code:
+
+```html
+<div class="plantuml">
+  <svg>
+    <!-- Snip converted SVG code -->
+  </svg>
+</div>
+```
+
+Which in place will be rendered as the following:
 
 ![Rendered SVG Diagram][diagram-svg]
 
@@ -87,14 +97,14 @@ License][license].
 
 ## Code of Conduct
 
-Everyone interacting in the Kramdown::PlantUml project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/kramdown-plantuml/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Kramdown::PlantUml project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct][coc].
 
 [plantuml]: https://plantuml.com/
 [jekyll]: https://jekyllrb.com/
 [kramdown]: https://kramdown.gettalong.org/
 [gems]: https://rubygems.org
 [github]: https://github.com/SwedbankPay/kramdown-plantuml/
-[coc]: CODE_OF_CONDUCT.md
+[coc]: ./CODE_OF_CONDUCT.md
 [coc-badge]: https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg
 [cla]: https://cla-assistant.io/SwedbankPay/kramdown-plantuml
 [cla-badge]: https://cla-assistant.io/readme/badge/SwedbankPay/design.swedbankpay.com
