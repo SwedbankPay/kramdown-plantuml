@@ -4,7 +4,8 @@
 ![Build][build-badge]
 ![No Java][no-java-build-badge]
 ![No PlantUML][no-plantuml-badge]
-[![MIT License][license-badge]][license]
+[![License][license-badge]][license]
+[![Dependabot Status][dependabot-badge]][dependabot]
 [![CLA assistant][cla-badge]][cla]
 [![Contributor Covenant][coc-badge]][coc]
 
@@ -96,22 +97,24 @@ The code within this repository is available as open source under the terms of
 the [Apache 2.0 License][license] and the [contributor's license
 agreement][cla].
 
-[plantuml]: https://plantuml.com/
-[jekyll]: https://jekyllrb.com/
-[kramdown]: https://kramdown.gettalong.org/
-[gems]: https://rubygems.org
-[github]: https://github.com/SwedbankPay/kramdown-plantuml/
-[coc]: ./CODE_OF_CONDUCT.md
-[coc-badge]: https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg
-[cla]: https://cla-assistant.io/SwedbankPay/kramdown-plantuml
-[cla-badge]: https://cla-assistant.io/readme/badge/SwedbankPay/design.swedbankpay.com
-[license]: https://opensource.org/licenses/MIT
-[license-badge]: https://img.shields.io/github/license/SwedbankPay/kramdown-plantuml
-[fenced]: https://www.markdownguide.org/extended-syntax/#syntax-highlighting
-[svg]: https://developer.mozilla.org/en-US/docs/Web/SVG
-[diagram-svg]: spec/diagram.svg
-[gem-badge]: https://badge.fury.io/rb/kramdown-plantuml.svg
-[gem-url]: https://rubygems.org/gems/kramdown-plantuml
-[build-badge]: https://github.com/SwedbankPay/kramdown-plantuml/workflows/Ruby%20Gem/badge.svg?branch=master
-[no-java-build-badge]: https://github.com/SwedbankPay/kramdown-plantuml/workflows/No%20Java/badge.svg?branch=master
-[no-plantuml-badge]: https://github.com/SwedbankPay/kramdown-plantuml/workflows/No%20PlantUML/badge.svg?branch=master
+[build-badge]:          https://github.com/SwedbankPay/kramdown-plantuml/workflows/Ruby%20Gem/badge.svg?branch=master
+[cla-badge]:            https://cla-assistant.io/readme/badge/SwedbankPay/kramdown-plantuml
+[cla]:                  https://cla-assistant.io/SwedbankPay/kramdown-plantuml
+[coc-badge]:            https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg
+[coc]:                  ./CODE_OF_CONDUCT.md
+[dependabot-badge]:     https://api.dependabot.com/badges/status?host=github&repo=SwedbankPay/kramdown-plantuml
+[dependabot]:           https://dependabot.com
+[diagram-svg]:          ./spec/diagram.svg
+[fenced]:               https://www.markdownguide.org/extended-syntax/#syntax-highlighting
+[gem-badge]:            https://badge.fury.io/rb/kramdown-plantuml.svg
+[gem-url]:              https://rubygems.org/gems/kramdown-plantuml
+[gems]:                 https://rubygems.org
+[github]:               https://github.com/SwedbankPay/kramdown-plantuml/
+[jekyll]:               https://jekyllrb.com/
+[kramdown]:             https://kramdown.gettalong.org/
+[license-badge]:        https://img.shields.io/github/license/SwedbankPay/kramdown-plantuml
+[license]:              https://opensource.org/licenses/Apache-2.0
+[no-java-build-badge]:  https://github.com/SwedbankPay/kramdown-plantuml/workflows/No%20Java/badge.svg?branch=master
+[no-plantuml-badge]:    https://github.com/SwedbankPay/kramdown-plantuml/workflows/No%20PlantUML/badge.svg?branch=master
+[plantuml]:             https://plantuml.com/
+[svg]:                  https://developer.mozilla.org/en-US/docs/Web/SVG
