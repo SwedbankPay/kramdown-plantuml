@@ -22,7 +22,7 @@ module Kramdown::PlantUml
     def convert_plantuml_to_svg(content)
       cmd = "java -jar #{@plant_uml_jar_file} -tsvg -pipe"
 
-      stdout, stderr, status = Open3.capture3(cmd, :stdin_data => content)
+      stdout, stderr, _ = Open3.capture3(cmd, :stdin_data => content)
 
       unless stderr.empty?
         raise stderr
