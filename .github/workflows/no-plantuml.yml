@@ -17,7 +17,9 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Bundle install
-      run: bundle install --jobs 4 --retry 3
+      run: |
+        bundle config set without 'codecov'
+        bundle install --jobs 4 --retry 3
 
     - name: Test with Rake
       run: bundle exec rspec --tag no_plantuml
