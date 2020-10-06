@@ -11,9 +11,9 @@ module Kramdown::PlantUml
       jar_glob = File.join dir, '../bin/**/plantuml*.jar'
       @plant_uml_jar_file = Dir[jar_glob].first
 
+      raise IOError, 'Java can not be found' unless Which.which('java')
       raise IOError, "No 'plantuml.jar' file could be found" if @plant_uml_jar_file.nil?
       raise IOError, "'#{@plant_uml_jar_file}' does not exist" unless File.exist? @plant_uml_jar_file
-      raise IOError, 'Java can not be found' unless Which.which('java')
     end
 
     def convert_plantuml_to_svg(content)
