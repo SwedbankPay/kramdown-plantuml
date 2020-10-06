@@ -125,6 +125,9 @@ jobs:
     - name: Test with Rake
       run: bundle exec rake
 
+    - name: Codecov upload
+      run: bundle exec rake codecov:upload || echo 'Codecov upload failed'
+
     - name: Build gem
       id: gem
       run: |

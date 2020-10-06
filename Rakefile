@@ -7,4 +7,15 @@ RSpec::Core::RakeTask.new(:spec) do |t|
   t.rspec_opts = '--format documentation --tag ~no_plantuml --tag ~no_java'
 end
 
+namespace :codecov do
+  desc 'Uploads the latest SimpleCov result set to codecov.io'
+  task :upload do
+    require 'simplecov'
+    require 'codecov'
+
+    formatter = SimpleCov::Formatter::Codecov.new
+    formatter.format(SimpleCov::ResultMerger.merged_result)
+  end
+end
+
 task default: :spec
