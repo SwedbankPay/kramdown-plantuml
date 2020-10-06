@@ -19,6 +19,7 @@ jobs:
     - name: Bundle install
       run: |
         bundle config set without 'codecov'
+        bundle config set without 'simplecov'
         bundle install --jobs 4 --retry 3
 
     - name: Test with Rake
