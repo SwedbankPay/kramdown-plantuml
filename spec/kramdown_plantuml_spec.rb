@@ -56,7 +56,7 @@ describe Kramdown::PlantUml::Converter do
     it 'if plantuml.jar is not present', :no_plantuml do
       expect do
         converter.convert_plantuml_to_svg(plantuml_content).to_s
-      end.to raise_error(IOError, /plantuml.1.2020.5.jar' does not exist/)
+      end.to raise_error(IOError, /No 'plantuml.jar' file could be found/)
     end
 
     it 'if Java is not installed', :no_java do
