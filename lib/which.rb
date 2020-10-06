@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Which
   def self.which(cmd)
     exts = ENV['PATHEXT'] ? ENV['PATHEXT'].split(';') : ['']
