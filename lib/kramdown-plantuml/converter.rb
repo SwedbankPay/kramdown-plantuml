@@ -8,20 +8,11 @@ module Kramdown::PlantUml
   class Converter
     def initialize
       dir = File.dirname __dir__
-      bin = File.join dir, "../bin"
-      bin = File.expand_path bin
-      @plant_uml_jar_file = File.join bin, "plantuml.1.2020.5.jar"
+      jar_glob = File.join dir, '../bin/**/plantuml*.jar'
+      @plant_uml_jar_file = Dir[jar_glob].first
 
-      unless File.exists? @plant_uml_jar_file
-        raise IOError.new("'#{@plant_uml_jar_file}' does not exist")
-      end
-
-      unless Which::which("java")
-        raise IOError.new("Java can not be found")
-      end
-
+      raise IOError, "No 'plantuml.jar' file could be found" if @plant_uml_jar_file.nil?
       raise IOError, "'#{@plant_uml_jar_file}' does not exist" unless File.exist? @plant_uml_jar_file
-
       raise IOError, 'Java can not be found' unless Which.which('java')
     end
 
