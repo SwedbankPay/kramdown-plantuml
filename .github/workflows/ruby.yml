@@ -96,7 +96,7 @@ jobs:
         path: bin/
 
     - name: Version stamp
-      run: sed -i -e 's/0.0.1.dev/${{ needs.version.outputs.version }}/g' ./lib/kramdown-plantuml/version.rb
+      run: sed -i -e 's/0.0.1.dev/${{ needs.version.outputs.version }}/g' ${{ github.workspace }}/lib/kramdown-plantuml/version.rb
 
     - name: Set up Ruby 2.7
       uses: actions/setup-ruby@v1
