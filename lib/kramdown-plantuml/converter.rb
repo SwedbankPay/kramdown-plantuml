@@ -10,7 +10,7 @@ module Kramdown::PlantUml
       bin = File.expand_path bin
       @plant_uml_jar_file = File.join bin, "plantuml.1.2020.5.jar"
 
-      if not File.exists? @plant_uml_jar_file
+      unless File.exists? @plant_uml_jar_file
         raise IOError.new("'#{@plant_uml_jar_file}' does not exist")
       end
 
@@ -24,10 +24,11 @@ module Kramdown::PlantUml
 
       stdout, stderr, _ = Open3.capture3(cmd, :stdin_data => content)
 
-      unless stderr.empty?
+      # Circumvention of https://bugs.openjdk.java.net/browse/JDK-8244621
+      unless stderr.empty? || stderr.include?('CoreText note:')
         raise stderr
       end
-      
+
       xml_prologue_start = "<?xml"
       xml_prologue_end = "?>"
 
