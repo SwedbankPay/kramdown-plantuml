@@ -1,1 +1,16 @@
-inherit_from: .rubocop_todo.yml
+AllCops:
+  NewCops: enable
+  Exclude:
+    - "Rakefile"
+    - "_site/**/*.rb"
+    - "spec/**/*.rb"
+    - "vendor/**/*.rb"
+Layout:
+  LineLength: 100
+  IndentationStyle:
+    IndentationWidth: 2
+Metrics/MethodLength:
+  Max: 20
+Naming/FileName:
+  Exclude:
+    - 'lib/kramdown-plantuml.rb'
