@@ -75,6 +75,9 @@ jobs:
         bundle config path vendor/bundle
         bundle install --jobs 4 --retry 3
 
+    - name: rubocop
+      run: bundle exec rubocop --fail-level warning --display-only-fail-level-offenses
+
     - name: Test with Rake
       env:
         GEM_VERSION: ${{ steps.gemversion.outputs.version }}

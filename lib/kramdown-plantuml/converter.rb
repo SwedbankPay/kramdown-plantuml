@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'which'
 require 'open3'
 require_relative 'version'
@@ -17,30 +19,32 @@ module Kramdown::PlantUml
       unless Which::which("java")
         raise IOError.new("Java can not be found")
       end
+
+      raise IOError, "'#{@plant_uml_jar_file}' does not exist" unless File.exist? @plant_uml_jar_file
+
+      raise IOError, 'Java can not be found' unless Which.which('java')
     end
 
     def convert_plantuml_to_svg(content)
       cmd = "java -jar #{@plant_uml_jar_file} -tsvg -pipe"
 
-      stdout, stderr, _ = Open3.capture3(cmd, :stdin_data => content)
+      stdout, stderr, = Open3.capture3(cmd, stdin_data: content)
 
       # Circumvention of https://bugs.openjdk.java.net/browse/JDK-8244621
-      unless stderr.empty? || stderr.include?('CoreText note:')
-        raise stderr
-      end
+      raise stderr unless stderr.empty? || stderr.include?('CoreText note:')
 
-      xml_prologue_start = "<?xml"
-      xml_prologue_end = "?>"
+      xml_prologue_start = '<?xml'
+      xml_prologue_end = '?>'
 
       start_index = stdout.index(xml_prologue_start)
       end_index = stdout.index(xml_prologue_end, xml_prologue_start.length) + xml_prologue_end.length
 
       stdout.slice! start_index, end_index
 
-      wrapper_element_start = "<div class=\"plantuml\">"
-      wrapper_element_end = "</div>"
+      wrapper_element_start = '<div class="plantuml">'
+      wrapper_element_end = '</div>'
 
-      return "#{wrapper_element_start}#{stdout}#{wrapper_element_end}"
+      "#{wrapper_element_start}#{stdout}#{wrapper_element_end}"
     end
   end
 end
