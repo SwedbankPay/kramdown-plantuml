@@ -19,8 +19,5 @@ jobs:
     - name: Bundle install
       run: bundle install --jobs 4 --retry 3
 
-    - name: Remove plantuml.1.2020.5.jar
-      run:  rm bin/plantuml.1.2020.5.jar
-
     - name: Test with Rake
       run: bundle exec rspec --tag no_plantuml
