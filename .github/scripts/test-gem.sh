@@ -74,11 +74,33 @@ test_gem() {
 
     bundle install
     bundle exec jekyll build
-    grep -Fxq 'class="plantuml"' _site/index.html
-    grep -Fxq '<svg' _site/index.html
-    grep -Fxq '<ellipse' _site/index.html
-    grep -Fxq '<polygon' _site/index.html
-    grep -Fxq '<path' _site/index.html
+    file_contains '_site/index.html' 'class="plantuml"'
+    file_contains '_site/index.html' '<svg'
+    file_contains '_site/index.html' '<ellipse'
+    file_contains '_site/index.html' '<polygon'
+    file_contains '_site/index.html' '<path'
+}
+
+file_contains() {
+    file=$1
+    contents=$2
+
+    if [[ -z "$file" ]]; then
+        echo "file_contains missing required argument <file>."
+        return 1
+    fi
+
+    if [[ -z "$contents" ]]; then
+        echo "file_contains missing required argument <contents>."
+        return 1
+    fi
+
+    if grep -Fxq "$contents" "$file"; then
+        echo "Success! '$contents' found in '$file'."
+    else
+        echo "Failed! '$contents' not found in '$file'."
+        exit 1
+    fi
 }
 
 main() {
