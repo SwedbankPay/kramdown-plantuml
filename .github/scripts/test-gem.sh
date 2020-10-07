@@ -102,6 +102,11 @@ file_contains() {
         return 1
     fi
 
+    if [[ ! -f "$file" ]]; then
+        echo "file_contains <file> not found: '$file'."
+        return 1
+    fi
+
     if grep -Fxq "$contents" "$file"; then
         echo "Success! '$contents' found in '$file'."
     else
@@ -111,7 +116,7 @@ file_contains() {
             cat "$file"
         fi
 
-        exit 1
+        return 1
     fi
 }
 
