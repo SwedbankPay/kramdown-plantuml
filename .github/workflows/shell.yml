@@ -1,4 +1,4 @@
-name: Ruby Gem
+name: Shell
 
 on:
   push:
