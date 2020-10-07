@@ -107,7 +107,7 @@ file_contains() {
         return 1
     fi
 
-    if grep -Fxq "$contents" "$file"; then
+    if grep --quiet --fixed-strings "$contents" "$file"; then
         echo "Success! '$contents' found in '$file'."
     else
         echo "Failed! '$contents' not found in '$file'."
