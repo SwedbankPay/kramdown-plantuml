@@ -12,3 +12,4 @@ Gemfile.lock
 *.jar
 /bin/
 .jekyll-cache
+_site
