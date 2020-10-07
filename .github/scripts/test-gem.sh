@@ -74,8 +74,13 @@ test_gem() {
         echo "gem 'kramdown-plantuml', path: '$gem_path'" >> Gemfile
     fi
 
+    if [[ $verbose ]]; then
+        cat Gemfile
+    fi
+
     bundle install
     bundle exec jekyll build
+
     file_contains '_site/index.html' 'class="plantuml"'
     file_contains '_site/index.html' '<svg'
     file_contains '_site/index.html' '<ellipse'

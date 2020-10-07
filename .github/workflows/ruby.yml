@@ -128,7 +128,7 @@ jobs:
         path: ${{ steps.gem.outputs.name }}
 
     - name: Test gem
-      run: .github/scripts/test-gem.sh --workdir ${{ github.workspace }} --gem ${{ steps.gem.outputs.name }}
+      run: .github/scripts/test-gem.sh --workdir ${{ github.workspace }} --gem ${{ steps.gem.outputs.name }} --verbose
 
   publish-dev:
     needs: [version, gem]
