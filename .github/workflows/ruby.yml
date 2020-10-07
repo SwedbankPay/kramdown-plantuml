@@ -140,6 +140,9 @@ jobs:
       with:
         ruby-version: 2.7.x
 
+    - name: Setup Graphviz
+      uses: kamiazya/setup-graphviz@v1
+
     - name: Publish to GPR
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
