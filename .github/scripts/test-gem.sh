@@ -104,6 +104,11 @@ file_contains() {
         echo "Success! '$contents' found in '$file'."
     else
         echo "Failed! '$contents' not found in '$file'."
+
+        if [[ $verbose ]]; then
+            cat "$file"
+        fi
+
         exit 1
     fi
 }
