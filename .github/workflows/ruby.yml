@@ -144,7 +144,7 @@ jobs:
       uses: kamiazya/setup-graphviz@v1
 
     - name: Publish to GPR
-      run: .github/scripts/publish-gem.sh --token ${{ secrets.GITHUB_TOKEN }} --owner SwedbankPay --gem ${{ needs.gem.outputs.name }} --verbose
+      run: .github/scripts/publish-gem.sh --gem ${{ needs.gem.outputs.name }} --token ${{ secrets.GITHUB_TOKEN }} --owner SwedbankPay --verbose
 
     - name: Test gem
       run: .github/scripts/test-gem.sh --workdir "${{ github.workspace }}/spec/fixture" --token "${{ secrets.GITHUB_TOKEN }}" --verbose
@@ -160,11 +160,4 @@ jobs:
         name: ${{ needs.gem.outputs.name }}
 
     - name: Publish to RubyGems
-      env:
-        RUBYGEMS_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}
-      run: |
-        mkdir -p $HOME/.gem
-        touch $HOME/.gem/credentials
-        chmod 0600 $HOME/.gem/credentials
-        printf -- "---\n:rubygems_api_key: ${RUBYGEMS_API_KEY}\n" > $HOME/.gem/credentials
-        gem push ${{ needs.gem.outputs.name }}
+      run: .github/scripts/publish-gem.sh --gem ${{ needs.gem.outputs.name }} --token ${{ secrets.RUBYGEMS_API_KEY }} --verbose
