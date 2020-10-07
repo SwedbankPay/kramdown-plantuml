@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'which'
 require 'open3'
+require_relative '../which'
 require_relative 'version'
 
 module Kramdown

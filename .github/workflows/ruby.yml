@@ -2,10 +2,8 @@ name: Ruby Gem
 
 on:
   push:
-    branches:
-    - '*'
-    tags:
-    - '*'
+    branches: ['*']
+    tags: ['*']
   pull_request:
 
 jobs:
@@ -143,7 +141,10 @@ jobs:
         name: ${{ steps.gem.outputs.name }}
         path: ${{ steps.gem.outputs.name }}
 
-  publish:
+    - name: Test gem
+      run: .github/scripts/test-gem.sh --workdir ${{ github.workspace }} --gem ${{ needs.gem.outputs.name }}
+
+  publish-dev:
     needs: [version, gem]
     runs-on: ubuntu-latest
 
@@ -151,6 +152,11 @@ jobs:
     - uses: actions/download-artifact@v2
       with:
         name: ${{ needs.gem.outputs.name }}
+
+    - name: Set up Ruby 2.7
+      uses: actions/setup-ruby@v1
+      with:
+        ruby-version: 2.7.x
 
     - name: Publish to GPR
       env:
@@ -167,8 +173,20 @@ jobs:
                  ${{ needs.gem.outputs.name }} \
           || echo "push failed ($?) probably due to version '${{ needs.version.outputs.version }}' already existing in GPR."
 
+    - name: Test gem
+      run: .github/scripts/test-gem.sh --workdir ${{ github.workspace }} --token ${{ secrets.GITHUB_TOKEN }}
+
+  publish-prod:
+    needs: [version, gem]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/') # Only publish tagged commits
+
+    steps:
+    - uses: actions/download-artifact@v2
+      with:
+        name: ${{ needs.gem.outputs.name }}
+
     - name: Publish to RubyGems
-      if: startsWith(github.ref, 'refs/tags/') # Only publish tagged commits
       env:
         RUBYGEMS_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}
       run: |

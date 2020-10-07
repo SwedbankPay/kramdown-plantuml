@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'kramdown-plantuml/version'
-require 'kramdown-plantuml/converter'
-require 'kramdown_html'
+require_relative 'kramdown-plantuml/version'
+require_relative 'kramdown-plantuml/converter'
+require_relative 'kramdown_html'
 
 module Kramdown
   module PlantUml
