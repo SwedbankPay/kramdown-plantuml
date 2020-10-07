@@ -116,10 +116,7 @@ jobs:
 
     - name: Build gem
       id: gem
-      run: |
-        GEM_BUILD_NAME=$(gem build kramdown-plantuml.gemspec | awk '/File/ {print $2}')
-        echo "Gem filename: '${GEM_BUILD_NAME}'"
-        echo "::set-output name=name::${GEM_BUILD_NAME}"
+      run: .github/scripts/build-gem.sh
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2-preview
