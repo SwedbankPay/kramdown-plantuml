@@ -144,10 +144,7 @@ jobs:
       uses: kamiazya/setup-graphviz@v1
 
     - name: Publish to GPR
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        OWNER: SwedbankPay
-      run: .github/scripts/publish-dev.sh
+      run: .github/scripts/publish-gem.sh --token ${{ secrets.GITHUB_TOKEN }} --owner SwedbankPay --gem ${{ needs.gem.outputs.name }} --verbose
 
     - name: Test gem
       run: .github/scripts/test-gem.sh --workdir "${{ github.workspace }}/spec/fixture" --token "${{ secrets.GITHUB_TOKEN }}" --verbose
