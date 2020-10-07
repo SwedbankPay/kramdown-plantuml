@@ -4,11 +4,12 @@ me=$(basename "$0")
 
 help_message="\
 Usage:
-  $me --workdir <workdir> [--gemdir <gemdir>] | --token <token>] [--verbose]
+  $me --workdir <workdir> [--gemdir <gemdir> | --version <version> --token <token>] [--verbose]
   $me --help
 Arguments:
   -w, --workdir <workdir>       The path to the working directory.
   -g, --gemdir <gemdir>         The path to directory of the Gem file to test.
+  -v, --version <version>       The version of the Gem to test.
   -t, --token <token>           The GitHub token to use for retrieving the gem
                                 from the GitHub Package Registry.
   -h, --help                    Displays this help screen.
@@ -24,6 +25,9 @@ parse_args() {
             shift
         elif [[ $1 = "-g" || $1 = "--gemdir" ]]; then
             gemdir=$2
+            shift 2
+        elif [[ $1 = "-v" || $1 = "--version" ]]; then
+            version=$2
             shift 2
         elif [[ $1 = "-t" || $1 = "--token" ]]; then
             token=$2
@@ -67,7 +71,7 @@ test_gem() {
         # A non-empty $token means we should install the Gem from GPR
         repository="https://rubygems.pkg.github.com/SwedbankPay"
         bundle config "$repository" "SwedbankPay:$token"
-        printf "source '%s' do\n\tgem 'kramdown-plantuml'\nend" "$repository" >> Gemfile
+        printf "source '%s' do\n\tgem 'kramdown-plantuml', '%s'\nend" "$repository" "$version" >> Gemfile
     else
         echo "gem 'kramdown-plantuml', path: '$gemdir'" >> Gemfile
     fi

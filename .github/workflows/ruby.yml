@@ -160,4 +160,4 @@ jobs:
         name: ${{ needs.gem.outputs.name }}
 
     - name: Publish to RubyGems
-      run: .github/scripts/publish-gem.sh --gem ${{ needs.gem.outputs.name }} --token ${{ secrets.RUBYGEMS_API_KEY }} --verbose
+      run: .github/scripts/publish-gem.sh --gem ${{ needs.gem.outputs.name }} --version ${{ needs.version.outputs.version }} --token ${{ secrets.RUBYGEMS_API_KEY }} --verbose
