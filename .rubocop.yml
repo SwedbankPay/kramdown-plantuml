@@ -4,7 +4,8 @@ AllCops:
     - "Rakefile"
     - "_site/**/*.rb"
     - "spec/**/*.rb"
-    - "vendor/**/*.rb"
+    - "vendor/**/.*"
+    - "vendor/**/*"
 Layout:
   LineLength: 100
   IndentationStyle:
