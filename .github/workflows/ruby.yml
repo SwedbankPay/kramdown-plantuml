@@ -122,7 +122,7 @@ jobs:
         path: ${{ steps.gem.outputs.name }}
 
     - name: Test gem
-      run: .github/scripts/test-gem.sh --workdir "${{ github.workspace }}/spec/fixture" --gem "${{ steps.gem.outputs.name }}" --verbose
+      run: .github/scripts/test-gem.sh --workdir "${{ github.workspace }}/spec/fixture" --gemdir "${{ github.workspace }}" --verbose
 
   publish-dev:
     needs: [version, gem]
@@ -154,7 +154,7 @@ jobs:
           || echo "push failed ($?) probably due to version '${{ needs.version.outputs.version }}' already existing in GPR."
 
     - name: Test gem
-      run: .github/scripts/test-gem.sh --workdir ${{ github.workspace }} --token ${{ secrets.GITHUB_TOKEN }}
+      run: .github/scripts/test-gem.sh --workdir "${{ github.workspace }}/spec/fixture" --token "${{ secrets.GITHUB_TOKEN }}" --verbose
 
   publish-prod:
     needs: [version, gem]
