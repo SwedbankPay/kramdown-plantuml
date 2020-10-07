@@ -79,11 +79,13 @@ test_gem() {
     bundle install
     bundle exec jekyll build
 
-    file_contains '_site/index.html' 'class="plantuml"'
-    file_contains '_site/index.html' '<svg'
-    file_contains '_site/index.html' '<ellipse'
-    file_contains '_site/index.html' '<polygon'
-    file_contains '_site/index.html' '<path'
+    file="$workdir/_site/index.html"
+
+    file_contains "$file" "class=\"plantuml\""
+    file_contains "$file" "<svg"
+    file_contains "$file" "<ellipse"
+    file_contains "$file" "<polygon"
+    file_contains "$file" "<path"
 }
 
 file_contains() {
