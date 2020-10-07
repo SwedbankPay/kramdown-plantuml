@@ -11,3 +11,4 @@ Gemfile.lock
 /target/
 *.jar
 /bin/
+.jekyll-cache
