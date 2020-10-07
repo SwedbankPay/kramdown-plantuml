@@ -67,7 +67,9 @@ test_gem() {
         # A non-empty $token means we should install the Gem from GPR
         repository="https://rubygems.pkg.github.com/SwedbankPay"
         bundle config "$repository" "SwedbankPay:$token"
-        echo "source '$repository' { gem 'kramdown-plantuml' }" >> Gemfile
+        echo "source '$repository' do" >> Gemfile
+        echo "  gem 'kramdown-plantuml'" >> Gemfile
+        echo "end" >> Gemfile
     else
         echo "gem 'kramdown-plantuml', path: '$gemdir'" >> Gemfile
     fi
