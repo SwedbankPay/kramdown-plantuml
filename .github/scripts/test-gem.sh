@@ -52,6 +52,13 @@ parse_args() {
         echo "$help_message"
         return 1
     fi
+
+    if [[ (-n "$version" && -z "$token") || (-z "$version" && -n "$token") ]]; then
+        echo "Missing or invalid required arguments: --version <gem-path> and --token <token>."
+        echo "When either argument is present, both must be."
+        echo "$help_message"
+        return 1
+    fi
 }
 
 # Echo expanded commands as they are executed (for debugging)

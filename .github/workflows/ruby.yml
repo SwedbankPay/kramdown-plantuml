@@ -147,7 +147,7 @@ jobs:
       run: .github/scripts/publish-gem.sh --gem ${{ needs.gem.outputs.name }} --token ${{ secrets.GITHUB_TOKEN }} --owner SwedbankPay --verbose
 
     - name: Test gem
-      run: .github/scripts/test-gem.sh --workdir "${{ github.workspace }}/spec/fixture" --token "${{ secrets.GITHUB_TOKEN }}" --verbose
+      run: .github/scripts/test-gem.sh --workdir "${{ github.workspace }}/spec/fixture" --version ${{ needs.version.outputs.version }} --token "${{ secrets.GITHUB_TOKEN }}" --verbose
 
   publish-prod:
     needs: [version, gem]
@@ -160,4 +160,4 @@ jobs:
         name: ${{ needs.gem.outputs.name }}
 
     - name: Publish to RubyGems
-      run: .github/scripts/publish-gem.sh --gem ${{ needs.gem.outputs.name }} --version ${{ needs.version.outputs.version }} --token ${{ secrets.RUBYGEMS_API_KEY }} --verbose
+      run: .github/scripts/publish-gem.sh --gem ${{ needs.gem.outputs.name }} --token ${{ secrets.RUBYGEMS_API_KEY }} --verbose
