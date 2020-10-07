@@ -23,7 +23,7 @@ parse_args() {
             verbose=true
             shift
         elif [[ $1 = "-g" || $1 = "--gem" ]]; then
-            gem_path=$(dirname "$2")
+            gem_path=$2
             shift 2
         elif [[ $1 = "-t" || $1 = "--token" ]]; then
             token=$2
@@ -48,6 +48,8 @@ parse_args() {
         echo "$help_message"
         return 1
     fi
+
+    gem_path=$(dirname "$gem_path")
 }
 
 # Echo expanded commands as they are executed (for debugging)
