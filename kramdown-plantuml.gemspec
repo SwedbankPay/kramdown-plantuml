@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
     if Which.which('git')
       files = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
       # Explicitly add plantuml.jar to the list of files as it is not committed to Git.
-      files.append(Dir['bin/plantuml*.jar'].first)
+      files.append(Dir['bin/**/plantuml*.jar'].first)
     else
       puts "Git not found, no files added to #{spec.name}."
     end

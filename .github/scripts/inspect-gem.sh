@@ -57,7 +57,7 @@ inspect_gem() {
         return 1
     fi
 
-    if ! ls "$gem_dir/bin/plantuml"*".jar" 1> /dev/null 2>&1; then
+    if ! ls "$gem_dir/bin/"**"plantuml"*".jar" 1> /dev/null 2>&1; then
         echo "ERROR! 'plantuml.jar' missing from '$gem'."
         return 1
     fi

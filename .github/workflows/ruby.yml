@@ -81,8 +81,6 @@ jobs:
         name: plantuml.jar
         path: bin/
 
-    - run: find .
-
     - name: Version stamp
       run: sed -i -e 's/0.0.1.dev/${{ needs.version.outputs.version }}/g' ${{ github.workspace }}/lib/kramdown-plantuml/version.rb
 
