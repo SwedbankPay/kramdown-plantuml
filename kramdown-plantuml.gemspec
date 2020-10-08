@@ -6,10 +6,10 @@ require_relative 'lib/kramdown-plantuml/version'
 Gem::Specification.new do |spec|
   spec.name          = 'kramdown-plantuml'
   spec.version       = Kramdown::PlantUml::VERSION
-  spec.authors       = ['Asbjørn Ulsberg']
-  spec.email         = ['asbjorn@ulsberg.no']
+  spec.authors       = ['Swedbank Pay']
+  spec.email         = ['opensource@swedbankpay.com']
 
-  spec.summary       = 'Short summary'
+  spec.summary       = "kramdown-plantuml allows you to use PlantUML syntax within fenced code blocks with Kramdown (Jekyll's default Markdown parser)"
   spec.homepage      = 'https://github.com/SwedbankPay/kramdown-plantuml'
   spec.license       = 'MIT'
   spec.required_ruby_version = Gem::Requirement.new('>= 2.3.0')

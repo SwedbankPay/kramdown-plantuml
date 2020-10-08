@@ -10,8 +10,8 @@
 [![Contributor Covenant][coc-badge]][coc]
 
 `kramdown-plantuml` allows you to use [PlantUML][plantuml] syntax within [fenced
-code blocks][fenced] in [Jekyll] with its default [Kramdown][kramdown] Markdown
-parser:
+code blocks][fenced] in [Kramdown][kramdown] ([Jekyll][jekyll]'s default
+Markdown parser):
 
 ````md
 ```plantuml
