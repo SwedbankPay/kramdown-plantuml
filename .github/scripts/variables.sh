@@ -51,6 +51,9 @@ generate_variables() {
         version="${ref#refs/tags/}"
     fi
 
+    # Convert the version number to all-lowercase because GPR only supports lowercase version numbers.
+    version=$(echo "$version" | tr '[:upper:]' '[:lower:]')
+
     echo "Ref: $ref"
     echo "Sha: $sha"
     echo "Version: $version"
