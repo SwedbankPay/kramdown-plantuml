@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -o errexit # Abort if any command fails
+set -e # Abort if any command fails
 
 me=$(basename "$0")
 
@@ -76,11 +76,8 @@ publish_gem() {
     chmod 0600 "$credentials_file"
     printf -- "---\n:%s %s\n" "$auth_header" "$token" > "$credentials_file"
 
-    set -e
-
     if [[ -n "$host" ]]; then
-        gem push --KEY github --host "$host" "$gem" \
-            || echo "push failed ($?) probably due to version '$gem' already existing in GPR."
+        gem push --KEY github --host "$host" "$gem"
     else
         gem push "$gem"
     fi
