@@ -37,24 +37,27 @@ parse_args() {
 # Echo expanded commands as they are executed (for debugging)
 enable_expanded_output() {
     if [ $verbose ]; then
+        echo "Verbose mode enabled."
         set -o xtrace
         set +o verbose
     fi
 }
 
 inspect_gem() {
-    gem unpack "$gem" --target ~/gem
+    gem unpack "$gem"
+    gem_dir="${gem%.*}"
 
-    if [[ $verbose ]]; then
-        find ~/gem
+    if [ $verbose ]; then
+        echo "Files in '$gem_dir':"
+        find "$gem_dir"
     fi
 
-    if [[ ! -d "~/gem/bin" ]]; then
+    if [[ ! -d "$gem_dir/bin" ]]; then
         echo "ERROR! 'bin' folder missing from '$gem'."
         return 1
     fi
 
-    if [[ ! -f "~/gem/bin/plantuml*.jar" ]]; then
+    if ! ls "$gem_dir/bin/plantuml"*".jar" 1> /dev/null 2>&1; then
         echo "ERROR! 'plantuml.jar' missing from '$gem'."
         return 1
     fi
