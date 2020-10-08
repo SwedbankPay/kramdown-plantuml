@@ -1,15 +1,23 @@
+# frozen_string_literal: true
+
 require 'kramdown'
-require "kramdown-plantuml/converter"
+require_relative 'kramdown-plantuml/converter'
 
-class Kramdown::Converter::Html
-    alias_method :super_convert_codeblock, :convert_codeblock
+PlantUmlConverter = Kramdown::PlantUml::Converter
 
-    def convert_codeblock(element, indent)
-        if element.attr["class"] != "language-plantuml"
-            return super_convert_codeblock(element, indent)
-        end
+module Kramdown
+  module Converter
+    # Plugs into Kramdown::Converter::Html to provide conversion of PlantUML markup
+    # into beautiful SVG.
+    class Html
+      alias super_convert_codeblock convert_codeblock
 
-        converter = Kramdown::PlantUml::Converter.new
-        return converter.convert_plantuml_to_svg(element.value)
+      def convert_codeblock(element, indent)
+        return super_convert_codeblock(element, indent) if element.attr['class'] != 'language-plantuml'
+
+        converter = PlantUmlConverter.new
+        converter.convert_plantuml_to_svg(element.value)
+      end
     end
+  end
 end

@@ -2,67 +2,97 @@ name: Ruby Gem
 
 on:
   push:
-    branches:
-    - '*'
-    tags:
-    - '*'
+    branches: ['*']
+    tags: ['*']
   pull_request:
 
 jobs:
-  build:
-    name: Build, Test and Publish Ruby Gem
+  version:
     runs-on: ubuntu-latest
+
+    outputs:
+      version: ${{ steps.variables.outputs.version }}
 
     steps:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
 
-    - name: Fetch all history for all tags and branches
-      run: |
-        git fetch --prune --tags
-        echo "REF: ${{ github.ref }}"
-
-    - name: Install GitVersion
-      uses: gittools/actions/gitversion/setup@v0.9.2
+    - name: Setup GitVersion
+      uses: gittools/actions/gitversion/setup@v0.9.4
       if: startsWith(github.ref, 'refs/tags/') != true # Only use GitVersion for unstable builds
       with:
-        versionSpec: '5.2.x'
+        versionSpec: '5.3.x'
 
     - name: Execute GitVersion
       id: gitversion
       if: startsWith(github.ref, 'refs/tags/') != true
-      uses: gittools/actions/gitversion/execute@v0.9.2
+      uses: gittools/actions/gitversion/execute@v0.9.4
 
-    - name: Create gem version number
-      id: gemversion
-      uses: actions/github-script@0.9.0
+    - name: Create variables
+      id: variables
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: ./.github/scripts/variables.sh ${{ steps.gitversion.outputs.legacySemVerPadded }}
+
+  plantuml:
+    needs: version
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup Java
+      uses: actions/setup-java@v1
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: |
-          const gemVersion = (function() {
-            const ref = '${{ github.ref }}';
-            const tagPrefix = 'refs/tags/';
+        java-version: 14
 
-            if (ref.startsWith(tagPrefix)) {
-              // If a tag ref is being built, just return the tag verbatim
-              return ref.substring(tagPrefix.length);
-            }
+    - name: Cache Maven dependencies
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-maven-
 
-            return '${{ steps.gitversion.outputs.legacySemVerPadded }}';
-          })();
+    - name: Version stamp
+      run: mvn versions:set -DnewVersion=${{ needs.version.outputs.version }}
 
-          core.setOutput('version', gemVersion);
+    - name: Maven install
+      run: mvn install
 
-    - name: Set up Ruby 2.6
+    - name: Upload plantuml.jar artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: plantuml.jar
+        path: ~/.m2/repository/**/plantuml*.jar
+
+  gem:
+    needs: [version, plantuml]
+    runs-on: ubuntu-latest
+
+    outputs:
+      name: ${{ steps.gem.outputs.name }}
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: plantuml.jar
+        path: bin/
+
+    - name: Version stamp
+      run: sed -i -e 's/0.0.1.dev/${{ needs.version.outputs.version }}/g' ${{ github.workspace }}/lib/kramdown-plantuml/version.rb
+
+    - name: Set up Ruby 2.7
       uses: actions/setup-ruby@v1
       with:
-        ruby-version: 2.6.x
+        ruby-version: 2.7.x
 
     - name: Setup Graphviz
       uses: kamiazya/setup-graphviz@v1
 
-    - name: Cache dependencies
+    - name: Cache Ruby gems
       uses: actions/cache@v1
       with:
         path: vendor/bundle
@@ -70,24 +100,20 @@ jobs:
         restore-keys: ${{ runner.os }}-gems-
 
     - name: Bundle install
-      run: |
-        gem install bundler
-        bundle config path vendor/bundle
-        bundle install --jobs 4 --retry 3
+      run: .github/scripts/bundle-install.sh
+
+    - name: rubocop
+      run: bundle exec rubocop --fail-level warning --display-only-fail-level-offenses
 
     - name: Test with Rake
-      env:
-        GEM_VERSION: ${{ steps.gemversion.outputs.version }}
       run: bundle exec rake
+
+    - name: Codecov upload
+      run: bundle exec rake codecov:upload || echo 'Codecov upload failed'
 
     - name: Build gem
       id: gem
-      env:
-        GEM_VERSION: ${{ steps.gemversion.outputs.version }}
-      run: |
-        GEM_BUILD_NAME=$(gem build kramdown-plantuml.gemspec | awk '/File/ {print $2}')
-        echo "Gem filename: '${GEM_BUILD_NAME}'"
-        echo "::set-output name=name::${GEM_BUILD_NAME}"
+      run: .github/scripts/build-gem.sh
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2-preview
@@ -95,28 +121,46 @@ jobs:
         name: ${{ steps.gem.outputs.name }}
         path: ${{ steps.gem.outputs.name }}
 
+    - name: Inspect gem
+      run: .github/scripts/inspect-gem.sh --gem "${{ github.workspace }}/${{ steps.gem.outputs.name }}" --verbose
+
+    - name: Test gem
+      run: .github/scripts/test-gem.sh --workdir "${{ github.workspace }}/spec/fixture" --gemdir "${{ github.workspace }}" --verbose
+
+  publish-dev:
+    needs: [version, gem]
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: actions/download-artifact@v2
+      with:
+        name: ${{ needs.gem.outputs.name }}
+
+    - name: Set up Ruby 2.7
+      uses: actions/setup-ruby@v1
+      with:
+        ruby-version: 2.7.x
+
+    - name: Setup Graphviz
+      uses: kamiazya/setup-graphviz@v1
+
     - name: Publish to GPR
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        OWNER: SwedbankPay
-      run: |
-        mkdir -p $HOME/.gem
-        touch $HOME/.gem/credentials
-        chmod 0600 $HOME/.gem/credentials
-        printf -- "---\n:github: Bearer ${GITHUB_TOKEN}\n" > $HOME/.gem/credentials
-        set -e
-        gem push --KEY github \
-                 --host https://rubygems.pkg.github.com/${OWNER} \
-                 ${{ steps.gem.outputs.name }} \
-          || echo "push failed ($?) probably due to version '${{ steps.gemversion.outputs.version }}' already existing in GPR."
+      run: .github/scripts/publish-gem.sh --gem ${{ needs.gem.outputs.name }} --token ${{ secrets.GITHUB_TOKEN }} --owner SwedbankPay --verbose
+
+    - name: Test gem
+      run: .github/scripts/test-gem.sh --workdir "${{ github.workspace }}/spec/fixture" --version ${{ needs.version.outputs.version }} --token "${{ secrets.GITHUB_TOKEN }}" --verbose
+
+  publish-prod:
+    needs: [version, gem]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/') # Only publish tagged commits
+
+    steps:
+    - uses: actions/download-artifact@v2
+      with:
+        name: ${{ needs.gem.outputs.name }}
 
     - name: Publish to RubyGems
-      if: startsWith(github.ref, 'refs/tags/') # Only publish tagged commits
-      env:
-        RUBYGEMS_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}
-      run: |
-        mkdir -p $HOME/.gem
-        touch $HOME/.gem/credentials
-        chmod 0600 $HOME/.gem/credentials
-        printf -- "---\n:rubygems_api_key: ${RUBYGEMS_API_KEY}\n" > $HOME/.gem/credentials
-        gem push ${{ steps.gem.outputs.name }}
+      run: .github/scripts/publish-gem.sh --gem ${{ needs.gem.outputs.name }} --token ${{ secrets.RUBYGEMS_API_KEY }} --verbose

@@ -11,15 +11,13 @@ jobs:
     name: No Java
     runs-on: ubuntu-latest
     container:
-      image: ruby:2.7.0-alpine3.11
+      image: ruby:2.7.2
 
     steps:
     - uses: actions/checkout@v2
 
     - name: Bundle install
-      run: |
-        find .
-        bundle install --jobs 4 --retry 3
+      run: bundle install --jobs 4 --retry 3
 
     - name: Test with Rake
       run: bundle exec rspec --tag no_java

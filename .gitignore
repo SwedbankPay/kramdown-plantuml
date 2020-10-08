@@ -8,3 +8,8 @@
 /tmp/
 *.gem
 Gemfile.lock
+/target/
+*.jar
+/bin/
+.jekyll-cache
+_site

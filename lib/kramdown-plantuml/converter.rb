@@ -1,45 +1,44 @@
-require 'which'
+# frozen_string_literal: true
+
 require 'open3'
+require_relative '../which'
 require_relative 'version'
 
-module Kramdown::PlantUml
-  class Converter
-    def initialize
-      dir = File.dirname __dir__
-      bin = File.join dir, "../bin"
-      bin = File.expand_path bin
-      @plant_uml_jar_file = File.join bin, "plantuml.1.2020.5.jar"
+module Kramdown
+  module PlantUml
+    # Converts PlantUML markup to SVG
+    class Converter
+      def initialize
+        dir = File.dirname __dir__
+        jar_glob = File.join dir, '../bin/**/plantuml*.jar'
+        @plant_uml_jar_file = Dir[jar_glob].first
 
-      if not File.exists? @plant_uml_jar_file
-        raise IOError.new("'#{@plant_uml_jar_file}' does not exist")
+        raise IOError, 'Java can not be found' unless Which.which('java')
+        raise IOError, "No 'plantuml.jar' file could be found" if @plant_uml_jar_file.nil?
+        raise IOError, "'#{@plant_uml_jar_file}' does not exist" unless File.exist? @plant_uml_jar_file
       end
 
-      unless Which::which("java")
-        raise IOError.new("Java can not be found")
+      def convert_plantuml_to_svg(content)
+        cmd = "java -jar #{@plant_uml_jar_file} -tsvg -pipe"
+
+        stdout, stderr, = Open3.capture3(cmd, stdin_data: content)
+
+        # Circumvention of https://bugs.openjdk.java.net/browse/JDK-8244621
+        raise stderr unless stderr.empty? || stderr.include?('CoreText note:')
+
+        xml_prologue_start = '<?xml'
+        xml_prologue_end = '?>'
+
+        start_index = stdout.index(xml_prologue_start)
+        end_index = stdout.index(xml_prologue_end, xml_prologue_start.length) + xml_prologue_end.length
+
+        stdout.slice! start_index, end_index
+
+        wrapper_element_start = '<div class="plantuml">'
+        wrapper_element_end = '</div>'
+
+        "#{wrapper_element_start}#{stdout}#{wrapper_element_end}"
       end
-    end
-
-    def convert_plantuml_to_svg(content)
-      cmd = "java -jar #{@plant_uml_jar_file} -tsvg -pipe"
-
-      stdout, stderr, _ = Open3.capture3(cmd, :stdin_data => content)
-
-      unless stderr.empty?
-        raise stderr
-      end
-      
-      xml_prologue_start = "<?xml"
-      xml_prologue_end = "?>"
-
-      start_index = stdout.index(xml_prologue_start)
-      end_index = stdout.index(xml_prologue_end, xml_prologue_start.length) + xml_prologue_end.length
-
-      stdout.slice! start_index, end_index
-
-      wrapper_element_start = "<div class=\"plantuml\">"
-      wrapper_element_end = "</div>"
-
-      return "#{wrapper_element_start}#{stdout}#{wrapper_element_end}"
     end
   end
 end

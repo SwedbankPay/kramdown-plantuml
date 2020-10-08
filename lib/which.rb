@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Wraps the `which` Unix utility
 class Which
   def self.which(cmd)
     exts = ENV['PATHEXT'] ? ENV['PATHEXT'].split(';') : ['']
