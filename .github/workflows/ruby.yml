@@ -121,6 +121,9 @@ jobs:
         name: ${{ steps.gem.outputs.name }}
         path: ${{ steps.gem.outputs.name }}
 
+    - name: Inspect gem
+      run: .github/scripts/inspect-gem.sh --gem "${{ github.workspace }}/${{ steps.gem.outputs.name }}" --verbose
+
     - name: Test gem
       run: .github/scripts/test-gem.sh --workdir "${{ github.workspace }}/spec/fixture" --gemdir "${{ github.workspace }}" --verbose
 
