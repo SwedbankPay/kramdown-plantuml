@@ -45,6 +45,10 @@ enable_expanded_output() {
 inspect_gem() {
     gem unpack "$gem" --target ~/gem
 
+    if [[ $verbose ]]; then
+        find ~/gem
+    fi
+
     if [[ ! -d "~/gem/bin" ]]; then
         echo "ERROR! 'bin' folder missing from '$gem'."
         return 1
