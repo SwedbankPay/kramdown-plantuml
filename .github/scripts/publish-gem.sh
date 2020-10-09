@@ -77,7 +77,18 @@ publish_gem() {
     printf -- "---\n:%s %s\n" "$auth_header" "$token" > "$credentials_file"
 
     if [[ -n "$host" ]]; then
-        gem push --KEY github --host "$host" "$gem"
+        if ! result=$(gem push --KEY github --host "$host" "$gem"); then
+            echo "ERROR: gem push failed."
+
+            if [[ $result == *"has already been pushed"* ]]; then
+                echo "ERROR: $gem has already been pushed."
+                # Silently ignore 'already been pushed' Gem errors.
+                return 0
+            else
+                echo "$result"
+                return 1
+            fi
+        fi
     else
         gem push "$gem"
     fi
