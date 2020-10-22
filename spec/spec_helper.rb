@@ -100,3 +100,8 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 =end
 end
+
+if ENV.fetch('GITHUB_ACTIONS', false) || ENV.fetch('COVER', false)
+  require 'simplecov'
+  SimpleCov.start
+end
