@@ -80,23 +80,28 @@ SVG.
 which in turn is dependent on [Graphviz][graphviz]. This means that both Java
 and Graphviz need to be installed for `kramdown-plantuml` to work.
 
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. You can
-also run `bin/console` for an interactive prompt that will allow you to
-experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To
-release a new version, update the version number in `version.rb`, and then run
-`bundle exec rake release`, which will create a git tag for the version, push
-git commits and tags, and push the `.gem` file to [rubygems.org][gems].
-
 ## Contributing
 
 Bug reports and pull requests are welcome on [GitHub][github]. This project is
 intended to be a safe, welcoming space for collaboration, and contributors are
 expected to adhere to the [code of conduct][coc] and sign the
 [contributor's license agreement][cla].
+
+### Development
+
+In order to do development on `kramdown-plantuml`, [clone] or [fork]
+this repository, perform the changes you want and submit a [pull request][pr].
+
+The easiest way to develop and test `kramdown-plantuml` is to add it as a
+[Jekyll][jekyll] plugin installed from a local path in your `Gemfile`:
+
+```ruby
+gem 'kramdown-plantuml', path: 'path/to/kramdown-plantuml'
+```
+
+Every time you perform a change to `kramdown-plantuml`, you can then, within
+the directory of your Jekyll site, do a `bundle install` to bring the changes
+in and then start Jekyll up again afterwards with `bundle exec jekyll serve`.
 
 ## License
 
@@ -107,6 +112,7 @@ agreement][cla].
 [build-badge]:          https://github.com/SwedbankPay/kramdown-plantuml/workflows/Ruby%20Gem/badge.svg?branch=master
 [cla-badge]:            https://cla-assistant.io/readme/badge/SwedbankPay/kramdown-plantuml
 [cla]:                  https://cla-assistant.io/SwedbankPay/kramdown-plantuml
+[clone]:                https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/cloning-a-repository
 [coc-badge]:            https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg
 [coc]:                  ./CODE_OF_CONDUCT.md
 [codecov]:              https://codecov.io/gh/SwedbankPay/kramdown-plantuml/
@@ -115,6 +121,7 @@ agreement][cla].
 [dependabot]:           https://dependabot.com
 [diagram-svg]:          ./spec/diagram.svg
 [fenced]:               https://www.markdownguide.org/extended-syntax/#syntax-highlighting
+[fork]:                 https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github/fork-a-repo
 [gem-badge]:            https://badge.fury.io/rb/kramdown-plantuml.svg
 [gem-url]:              https://rubygems.org/gems/kramdown-plantuml
 [gems]:                 https://rubygems.org
@@ -127,4 +134,5 @@ agreement][cla].
 [no-java-build-badge]:  https://github.com/SwedbankPay/kramdown-plantuml/workflows/No%20Java/badge.svg?branch=master
 [no-plantuml-badge]:    https://github.com/SwedbankPay/kramdown-plantuml/workflows/No%20PlantUML/badge.svg?branch=master
 [plantuml]:             https://plantuml.com/
+[pr]:                   https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/about-pull-requests
 [svg]:                  https://developer.mozilla.org/en-US/docs/Web/SVG
