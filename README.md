@@ -73,6 +73,12 @@ Then, `bundle exec jekyll build` or `bundle exec jekyll serve` will execute
 `kramdown-plantuml`, converting code fenced PlantUML diagrams to beautiful
 SVG.
 
+## Requirements
+
+`kramdown-plantuml` is dependent on the Java application [PlantUML][plantuml],
+which in turn is dependent on [Graphviz][graphviz]. This means that both Java
+and Graphviz need to be installed for `kramdown-plantuml` to work.
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. You can
@@ -110,6 +116,7 @@ agreement][cla].
 [gem-url]:              https://rubygems.org/gems/kramdown-plantuml
 [gems]:                 https://rubygems.org
 [github]:               https://github.com/SwedbankPay/kramdown-plantuml/
+[graphviz]:             https://graphviz.org/
 [jekyll]:               https://jekyllrb.com/
 [kramdown]:             https://kramdown.gettalong.org/
 [license-badge]:        https://img.shields.io/github/license/SwedbankPay/kramdown-plantuml
