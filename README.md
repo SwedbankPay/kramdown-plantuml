@@ -4,6 +4,7 @@
 ![Build][build-badge]
 ![No Java][no-java-build-badge]
 ![No PlantUML][no-plantuml-badge]
+[![Codecov][codecov-badge]][codecov]
 [![License][license-badge]][license]
 [![Dependabot Status][dependabot-badge]][dependabot]
 [![CLA assistant][cla-badge]][cla]
@@ -108,6 +109,8 @@ agreement][cla].
 [cla]:                  https://cla-assistant.io/SwedbankPay/kramdown-plantuml
 [coc-badge]:            https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg
 [coc]:                  ./CODE_OF_CONDUCT.md
+[codecov]:              https://codecov.io/gh/SwedbankPay/kramdown-plantuml/
+[codecov-badge]:        https://codecov.io/gh/SwedbankPay/kramdown-plantuml/branch/master/graph/badge.svg?token=U3QJLVG3HY
 [dependabot-badge]:     https://api.dependabot.com/badges/status?host=github&repo=SwedbankPay/kramdown-plantuml
 [dependabot]:           https://dependabot.com
 [diagram-svg]:          ./spec/diagram.svg
