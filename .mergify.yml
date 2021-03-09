@@ -9,11 +9,12 @@ pull_request_rules:
   - name: Automatic merge on approval
     conditions:
       - author~=^dependabot(|-preview)\[bot\]$
-      - check-success=No Java
-      - check-success=No PlantUML
-      - check-success=Ruby Gem
-      - check-success=Shell
-      - check-success=license/cla
+      - check-success=test
+      - check-success=version
+      - check-success=plantuml
+      - check-success=gem
+      - check-success=publish-dev
+      - check-success=shellcheck
     actions:
       merge:
         method: merge
