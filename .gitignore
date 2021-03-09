@@ -13,3 +13,6 @@ Gemfile.lock
 /bin/
 .jekyll-cache
 _site
+.classpath
+.project
+.settings
