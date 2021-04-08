@@ -82,23 +82,14 @@ jobs:
     - name: Version stamp
       run: sed -i -e 's/0.0.1.dev/${{ needs.version.outputs.version }}/g' ${{ github.workspace }}/lib/kramdown-plantuml/version.rb
 
-    - name: Set up Ruby 2.7
-      uses: actions/setup-ruby@v1
+    - name: Setup Ruby 2.7
+      uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 2.7.x
+        ruby-version: 2.7
+        bundler-cache: true
 
     - name: Setup Graphviz
       uses: kamiazya/setup-graphviz@v1
-
-    - name: Cache Ruby gems
-      uses: actions/cache@v1
-      with:
-        path: vendor/bundle
-        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
-        restore-keys: ${{ runner.os }}-gems-
-
-    - name: Bundle install
-      run: .github/scripts/bundle-install.sh
 
     - name: rubocop
       run: bundle exec rubocop --fail-level warning --display-only-fail-level-offenses
@@ -145,10 +136,10 @@ jobs:
       uses: kamiazya/setup-graphviz@v1
 
     - name: Publish to GPR
-      run: .github/scripts/publish-gem.sh --gem ${{ needs.gem.outputs.name }} --token ${{ secrets.GITHUB_TOKEN }} --owner SwedbankPay --verbose
+      run: .github/scripts/publish-gem.sh --gem ${{ needs.gem.outputs.name }} --token ${{ secrets.GPR_TOKEN }} --owner SwedbankPay --verbose
 
     - name: Test gem
-      run: .github/scripts/test-gem.sh --workdir "${{ github.workspace }}/spec/fixture" --version ${{ needs.version.outputs.version }} --token "${{ secrets.GITHUB_TOKEN }}" --verbose
+      run: .github/scripts/test-gem.sh --workdir "${{ github.workspace }}/spec/fixture" --version ${{ needs.version.outputs.version }} --token "${{ secrets.GPR_TOKEN }}" --verbose
 
   publish-prod:
     needs: [version, gem]
