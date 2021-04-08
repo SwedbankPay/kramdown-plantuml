@@ -129,9 +129,10 @@ jobs:
         name: ${{ needs.gem.outputs.name }}
 
     - name: Set up Ruby 2.7
-      uses: actions/setup-ruby@v1
+      uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 2.7.x
+        ruby-version: 2.7
+        bundler-cache: true
 
     - name: Setup Graphviz
       uses: kamiazya/setup-graphviz@v1
