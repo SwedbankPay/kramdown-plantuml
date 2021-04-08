@@ -26,14 +26,32 @@ parse_args() {
             verbose=true
             shift
         elif [[ $1 = "-g" || $1 = "--gem" ]]; then
-            gem=$2
-            shift 2
+            gem=${2// }
+
+            if [[ "$gem" = "--"* ]]; then
+                gem=""
+                shift 1
+            else
+                shift 2
+            fi
         elif [[ $1 = "-t" || $1 = "--token" ]]; then
-            token=$2
-            shift 2
+            token=${2// }
+
+            if [[ "$token" = "--"* ]]; then
+                token=""
+                shift 1
+            else
+                shift 2
+            fi
         elif [[ $1 = "-o" || $1 = "--owner" ]]; then
-            owner=$2
-            shift 2
+            owner=${2// }
+
+            if [[ "$owner" = "--"* ]]; then
+                owner=""
+                shift 1
+            else
+                shift 2
+            fi
         else
             break
         fi
