@@ -43,6 +43,7 @@ jobs:
     - name: Setup Java
       uses: actions/setup-java@v2
       with:
+        distribution: adopt
         java-version: 14
 
     - name: Cache Maven dependencies
