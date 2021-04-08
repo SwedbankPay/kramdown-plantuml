@@ -109,14 +109,14 @@ The code within this repository is available as open source under the terms of
 the [Apache 2.0 License][license] and the [contributor's license
 agreement][cla].
 
-[build-badge]:          https://github.com/SwedbankPay/kramdown-plantuml/workflows/Ruby%20Gem/badge.svg?branch=master
+[build-badge]:          https://github.com/SwedbankPay/kramdown-plantuml/workflows/Ruby%20Gem/badge.svg?branch=main
 [cla-badge]:            https://cla-assistant.io/readme/badge/SwedbankPay/kramdown-plantuml
 [cla]:                  https://cla-assistant.io/SwedbankPay/kramdown-plantuml
 [clone]:                https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/cloning-a-repository
 [coc-badge]:            https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg
 [coc]:                  ./CODE_OF_CONDUCT.md
 [codecov]:              https://codecov.io/gh/SwedbankPay/kramdown-plantuml/
-[codecov-badge]:        https://codecov.io/gh/SwedbankPay/kramdown-plantuml/branch/master/graph/badge.svg?token=U3QJLVG3HY
+[codecov-badge]:        https://codecov.io/gh/SwedbankPay/kramdown-plantuml/branch/main/graph/badge.svg?token=U3QJLVG3HY
 [dependabot-badge]:     https://api.dependabot.com/badges/status?host=github&repo=SwedbankPay/kramdown-plantuml
 [dependabot]:           https://dependabot.com
 [diagram-svg]:          ./spec/diagram.svg
@@ -131,8 +131,8 @@ agreement][cla].
 [kramdown]:             https://kramdown.gettalong.org/
 [license-badge]:        https://img.shields.io/github/license/SwedbankPay/kramdown-plantuml
 [license]:              https://opensource.org/licenses/Apache-2.0
-[no-java-build-badge]:  https://github.com/SwedbankPay/kramdown-plantuml/workflows/No%20Java/badge.svg?branch=master
-[no-plantuml-badge]:    https://github.com/SwedbankPay/kramdown-plantuml/workflows/No%20PlantUML/badge.svg?branch=master
+[no-java-build-badge]:  https://github.com/SwedbankPay/kramdown-plantuml/workflows/No%20Java/badge.svg?branch=main
+[no-plantuml-badge]:    https://github.com/SwedbankPay/kramdown-plantuml/workflows/No%20PlantUML/badge.svg?branch=main
 [plantuml]:             https://plantuml.com/
 [pr]:                   https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/about-pull-requests
 [svg]:                  https://developer.mozilla.org/en-US/docs/Web/SVG
