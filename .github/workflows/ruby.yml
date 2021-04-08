@@ -82,23 +82,14 @@ jobs:
     - name: Version stamp
       run: sed -i -e 's/0.0.1.dev/${{ needs.version.outputs.version }}/g' ${{ github.workspace }}/lib/kramdown-plantuml/version.rb
 
-    - name: Set up Ruby 2.7
-      uses: actions/setup-ruby@v1
+    - name: Setup Ruby 2.7
+      uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 2.7.x
+        ruby-version: 2.7
+        bundler-cache: true
 
     - name: Setup Graphviz
       uses: kamiazya/setup-graphviz@v1
-
-    - name: Cache Ruby gems
-      uses: actions/cache@v1
-      with:
-        path: vendor/bundle
-        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
-        restore-keys: ${{ runner.os }}-gems-
-
-    - name: Bundle install
-      run: .github/scripts/bundle-install.sh
 
     - name: rubocop
       run: bundle exec rubocop --fail-level warning --display-only-fail-level-offenses
