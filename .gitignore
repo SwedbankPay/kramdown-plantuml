@@ -16,3 +16,4 @@ _site
 .classpath
 .project
 .settings
+.vscode
