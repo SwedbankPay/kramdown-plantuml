@@ -1,10 +1,6 @@
 name: Shell
 
-on:
-  push:
-    branches: ['*']
-    tags: ['*']
-  pull_request:
+on: [push, pull_request]
 
 jobs:
   shellcheck:
