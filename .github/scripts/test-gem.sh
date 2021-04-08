@@ -24,17 +24,41 @@ parse_args() {
             verbose=true
             shift
         elif [[ $1 = "-g" || $1 = "--gemdir" ]]; then
-            gemdir=$2
-            shift 2
+            gemdir=${2// }
+
+            if [[ "$gemdir" = "--"* ]]; then
+                gemdir=""
+                shift 1
+            else
+                shift 2
+            fi
         elif [[ $1 = "-v" || $1 = "--version" ]]; then
-            version=$2
-            shift 2
+            version=${2// }
+
+            if [[ "$version" = "--"* ]]; then
+                version=""
+                shift 1
+            else
+                shift 2
+            fi
         elif [[ $1 = "-t" || $1 = "--token" ]]; then
-            token=$2
-            shift 2
+            token=${2// }
+
+            if [[ "$token" = "--"* ]]; then
+                token=""
+                shift 1
+            else
+                shift 2
+            fi
         elif [[ $1 = "-w" || $1 = "--workdir" ]]; then
-            workdir=$2
-            shift 2
+            workdir=${2// }
+
+            if [[ "$workdir" = "--"* ]]; then
+                workdir=""
+                shift 1
+            else
+                shift 2
+            fi
         else
             break
         fi
