@@ -1,0 +1,17 @@
+name: amend
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  amend:
+    if: github.event.issue.pull_request != '' && contains(github.event.comment.body, '/amend')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: amend
+        env:
+          GITHUB_TOKEN: ${{ secrets.PUBLIC_REPO_TOKEN }}
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: .github/scripts/amend.sh
