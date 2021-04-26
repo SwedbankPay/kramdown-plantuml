@@ -10,8 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
       - name: amend
         env:
           GITHUB_TOKEN: ${{ secrets.PUBLIC_REPO_TOKEN }}
           GITHUB_CONTEXT: ${{ toJSON(github) }}
-        run: .github/scripts/amend.sh
+        run: .github/scripts/amend.sh --user payex-dev --verbose
