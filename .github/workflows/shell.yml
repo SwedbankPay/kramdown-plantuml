@@ -8,4 +8,4 @@ jobs:
 
     steps:
       - name: ShellCheck
-        uses: bewuethr/shellcheck-action@v2
+        uses: bewuethr/shellcheck-action@v2.0.4
