@@ -1,6 +1,6 @@
 name: Ruby Gem
 
-on: [push, pull_request]
+on: [push, pull_request, pull_request_target]
 
 jobs:
   version:
@@ -116,9 +116,18 @@ jobs:
   publish-dev:
     needs: [version, gem]
     runs-on: ubuntu-latest
+    if: |
+        (github.event_name == 'pull_request_target' && github.actor == 'dependabot[bot]') ||
+        (github.event_name != 'pull_request_target' && github.actor != 'dependabot[bot]')
 
     steps:
     - uses: actions/checkout@v2
+      if: ${{ github.event_name != 'pull_request_target' }}
+
+    - uses: actions/checkout@v2
+      if: ${{ github.event_name == 'pull_request_target' }}
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
 
     - uses: actions/download-artifact@v2
       with:
