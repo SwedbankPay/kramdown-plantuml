@@ -15,13 +15,13 @@ jobs:
         fetch-depth: 0
 
     - name: Setup GitVersion
-      uses: gittools/actions/gitversion/setup@v0.9.9
+      uses: gittools/actions/gitversion/setup@v0.9.10
       with:
         versionSpec: '5.x.x'
 
     - name: Execute GitVersion
       id: gitversion
-      uses: gittools/actions/gitversion/execute@v0.9.9
+      uses: gittools/actions/gitversion/execute@v0.9.10
 
     - name: Create variables
       id: variables
