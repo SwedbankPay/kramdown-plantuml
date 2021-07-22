@@ -3,16 +3,13 @@
 require 'kramdown_html'
 
 describe Kramdown::Converter::Html do
-  it 'creates a plantuml' do
-    # TODO: Figure out how to instantiate and test Kramdown::Converter::Html
-    #    kramdown = Kramdown::Converter::Html.new(nil, nil)
-    #    str = "@startuml\
-    #    actor client\
-    #    node app\
-    #    database db\
-    #    db -> app\
-    #    app -> client\
-    #    @enduml"
-    #    expect(kramdown.convert(str)).to.include("PlantUML version 1.2020.02(Sun Mar 01 04:22:07 CST 2020)")
-  end
+  subject {
+    plantuml_content = File.read(File.join(__dir__, 'diagram.plantuml'))
+    document = "```plantuml\n@startuml\n@enduml\n```"
+    Kramdown::Document.new(document, input: 'GFM').to_html
+  }
+
+  it {
+    is_expected.to include('class="plantuml">')
+  }
 end

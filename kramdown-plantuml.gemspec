@@ -33,6 +33,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'kramdown', '~> 2.3'
+  spec.add_dependency 'kramdown-parser-gfm', '~> 1.1'
   spec.add_dependency 'open3', '~> 0.1'
 
   spec.add_development_dependency 'rake', '~> 13.0'
