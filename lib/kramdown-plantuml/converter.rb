@@ -11,7 +11,8 @@ module Kramdown
       def initialize
         dir = File.dirname __dir__
         jar_glob = File.join dir, '../bin/**/plantuml*.jar'
-        @plant_uml_jar_file = Dir[jar_glob].first
+        first_jar = Dir[jar_glob].first
+        @plant_uml_jar_file = File.expand_path first_jar unless first_jar.nil?
 
         raise IOError, 'Java can not be found' unless Which.which('java')
         raise IOError, "No 'plantuml.jar' file could be found" if @plant_uml_jar_file.nil?
@@ -21,7 +22,7 @@ module Kramdown
       def convert_plantuml_to_svg(content)
         cmd = "java -jar #{@plant_uml_jar_file} -tsvg -pipe"
 
-        stdout, stderr, = Open3.capture3(cmd, stdin_data: content)
+        stdout, stderr = Open3.capture3(cmd, stdin_data: content)
 
         # Circumvention of https://bugs.openjdk.java.net/browse/JDK-8244621
         raise stderr unless stderr.empty? || stderr.include?('CoreText note:')

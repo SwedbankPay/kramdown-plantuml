@@ -103,6 +103,23 @@ Every time you perform a change to `kramdown-plantuml`, you can then, within
 the directory of your Jekyll site, do a `bundle install` to bring the changes
 in and then start Jekyll up again afterwards with `bundle exec jekyll serve`.
 
+#### Tests
+
+A few tests are exercised with GitHub Actions every time code is pushed to the
+repository on GitHub. You can execute these tests locally by first installing
+all dependencies as such:
+
+```shell
+bundle install # Installs required Ruby Gems
+bundle exec rake maven:install # Installs the PlantUML .jar file
+```
+
+And then to execute the tests you run the following:
+
+```shell
+bundle exec rake
+```
+
 ## License
 
 The code within this repository is available as open source under the terms of
