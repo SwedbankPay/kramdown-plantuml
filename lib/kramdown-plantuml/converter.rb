@@ -20,7 +20,7 @@ module Kramdown
       end
 
       def convert_plantuml_to_svg(content)
-        cmd = "java -jar #{@plant_uml_jar_file} -tsvg -pipe"
+        cmd = "java -Djava.awt.headless=true -jar #{@plant_uml_jar_file} -tsvg -pipe"
 
         stdout, stderr = Open3.capture3(cmd, stdin_data: content)
 
