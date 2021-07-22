@@ -9,7 +9,10 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Swedbank Pay']
   spec.email         = ['opensource@swedbankpay.com']
 
-  spec.summary       = "kramdown-plantuml allows you to use PlantUML syntax within fenced code blocks with Kramdown (Jekyll's default Markdown parser)"
+  spec.summary       = <<~SUMMARY
+    kramdown-plantuml allows you to use PlantUML syntax within fenced code
+    blocks with Kramdown (Jekyll's default Markdown parser).
+  SUMMARY
   spec.homepage      = 'https://github.com/SwedbankPay/kramdown-plantuml'
   spec.license       = 'MIT'
   spec.required_ruby_version = Gem::Requirement.new('>= 2.4.0')
