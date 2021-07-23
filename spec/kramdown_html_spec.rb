@@ -3,13 +3,43 @@
 require 'kramdown_html'
 
 describe Kramdown::Converter::Html do
-  subject {
-    plantuml_content = File.read(File.join(__dir__, 'diagram.plantuml'))
+  subject do
     document = "```plantuml\n@startuml\n@enduml\n```"
-    Kramdown::Document.new(document, input: 'GFM').to_html
-  }
+    Kramdown::Document.new(document, options).to_html
+  end
 
-  it {
-    is_expected.to include('class="plantuml">')
-  }
+  context 'clean' do
+    let (:options) { { input: 'GFM' } }
+
+    it {
+      is_expected.to include('class="plantuml">')
+    }
+  end
+
+  context 'theme' do
+    let (:options) {
+      {
+         input: 'GFM',
+         plantuml: {
+           theme: {
+             name: 'c2a3b0',
+             directory: __dir__,
+           }
+        }
+      }
+    }
+
+    it {
+      is_expected.to include('class="plantuml theme-c2a3b0">')
+    }
+
+    it {
+      is_expected.to include("!theme c2a3b0 from #{__dir__}")
+    }
+
+    it {
+      # Taken from `skinparam backgroundColor red` in the theme.
+      is_expected.to include('background:#FF0000;')
+    }
+  end
 end

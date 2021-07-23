@@ -116,7 +116,7 @@ test_gem() {
 
     file="$workdir/_site/index.html"
 
-    file_contains "$file" "class=\"plantuml\""
+    file_contains "$file" "class=\"plantuml theme-spacelab\""
     file_contains "$file" "<svg"
     file_contains "$file" "<ellipse"
     file_contains "$file" "<polygon"
