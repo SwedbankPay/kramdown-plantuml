@@ -1,5 +1,6 @@
 # frozen_string_literal: false
 
+require_relative 'hash'
 require_relative 'logger'
 
 module Kramdown
@@ -9,6 +10,7 @@ module Kramdown
       attr_reader :theme_name, :theme_directory
 
       def initialize(options = {})
+        options = options.symbolize_keys
         @logger = Logger.init
         @logger.debug(options)
         @theme_name, @theme_directory = theme_options(options)
