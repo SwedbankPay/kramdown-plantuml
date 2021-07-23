@@ -4,6 +4,7 @@ require 'open3'
 require_relative '../which'
 require_relative 'version'
 require_relative 'themer'
+require_relative 'plantuml_error'
 
 module Kramdown
   module PlantUml
@@ -29,14 +30,35 @@ module Kramdown
 
         stdout, stderr = Open3.capture3(cmd, stdin_data: plantuml)
 
-        # Circumvention of https://bugs.openjdk.java.net/browse/JDK-8244621
-        raise PlantUmlError, stderr unless stderr.empty? || stderr.include?('CoreText note:')
+        validate(stderr, plantuml)
 
         svg = strip_xml(stdout)
         wrap(svg)
       end
 
       private
+
+      def validate(stderr, plantuml)
+        message = <<~MESSAGE
+          Conversion of the following PlantUML diagram failed:
+
+          #{plantuml}
+
+          The error received from PlantUML was:
+
+          #{stderr}
+        MESSAGE
+
+        raise PlantUmlError, message if should_raise?(stderr)
+      end
+
+      def should_raise?(stderr)
+        !stderr.nil? && !stderr.empty? && \
+          # If stderr is not empty, but contains the string 'CoreText note:',
+          # the error is caused by a bug in Java, and should be ignored.
+          # Circumvents https://bugs.openjdk.java.net/browse/JDK-8244621
+          !stderr.include?('CoreText note:')
+      end
 
       def strip_xml(svg)
         xml_prologue_start = '<?xml'

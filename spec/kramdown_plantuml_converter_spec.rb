@@ -47,19 +47,23 @@ describe Kramdown::PlantUml::Converter do
   end
 
   context 'fails properly' do
-    subject(:converter) do
-      Kramdown::PlantUml::Converter.new
+    subject { Kramdown::PlantUml::Converter.new }
+
+    it 'with invalid PlantUML' do
+      expect do
+        subject.convert_plantuml_to_svg('INVALID!').to_s
+      end.to raise_error(Kramdown::PlantUml::PlantUmlError, /INVALID!/)
     end
 
     it 'if plantuml.jar is not present', :no_plantuml do
       expect do
-        converter.convert_plantuml_to_svg(plantuml_content).to_s
+        subject.convert_plantuml_to_svg(plantuml_content).to_s
       end.to raise_error(IOError, /No 'plantuml.jar' file could be found/)
     end
 
     it 'if Java is not installed', :no_java do
       expect do
-        converter.convert_plantuml_to_svg(plantuml_content).to_s
+        subject.convert_plantuml_to_svg(plantuml_content).to_s
       end.to raise_error(IOError, 'Java can not be found')
     end
   end

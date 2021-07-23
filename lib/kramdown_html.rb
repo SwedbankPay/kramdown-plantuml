@@ -4,6 +4,7 @@ require 'kramdown'
 require 'kramdown-parser-gfm'
 require_relative 'kramdown-plantuml/converter'
 require_relative 'kramdown-plantuml/logger'
+require_relative 'kramdown-plantuml/plantuml_error'
 
 PlantUmlConverter = Kramdown::PlantUml::Converter
 
