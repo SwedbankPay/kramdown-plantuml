@@ -6,8 +6,6 @@ require_relative 'kramdown-plantuml/converter'
 require_relative 'kramdown-plantuml/logger'
 require_relative 'kramdown-plantuml/plantuml_error'
 
-PlantUmlConverter = Kramdown::PlantUml::Converter
-
 module Kramdown
   module Converter
     # Plugs into Kramdown::Converter::Html to provide conversion of PlantUML markup
@@ -20,11 +18,12 @@ module Kramdown
 
         plantuml = element.value
         plantuml_options = @options.key?(:plantuml) ? @options[:plantuml] : {}
-        converter = PlantUmlConverter.new(plantuml_options || {})
+        converter = ::Kramdown::PlantUml::Converter.new(plantuml_options || {})
+
         begin
           converter.convert_plantuml_to_svg(plantuml)
-        rescue PlantUmlError
-          Logger.init.error("Conversion of the following PlantUML failed: #{plantuml}")
+        rescue ::Kramdown::PlantUml::PlantUmlError => e
+          Logger.init.error(e)
         end
       end
     end
