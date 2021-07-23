@@ -1,5 +1,7 @@
 # frozen_string_literal: false
 
+require_relative 'logger'
+
 module Kramdown
   module PlantUml
     # Provides theming support for PlantUML
@@ -7,12 +9,13 @@ module Kramdown
       attr_reader :theme_name, :theme_directory
 
       def initialize(options = {})
+        @logger = Logger.init
+        @logger.debug(options)
         @theme_name, @theme_directory = theme_options(options)
       end
 
       def apply_theme(plantuml)
-        return plantuml if plantuml.nil? || plantuml.empty?
-        return plantuml if @theme_name.nil? || @theme_name.empty?
+        return plantuml if plantuml.nil? || plantuml.empty? || @theme_name.nil? || @theme_name.empty?
 
         startuml = '@startuml'
         startuml_index = plantuml.index(startuml) + startuml.length
