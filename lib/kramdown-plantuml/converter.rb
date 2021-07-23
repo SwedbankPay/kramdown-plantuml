@@ -30,7 +30,7 @@ module Kramdown
         stdout, stderr = Open3.capture3(cmd, stdin_data: plantuml)
 
         # Circumvention of https://bugs.openjdk.java.net/browse/JDK-8244621
-        raise stderr unless stderr.empty? || stderr.include?('CoreText note:')
+        raise PlantUmlError, stderr unless stderr.empty? || stderr.include?('CoreText note:')
 
         svg = strip_xml(stdout)
         wrap(svg)

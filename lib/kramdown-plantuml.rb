@@ -6,6 +6,6 @@ require_relative 'kramdown_html'
 
 module Kramdown
   module PlantUml
-    class Error < StandardError; end
+    class PlantUmlError < StandardError; end
   end
 end

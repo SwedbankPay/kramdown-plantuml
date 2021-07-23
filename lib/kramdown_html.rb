@@ -3,6 +3,7 @@
 require 'kramdown'
 require 'kramdown-parser-gfm'
 require_relative 'kramdown-plantuml/converter'
+require_relative 'kramdown-plantuml/logger'
 
 PlantUmlConverter = Kramdown::PlantUml::Converter
 
@@ -16,9 +17,14 @@ module Kramdown
       def convert_codeblock(element, indent)
         return super_convert_codeblock(element, indent) if element.attr['class'] != 'language-plantuml'
 
+        plantuml = element.value
         plantuml_options = @options.key?(:plantuml) ? @options[:plantuml] : {}
         converter = PlantUmlConverter.new(plantuml_options || {})
-        converter.convert_plantuml_to_svg(element.value)
+        begin
+          converter.convert_plantuml_to_svg(plantuml)
+        rescue PlantUmlError
+          Logger.init.error("Conversion of the following PlantUML failed: #{plantuml}")
+        end
       end
     end
   end
