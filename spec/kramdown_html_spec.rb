@@ -16,7 +16,28 @@ describe Kramdown::Converter::Html do
     }
   end
 
-  context 'theme' do
+  context 'built-in theme' do
+    let (:options) {
+      {
+         input: 'GFM',
+         plantuml: {
+           theme: {
+             name: 'spacelab',
+           }
+        }
+      }
+    }
+
+    it {
+      is_expected.to include('class="plantuml theme-spacelab">')
+    }
+
+    it {
+      is_expected.to include("!theme spacelab")
+    }
+  end
+
+  context 'custom theme' do
     let (:options) {
       {
          input: 'GFM',
