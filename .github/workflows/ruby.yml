@@ -101,7 +101,7 @@ jobs:
       id: gem
       run: .github/scripts/build-gem.sh
 
-    - name: Upload artifact
+    - name: Upload gem
       uses: actions/upload-artifact@v2-preview
       with:
         name: ${{ steps.gem.outputs.name }}
@@ -147,6 +147,13 @@ jobs:
 
     - name: Test gem
       run: .github/scripts/test-gem.sh --workdir "${{ github.workspace }}/spec/fixture" --version ${{ needs.version.outputs.version }} --token "${{ secrets.GPR_TOKEN }}" --verbose
+
+    - name: Upload Jekyll site
+      uses: actions/upload-artifact@v2-preview
+      if: always()
+      with:
+        name: site
+        path: ${{ github.workspace }}/spec/fixture/_site
 
   publish-prod:
     needs: [version, gem]
