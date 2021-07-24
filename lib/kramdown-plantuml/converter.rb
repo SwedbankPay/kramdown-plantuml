@@ -5,6 +5,7 @@ require_relative '../which'
 require_relative 'version'
 require_relative 'themer'
 require_relative 'plantuml_error'
+require_relative 'logger'
 
 module Kramdown
   module PlantUml
@@ -12,11 +13,8 @@ module Kramdown
     class Converter
       def initialize(options = {})
         @themer = Themer.new(options)
-
-        dir = File.dirname __dir__
-        jar_glob = File.join dir, '../bin/**/plantuml*.jar'
-        first_jar = Dir[jar_glob].first
-        @plant_uml_jar_file = File.expand_path first_jar unless first_jar.nil?
+        @logger = Logger.init
+        @plant_uml_jar_file = find_plant_uml_jar_file
 
         raise IOError, 'Java can not be found' unless Which.which('java')
         raise IOError, "No 'plantuml.jar' file could be found" if @plant_uml_jar_file.nil?
@@ -28,9 +26,11 @@ module Kramdown
 
         plantuml = @themer.apply_theme(plantuml)
 
-        stdout, stderr = Open3.capture3(cmd, stdin_data: plantuml)
+        stdout, stderr, status = Open3.capture3(cmd, stdin_data: plantuml)
 
-        validate(stderr, plantuml)
+        @logger.debug("PlantUML exit code: #{status.exitstatus}")
+
+        validate(stdout, stderr, plantuml)
 
         svg = strip_xml(stdout)
         wrap(svg)
@@ -38,26 +38,14 @@ module Kramdown
 
       private
 
-      def validate(stderr, plantuml)
-        message = <<~MESSAGE
-          Conversion of the following PlantUML diagram failed:
+      def validate(stdout, stderr, plantuml)
+        raise PlantUmlError.new(plantuml, stderr) if PlantUmlError.should_raise?(stderr)
 
-          #{plantuml}
+        # If we have both stdout and stderr, the conversion succeeded, but
+        # warnings may have been written to stderr which we should pass on.
+        return unless !stdout.nil? && !stdout.empty? && !stderr.nil? && !stderr.empty?
 
-          The error received from PlantUML was:
-
-          #{stderr}
-        MESSAGE
-
-        raise PlantUmlError, message if should_raise?(stderr)
-      end
-
-      def should_raise?(stderr)
-        !stderr.nil? && !stderr.empty? && \
-          # If stderr is not empty, but contains the string 'CoreText note:',
-          # the error is caused by a bug in Java, and should be ignored.
-          # Circumvents https://bugs.openjdk.java.net/browse/JDK-8244621
-          !stderr.include?('CoreText note:')
+        @logger.warn("PlantUML warning:\n#{stderr}\nFor diagram:\n#{plantuml}")
       end
 
       def strip_xml(svg)
@@ -81,6 +69,13 @@ module Kramdown
         wrapper_element_end = '</div>'
 
         "#{wrapper_element_start}#{svg}#{wrapper_element_end}"
+      end
+
+      def find_plant_uml_jar_file
+        dir = File.dirname __dir__
+        jar_glob = File.join dir, '../bin/**/plantuml*.jar'
+        first_jar = Dir[jar_glob].first
+        File.expand_path first_jar unless first_jar.nil?
       end
     end
   end
