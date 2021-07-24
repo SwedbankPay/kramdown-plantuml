@@ -44,9 +44,9 @@ initialize() {
 
 generate_variables() {
     # Replace '+'' in the version number with '.'.
-    version="${version/+/.}"
+    version="${version//+/.}"
     # Replace '-' in the version number with '.'.
-    version="${version/-/.}"
+    version="${version//-/.}"
 
     if [[ "$ref" == refs/tags/* ]]; then
         # Override GitVersion's version on tags, just to be sure.
