@@ -20,11 +20,7 @@ module Kramdown
         plantuml_options = @options.key?(:plantuml) ? @options[:plantuml] : {}
         converter = ::Kramdown::PlantUml::Converter.new(plantuml_options || {})
 
-        begin
-          converter.convert_plantuml_to_svg(plantuml)
-        rescue ::Kramdown::PlantUml::PlantUmlError => e
-          Logger.init.error(e)
-        end
+        converter.convert_plantuml_to_svg(plantuml)
       end
     end
   end

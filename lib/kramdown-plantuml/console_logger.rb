@@ -43,10 +43,12 @@ module Kramdown
 
       def logger_for(level)
         case level
-        when :debug || :info
+        when :debug, :info
           $stdout
-        when :warn || :error
+        when :warn, :error
           $stderr
+        else
+          raise ArgumentError, "Unknown log level '#{level}'."
         end
       end
 

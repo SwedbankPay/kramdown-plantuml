@@ -7,6 +7,7 @@ module Kramdown
     # Provides theming support for PlantUML
     class Logger
       def initialize(logger)
+        raise ArgumentError, 'logger cannot be nil' if logger.nil?
         raise ArgumentError, 'logger must respond to #debug' unless logger.respond_to? :debug
         raise ArgumentError, 'logger must respond to #info' unless logger.respond_to? :info
         raise ArgumentError, 'logger must respond to #warn' unless logger.respond_to? :warn
