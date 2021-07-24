@@ -24,11 +24,14 @@ module Kramdown
 
         return plantuml if startuml_index.nil?
 
-        theme_string = "\n!theme #{@theme_name}"
-        theme_string << " from #{@theme_directory}" unless @theme_directory.nil?
-        theme_string << "\n"
+        /@startuml.*/.match(plantuml) do |match|
+          theme_string = "\n!theme #{@theme_name}"
+          theme_string << " from #{@theme_directory}" unless @theme_directory.nil?
 
-        plantuml.insert startuml_index, theme_string
+          return plantuml.insert match.end(0), theme_string
+        end
+
+        plantuml
       end
 
       private
