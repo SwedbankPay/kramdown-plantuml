@@ -27,7 +27,7 @@ jobs:
       id: variables
       env:
         GITHUB_CONTEXT: ${{ toJson(github) }}
-      run: ./.github/scripts/variables.sh ${{ steps.gitversion.outputs.legacySemVerPadded }}
+      run: ./.github/scripts/variables.sh ${{ steps.gitversion.outputs.fullSemVer }}
 
   plantuml:
     needs: version
