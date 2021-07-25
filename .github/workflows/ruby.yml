@@ -94,6 +94,11 @@ jobs:
     - name: Test with Rake
       run: bundle exec rake
 
+    - name: RSPec (debug)
+      env:
+        DEBUG: 1
+      run: bundle exec rspec --tag debug
+
     - name: Codecov upload
       run: bundle exec rake codecov:upload || echo 'Codecov upload failed'
 

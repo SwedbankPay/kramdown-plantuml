@@ -6,8 +6,11 @@ require 'kramdown-plantuml/plantuml_error'
 
 describe Kramdown::PlantUml::PlantUmlError do
   describe '#should_raise?' do
+    let (:exitcode) { 1 }
+    let (:stderr) { nil }
+
     subject {
-      Kramdown::PlantUml::PlantUmlError.should_raise?(stderr)
+      Kramdown::PlantUml::PlantUmlError.should_raise?(exitcode, stderr)
     }
 
     context 'when stderr is nil' do
@@ -28,6 +31,15 @@ describe Kramdown::PlantUml::PlantUmlError do
     context 'when stderr is CoreText bug' do
       let(:stderr) { 'CoreText note:' }
       it { is_expected.to be false }
+    end
+
+    context 'when exitcode is 0' do
+      it { is_expected.to be false }
+    end
+
+    context 'when exitcode is 1' do
+      let(:stderr) { 'error' }
+      it { is_expected.to be true }
     end
   end
 

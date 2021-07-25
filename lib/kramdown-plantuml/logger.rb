@@ -32,17 +32,36 @@ module Kramdown
         @logger.error(message)
       end
 
-      def self.init
-        inner = nil
+      def debug?
+        self.class.level == :debug
+      end
 
-        begin
-          require 'jekyll'
-          inner = Jekyll.logger
-        rescue LoadError
-          inner = ConsoleLogger.new
+      class << self
+        def init
+          inner = nil
+
+          begin
+            require 'jekyll'
+            inner = Jekyll.logger
+          rescue LoadError
+            inner = ConsoleLogger.new(level)
+          end
+
+          Logger.new(inner)
         end
 
-        Logger.new(inner)
+        def level
+          @level ||= level_from_env
+        end
+
+        private
+
+        def level_from_env
+          return :debug if BoolEnv.new('DEBUG').true?
+          return :debug if BoolEnv.new('VERBOSE').true?
+
+          :warn
+        end
       end
     end
   end

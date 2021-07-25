@@ -8,8 +8,8 @@ module Kramdown
     class ConsoleLogger
       LOG_LEVELS = %i[debug info warn error].freeze
 
-      def initialize
-        @configured_log_level = level_from_env
+      def initialize(level)
+        @configured_log_level = level
       end
 
       def debug(message)
@@ -33,15 +33,15 @@ module Kramdown
       def write(level, message)
         return false unless write_message?(level)
 
-        logger = logger_for(level)
-        logger.write(message)
+        pipe = pipe_for(level)
+        pipe.write("\n#{message}")
       end
 
       def write_message?(level_of_message)
         LOG_LEVELS.index(@configured_log_level) <= LOG_LEVELS.index(level_of_message)
       end
 
-      def logger_for(level)
+      def pipe_for(level)
         case level
         when :debug, :info
           $stdout
@@ -50,13 +50,6 @@ module Kramdown
         else
           raise ArgumentError, "Unknown log level '#{level}'."
         end
-      end
-
-      def level_from_env
-        return :debug if BoolEnv.new('DEBUG').true?
-        return :debug if BoolEnv.new('VERBOSE').true?
-
-        :warn
       end
     end
   end

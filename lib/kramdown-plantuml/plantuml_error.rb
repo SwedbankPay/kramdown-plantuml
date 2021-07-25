@@ -18,7 +18,9 @@ module Kramdown
         super message
       end
 
-      def self.should_raise?(stderr)
+      def self.should_raise?(exitcode, stderr)
+        return false if exitcode.zero?
+
         !stderr.nil? && !stderr.empty? && \
           # If stderr is not empty, but contains the string 'CoreText note:',
           # the error is caused by a bug in Java, and should be ignored.

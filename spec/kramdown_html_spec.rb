@@ -33,9 +33,9 @@ describe Kramdown::Converter::Html do
         is_expected.to include('class="plantuml theme-spacelab">')
       }
 
-      it {
+      it 'has theme metadata', :debug do
         is_expected.to include("!theme spacelab")
-      }
+      end
     end
 
     context 'custom theme' do
@@ -55,9 +55,9 @@ describe Kramdown::Converter::Html do
         is_expected.to include('class="plantuml theme-c2a3b0">')
       }
 
-      it {
+      it 'has theme metadata', :debug do
         is_expected.to include("!theme c2a3b0 from #{__dir__}")
-      }
+      end
 
       it {
         # Taken from `skinparam backgroundColor red` in the theme.
