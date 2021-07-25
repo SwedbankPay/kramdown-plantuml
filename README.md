@@ -136,7 +136,7 @@ agreement][cla].
 [codecov-badge]:        https://codecov.io/gh/SwedbankPay/kramdown-plantuml/branch/main/graph/badge.svg?token=U3QJLVG3HY
 [dependabot-badge]:     https://api.dependabot.com/badges/status?host=github&repo=SwedbankPay/kramdown-plantuml
 [dependabot]:           https://dependabot.com
-[diagram-svg]:          ./spec/diagram.svg
+[diagram-svg]:          ./spec/examples/diagram.svg
 [fenced]:               https://www.markdownguide.org/extended-syntax/#syntax-highlighting
 [fork]:                 https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github/fork-a-repo
 [gem-badge]:            https://badge.fury.io/rb/kramdown-plantuml.svg

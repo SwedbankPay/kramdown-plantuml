@@ -39,13 +39,15 @@ describe Kramdown::Converter::Html do
     end
 
     context 'custom theme' do
+      examples_dir = File.join __dir__, 'examples'
+
       let (:options) {
         {
           input: 'GFM',
           plantuml: {
             theme: {
               name: 'c2a3b0',
-              directory: __dir__,
+              directory: examples_dir,
             }
           }
         }
@@ -56,7 +58,7 @@ describe Kramdown::Converter::Html do
       }
 
       it 'has theme metadata', :debug do
-        is_expected.to include("!theme c2a3b0 from #{__dir__}")
+        is_expected.to include("!theme c2a3b0 from #{examples_dir}")
       end
 
       it {

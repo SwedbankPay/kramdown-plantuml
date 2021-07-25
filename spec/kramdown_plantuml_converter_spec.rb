@@ -4,7 +4,7 @@ require 'spec_helper'
 require 'kramdown-plantuml/converter'
 
 describe Kramdown::PlantUml::Converter do
-  plantuml_content = File.read(File.join(__dir__, 'diagram.plantuml'))
+  plantuml_content = File.read(File.join(__dir__, 'examples', 'diagram.plantuml'))
 
   context 'convert_plantuml_to_svg' do
     before(:all) do
