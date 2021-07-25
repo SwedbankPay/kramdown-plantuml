@@ -27,12 +27,20 @@ module Kramdown
       private
 
       def strip_xml(svg)
+        return svg if svg.nil? || svg.empty?
+
         xml_prologue_start = '<?xml'
         xml_prologue_end = '?>'
 
         start_index = svg.index(xml_prologue_start)
-        end_index = svg.index(xml_prologue_end, xml_prologue_start.length) \
-                  + xml_prologue_end.length
+
+        return svg if start_index.nil?
+
+        end_index = svg.index(xml_prologue_end, xml_prologue_start.length)
+
+        return svg if end_index.nil?
+
+        end_index += xml_prologue_end.length
 
         svg.slice! start_index, end_index
 
