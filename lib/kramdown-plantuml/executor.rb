@@ -19,7 +19,7 @@ module Kramdown
       end
 
       def execute(stdin)
-        cmd = "java -Djava.awt.headless=true -jar #{@plant_uml_jar_file} -tsvg -pipe"
+        cmd = "java -Djava.awt.headless=true -jar #{@plant_uml_jar_file} -tsvg -failfast -pipe"
         cmd << if @logger.debug?
                  ' -verbose'
                else
@@ -30,7 +30,7 @@ module Kramdown
 
         stdout, stderr, status = Open3.capture3 cmd, stdin_data: stdin
 
-        @logger.debug("PlantUML exit code: #{status.exitstatus}")
+        @logger.debug "PlantUML exit code: #{status.exitstatus}"
 
         PlantUmlResult.new(stdout, stderr, status)
       end

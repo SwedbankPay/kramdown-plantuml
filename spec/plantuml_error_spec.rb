@@ -45,17 +45,19 @@ describe Kramdown::PlantUml::PlantUmlError do
 
   describe '#new' do
     subject {
-      Kramdown::PlantUml::PlantUmlError.new(plantuml, stderr)
+      Kramdown::PlantUml::PlantUmlError.new(plantuml, stderr, exitcode)
     }
 
     context 'message is expected' do
       let (:plantuml) { 'some plantuml' }
       let (:stderr) { 'some stderr' }
+      let (:exitcode) { 1 }
 
       it { is_expected.to be_a Kramdown::PlantUml::PlantUmlError }
       its(:message) {
         is_expected.to match(/some plantuml/)
         is_expected.to match(/some stderr/)
+        is_expected.to match(/Exit code: 1/)
       }
     end
   end

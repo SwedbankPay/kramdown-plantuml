@@ -4,7 +4,7 @@ module Kramdown
   module PlantUml
     # PlantUML Error
     class PlantUmlError < StandardError
-      def initialize(plantuml, stderr)
+      def initialize(plantuml, stderr, exitcode)
         message = <<~MESSAGE
           Conversion of the following PlantUML diagram failed:
 
@@ -12,6 +12,7 @@ module Kramdown
 
           The error received from PlantUML was:
 
+          Exit code: #{exitcode}
           #{stderr}
         MESSAGE
 

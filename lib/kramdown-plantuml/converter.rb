@@ -18,6 +18,7 @@ module Kramdown
 
       def convert_plantuml_to_svg(plantuml)
         plantuml = @themer.apply_theme(plantuml)
+        @logger.debug "PlantUML converting diagram:\n#{plantuml}"
         result = @executor.execute(plantuml)
         result.validate(plantuml)
         svg = strip_xml(result.stdout)

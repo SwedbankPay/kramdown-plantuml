@@ -17,13 +17,11 @@ module Kramdown
       end
 
       def validate(plantuml)
-        raise PlantUmlError.new(plantuml, @stderr) if PlantUmlError.should_raise?(@exitcode, @stderr)
+        raise PlantUmlError.new(plantuml, @stderr, @exitcode) if PlantUmlError.should_raise?(@exitcode, @stderr)
 
-        # If we have both stdout and stderr, the conversion succeeded, but
-        # warnings may have been written to stderr which we should pass on.
-        return unless !@stdout.nil? && !@stdout.empty? && !@stderr.nil? && !@stderr.empty?
+        return if @stderr.nil? || @stderr.empty?
 
-        @logger.warn("PlantUML warning:\n#{@stderr}\nFor diagram:\n#{plantuml}")
+        @logger.debug("PlantUML log:\n#{@stderr}")
       end
     end
   end
