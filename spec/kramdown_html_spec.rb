@@ -7,7 +7,8 @@ describe Kramdown::Converter::Html do
     let (:options) { { input: 'GFM' } }
 
     subject do
-      document = "```plantuml\n@startuml\n@enduml\n```"
+      diagram = File.read(File.join(__dir__, 'examples', 'diagram.plantuml'))
+      document = "```plantuml\n#{diagram}\n```"
       Kramdown::Document.new(document, options).to_html
     end
 

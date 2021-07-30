@@ -11,15 +11,15 @@ module Kramdown
     class Executor
       def initialize
         @logger = Logger.init
-        @plant_uml_jar_file = find_plant_uml_jar_file
+        @plantuml_jar_file = find_plantuml_jar_file
 
         raise IOError, 'Java can not be found' unless Which.which('java')
-        raise IOError, "No 'plantuml.jar' file could be found" if @plant_uml_jar_file.nil?
-        raise IOError, "'#{@plant_uml_jar_file}' does not exist" unless File.exist? @plant_uml_jar_file
+        raise IOError, "No 'plantuml.jar' file could be found" if @plantuml_jar_file.nil?
+        raise IOError, "'#{@plantuml_jar_file}' does not exist" unless File.exist? @plantuml_jar_file
       end
 
       def execute(stdin)
-        cmd = "java -Djava.awt.headless=true -jar #{@plant_uml_jar_file} -tsvg -failfast -pipe"
+        cmd = "java -Djava.awt.headless=true -jar #{@plantuml_jar_file} -tsvg -failfast -pipe"
         cmd << if @logger.debug?
                  ' -verbose'
                else
@@ -37,7 +37,7 @@ module Kramdown
 
       private
 
-      def find_plant_uml_jar_file
+      def find_plantuml_jar_file
         dir = File.dirname __dir__
         jar_glob = File.join dir, '../bin/**/plantuml*.jar'
         first_jar = Dir[jar_glob].first
