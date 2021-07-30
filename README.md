@@ -6,7 +6,6 @@
 ![No PlantUML][no-plantuml-badge]
 [![Codecov][codecov-badge]][codecov]
 [![License][license-badge]][license]
-[![Dependabot Status][dependabot-badge]][dependabot]
 [![CLA assistant][cla-badge]][cla]
 [![Contributor Covenant][coc-badge]][coc]
 
@@ -183,8 +182,6 @@ agreement][cla].
 [coc]:                  ./CODE_OF_CONDUCT.md
 [codecov-badge]:        https://codecov.io/gh/SwedbankPay/kramdown-plantuml/branch/main/graph/badge.svg?token=U3QJLVG3HY
 [codecov]:              https://codecov.io/gh/SwedbankPay/kramdown-plantuml/
-[dependabot-badge]:     https://api.dependabot.com/badges/status?host=github&repo=SwedbankPay/kramdown-plantuml
-[dependabot]:           https://dependabot.com
 [diagram-svg]:          ./spec/examples/diagram.svg
 [fenced]:               https://www.markdownguide.org/extended-syntax/#syntax-highlighting
 [fork]:                 https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github/fork-a-repo
