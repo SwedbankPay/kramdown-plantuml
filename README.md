@@ -1,9 +1,10 @@
 # Kramdown::PlantUml
 
 [![Gem Version][gem-badge]][gem-url]
-![Build][build-badge]
-![No Java][no-java-build-badge]
-![No PlantUML][no-plantuml-badge]
+[![Ruby Gem][ruby-badge]][ruby-workflow]
+[![No Java][no-java-badge]][no-java-workflow]
+[![No PlantUML][no-plantuml-badge]][no-plantuml-workflow]
+[![Shell][shell-badge]][shell-workflow]
 [![Codecov][codecov-badge]][codecov]
 [![License][license-badge]][license]
 [![CLA assistant][cla-badge]][cla]
@@ -174,7 +175,6 @@ The code within this repository is available as open source under the terms of
 the [Apache 2.0 License][license] and the [contributor's license
 agreement][cla].
 
-[build-badge]:          https://github.com/SwedbankPay/kramdown-plantuml/workflows/Ruby%20Gem/badge.svg?branch=main
 [cla-badge]:            https://cla-assistant.io/readme/badge/SwedbankPay/kramdown-plantuml
 [cla]:                  https://cla-assistant.io/SwedbankPay/kramdown-plantuml
 [clone]:                https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/cloning-a-repository
@@ -194,9 +194,15 @@ agreement][cla].
 [kramdown]:             https://kramdown.gettalong.org/
 [license-badge]:        https://img.shields.io/github/license/SwedbankPay/kramdown-plantuml
 [license]:              https://opensource.org/licenses/Apache-2.0
-[no-java-build-badge]:  https://github.com/SwedbankPay/kramdown-plantuml/workflows/No%20Java/badge.svg?branch=main
-[no-plantuml-badge]:    https://github.com/SwedbankPay/kramdown-plantuml/workflows/No%20PlantUML/badge.svg?branch=main
+[no-java-badge]:        https://github.com/SwedbankPay/kramdown-plantuml/actions/workflows/no-java.yml/badge.svg
+[no-java-workflow]:     https://github.com/SwedbankPay/kramdown-plantuml/actions/workflows/no-java.yml
+[no-plantuml-badge]:    https://github.com/SwedbankPay/kramdown-plantuml/actions/workflows/no-plantuml.yml/badge.svg
+[no-plantuml-workflow]: https://github.com/SwedbankPay/kramdown-plantuml/actions/workflows/no-plantuml.yml
 [plantuml]:             https://plantuml.com/
 [pr]:                   https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/about-pull-requests
+[ruby-badge]:           https://github.com/SwedbankPay/kramdown-plantuml/actions/workflows/ruby.yml/badge.svg
+[ruby-workflow]:        https://github.com/SwedbankPay/kramdown-plantuml/actions/workflows/ruby.yml
+[shell-badge]:          https://github.com/SwedbankPay/kramdown-plantuml/actions/workflows/shell.yml/badge.svg
+[shell-workflow]:       https://github.com/SwedbankPay/kramdown-plantuml/actions/workflows/shell.yml
 [svg]:                  https://developer.mozilla.org/en-US/docs/Web/SVG
 [theme]:                https://plantuml.com/theme
