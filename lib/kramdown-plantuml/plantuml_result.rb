@@ -16,6 +16,27 @@ module Kramdown
         @logger = Logger.init
       end
 
+      def without_xml_prologue
+        return @stdout if @stdout.nil? || @stdout.empty?
+
+        xml_prologue_start = '<?xml'
+        xml_prologue_end = '?>'
+
+        start_index = @stdout.index(xml_prologue_start)
+
+        return @stdout if start_index.nil?
+
+        end_index = @stdout.index(xml_prologue_end, xml_prologue_start.length)
+
+        return @stdout if end_index.nil?
+
+        end_index += xml_prologue_end.length
+
+        @stdout.slice! start_index, end_index
+
+        @stdout
+      end
+
       def validate(plantuml)
         raise PlantUmlError.new(plantuml, @stderr, @exitcode) if PlantUmlError.should_raise?(@exitcode, @stderr)
 

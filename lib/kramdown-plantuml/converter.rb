@@ -22,32 +22,11 @@ module Kramdown
         @logger.debug "PlantUML converting diagram:\n#{plantuml}"
         result = @executor.execute(plantuml)
         result.validate(plantuml)
-        svg = strip_xml(result.stdout)
+        svg = result.without_xml_prologue
         wrap(svg)
       end
 
       private
-
-      def strip_xml(svg)
-        return svg if svg.nil? || svg.empty?
-
-        xml_prologue_start = '<?xml'
-        xml_prologue_end = '?>'
-
-        start_index = svg.index(xml_prologue_start)
-
-        return svg if start_index.nil?
-
-        end_index = svg.index(xml_prologue_end, xml_prologue_start.length)
-
-        return svg if end_index.nil?
-
-        end_index += xml_prologue_end.length
-
-        svg.slice! start_index, end_index
-
-        svg
-      end
 
       def wrap(svg)
         theme_class = @themer.theme_name ? "theme-#{@themer.theme_name}" : ''
