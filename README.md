@@ -43,6 +43,17 @@ Which in place will be rendered as the following:
 
 ![Rendered SVG Diagram][diagram-svg]
 
+If you configure theming (described below), the generated HTML will contain the
+name of the configured theme:
+
+```html
+<div class="plantuml theme-spacelab">
+  <svg>
+    <!-- Snip converted SVG code -->
+  </svg>
+</div>
+```
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -76,9 +87,47 @@ SVG.
 
 ## Requirements
 
-`kramdown-plantuml` is dependent on the Java application [PlantUML][plantuml],
-which in turn is dependent on [Graphviz][graphviz]. This means that both Java
-and Graphviz need to be installed for `kramdown-plantuml` to work.
+`kramdown-plantuml` is dependent on the Java application [PlantUML], which in
+turn is dependent on [Graphviz]. This means that both Java and Graphviz need to
+be installed for `kramdown-plantuml` to work.
+
+## Configuration
+
+`kramdown-plantuml` can be configured either directly in the `options` Hash
+provided through Kramdown or by `_config.yml` provided through Jekyll.
+
+### Theming
+
+In order to [theme] all PlantUML diagrams fed through `kramdown-plantuml`, you
+can configure a global theme with the `plantuml.theme.name` and
+`plantuml.theme.directory` properties. Only `name` is required and will allow
+any of the built-in themes to be used.
+
+The theme is simply inserted into each PlantUML diagram with the `!theme`
+declaration, so this can be centralized in configuration instead of duplicating
+it across all diagrams.
+
+Here's an example of how to configure `kramdown-plantuml` to use the `spacelab`
+theme in Jekyll's `_config.yml`:
+
+```yaml
+kramdown:
+  plantuml:
+    theme:
+      name: spacelab
+```
+
+If you have custom, local themes you'd like to use, you need to provide the
+`directory` in which they are placed alongside the `name` of the theme you'd
+like to use:
+
+```yaml
+kramdown:
+  plantuml:
+    theme:
+      name: my-custom-theme
+      directory: path/to/themes
+```
 
 ## Contributing
 
@@ -132,8 +181,8 @@ agreement][cla].
 [clone]:                https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/cloning-a-repository
 [coc-badge]:            https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg
 [coc]:                  ./CODE_OF_CONDUCT.md
-[codecov]:              https://codecov.io/gh/SwedbankPay/kramdown-plantuml/
 [codecov-badge]:        https://codecov.io/gh/SwedbankPay/kramdown-plantuml/branch/main/graph/badge.svg?token=U3QJLVG3HY
+[codecov]:              https://codecov.io/gh/SwedbankPay/kramdown-plantuml/
 [dependabot-badge]:     https://api.dependabot.com/badges/status?host=github&repo=SwedbankPay/kramdown-plantuml
 [dependabot]:           https://dependabot.com
 [diagram-svg]:          ./spec/examples/diagram.svg
@@ -153,3 +202,4 @@ agreement][cla].
 [plantuml]:             https://plantuml.com/
 [pr]:                   https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/about-pull-requests
 [svg]:                  https://developer.mozilla.org/en-US/docs/Web/SVG
+[theme]:                https://plantuml.com/theme
