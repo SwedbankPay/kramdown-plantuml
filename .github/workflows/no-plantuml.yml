@@ -19,5 +19,5 @@ jobs:
         ruby-version: 2.7
         bundler-cache: true
 
-    - name: Test with Rake
+    - name: RSpec
       run: bundle exec rspec --tag no_plantuml

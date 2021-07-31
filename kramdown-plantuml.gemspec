@@ -9,10 +9,13 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Swedbank Pay']
   spec.email         = ['opensource@swedbankpay.com']
 
-  spec.summary       = "kramdown-plantuml allows you to use PlantUML syntax within fenced code blocks with Kramdown (Jekyll's default Markdown parser)"
+  spec.summary       = <<~SUMMARY
+    kramdown-plantuml allows you to use PlantUML syntax within fenced code
+    blocks with Kramdown (Jekyll's default Markdown parser).
+  SUMMARY
   spec.homepage      = 'https://github.com/SwedbankPay/kramdown-plantuml'
   spec.license       = 'MIT'
-  spec.required_ruby_version = Gem::Requirement.new('>= 2.4.0')
+  spec.required_ruby_version = Gem::Requirement.new('>= 2.5.0')
 
   spec.metadata['homepage_uri'] = spec.homepage
   spec.metadata['source_code_uri'] = 'https://github.com/SwedbankPay/kramdown-plantuml'
@@ -33,9 +36,13 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'kramdown', '~> 2.3'
+  spec.add_dependency 'kramdown-parser-gfm', '~> 1.1'
   spec.add_dependency 'open3', '~> 0.1'
 
   spec.add_development_dependency 'rake', '~> 13.0'
   spec.add_development_dependency 'rspec', '~> 3.2'
+  spec.add_development_dependency 'rspec-its', '~> 1.3'
   spec.add_development_dependency 'rubocop', '~> 1.12'
+  spec.add_development_dependency 'rubocop-rake', '~> 0.6'
+  spec.add_development_dependency 'rubocop-rspec', '~> 2.4'
 end

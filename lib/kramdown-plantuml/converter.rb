@@ -1,43 +1,41 @@
 # frozen_string_literal: true
 
-require 'open3'
-require_relative '../which'
 require_relative 'version'
+require_relative 'themer'
+require_relative 'plantuml_error'
+require_relative 'logger'
+require_relative 'executor'
 
 module Kramdown
   module PlantUml
     # Converts PlantUML markup to SVG
     class Converter
-      def initialize
-        dir = File.dirname __dir__
-        jar_glob = File.join dir, '../bin/**/plantuml*.jar'
-        @plant_uml_jar_file = Dir[jar_glob].first
-
-        raise IOError, 'Java can not be found' unless Which.which('java')
-        raise IOError, "No 'plantuml.jar' file could be found" if @plant_uml_jar_file.nil?
-        raise IOError, "'#{@plant_uml_jar_file}' does not exist" unless File.exist? @plant_uml_jar_file
+      def initialize(options = {})
+        @themer = Themer.new(options)
+        @logger = Logger.init
+        @executor = Executor.new
       end
 
-      def convert_plantuml_to_svg(content)
-        cmd = "java -jar #{@plant_uml_jar_file} -tsvg -pipe"
+      def convert_plantuml_to_svg(plantuml)
+        plantuml = @themer.apply_theme(plantuml)
+        plantuml = plantuml.strip
+        @logger.debug "PlantUML converting diagram:\n#{plantuml}"
+        result = @executor.execute(plantuml)
+        result.validate(plantuml)
+        svg = result.without_xml_prologue
+        wrap(svg)
+      end
 
-        stdout, stderr, = Open3.capture3(cmd, stdin_data: content)
+      private
 
-        # Circumvention of https://bugs.openjdk.java.net/browse/JDK-8244621
-        raise stderr unless stderr.empty? || stderr.include?('CoreText note:')
+      def wrap(svg)
+        theme_class = @themer.theme_name ? "theme-#{@themer.theme_name}" : ''
+        class_name = "plantuml #{theme_class}".strip
 
-        xml_prologue_start = '<?xml'
-        xml_prologue_end = '?>'
-
-        start_index = stdout.index(xml_prologue_start)
-        end_index = stdout.index(xml_prologue_end, xml_prologue_start.length) + xml_prologue_end.length
-
-        stdout.slice! start_index, end_index
-
-        wrapper_element_start = '<div class="plantuml">'
+        wrapper_element_start = "<div class=\"#{class_name}\">"
         wrapper_element_end = '</div>'
 
-        "#{wrapper_element_start}#{stdout}#{wrapper_element_end}"
+        "#{wrapper_element_start}#{svg}#{wrapper_element_end}"
       end
     end
   end

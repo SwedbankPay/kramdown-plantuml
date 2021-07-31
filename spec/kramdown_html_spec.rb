@@ -3,16 +3,78 @@
 require 'kramdown_html'
 
 describe Kramdown::Converter::Html do
-  it 'creates a plantuml' do
-    # TODO: Figure out how to instantiate and test Kramdown::Converter::Html
-    #    kramdown = Kramdown::Converter::Html.new(nil, nil)
-    #    str = "@startuml\
-    #    actor client\
-    #    node app\
-    #    database db\
-    #    db -> app\
-    #    app -> client\
-    #    @enduml"
-    #    expect(kramdown.convert(str)).to.include("PlantUML version 1.2020.02(Sun Mar 01 04:22:07 CST 2020)")
+  context 'valid PlantUML' do
+    let (:options) { { input: 'GFM' } }
+
+    subject do
+      diagram = File.read(File.join(__dir__, 'examples', 'diagram.plantuml'))
+      document = "```plantuml\n#{diagram}\n```"
+      Kramdown::Document.new(document, options).to_html
+    end
+
+    context 'clean' do
+      it {
+        is_expected.to include('class="plantuml">')
+      }
+    end
+
+    context 'built-in theme' do
+      let (:options) {
+        {
+          input: 'GFM',
+          plantuml: {
+            theme: {
+              name: 'spacelab',
+            }
+          }
+        }
+      }
+
+      it {
+        is_expected.to include('class="plantuml theme-spacelab">')
+      }
+
+      it 'has theme metadata', :debug do
+        is_expected.to include("!theme spacelab")
+      end
+    end
+
+    context 'custom theme' do
+      examples_dir = File.join __dir__, 'examples'
+
+      let (:options) {
+        {
+          input: 'GFM',
+          plantuml: {
+            theme: {
+              name: 'c2a3b0',
+              directory: examples_dir,
+            }
+          }
+        }
+      }
+
+      it {
+        is_expected.to include('class="plantuml theme-c2a3b0">')
+      }
+
+      it 'has theme metadata', :debug do
+        is_expected.to include("!theme c2a3b0 from #{examples_dir}")
+      end
+
+      it {
+        # Taken from `skinparam backgroundColor red` in the theme.
+        is_expected.to include('background:#FF0000;')
+      }
+    end
+  end
+
+  context 'invalid PlantUML' do
+    let(:plantuml) { "```plantuml\n@startuml\n###INVALID###\n@enduml\n```" }
+
+    it {
+      expect { Kramdown::Document.new(plantuml, input: 'GFM').to_html }.to \
+        raise_error(Kramdown::PlantUml::PlantUmlError, /###INVALID###/)
+    }
   end
 end

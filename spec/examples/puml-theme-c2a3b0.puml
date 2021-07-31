@@ -1,0 +1,4 @@
+!$THEME = "c2a3b0"
+
+skinparam backgroundColor red
+skinparam useBetaStyle false
