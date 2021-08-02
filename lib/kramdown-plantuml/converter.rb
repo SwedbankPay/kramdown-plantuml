@@ -17,9 +17,14 @@ module Kramdown
       end
 
       def convert_plantuml_to_svg(plantuml)
+        if plantuml.nil? || plantuml.empty?
+          @logger.warn 'kramdown-plantuml: PlantUML diagram is empty'
+          return plantuml
+        end
+
         plantuml = @themer.apply_theme(plantuml)
         plantuml = plantuml.strip
-        @logger.debug "PlantUML converting diagram:\n#{plantuml}"
+        log(plantuml)
         result = @executor.execute(plantuml)
         result.validate(plantuml)
         svg = result.without_xml_prologue
@@ -36,6 +41,11 @@ module Kramdown
         wrapper_element_end = '</div>'
 
         "#{wrapper_element_start}#{svg}#{wrapper_element_end}"
+      end
+
+      def log(plantuml)
+        @logger.debug 'kramdown-plantuml: PlantUML converting diagram:'
+        @logger.debug_with_prefix 'kramdown-plantuml: ', plantuml
       end
     end
   end

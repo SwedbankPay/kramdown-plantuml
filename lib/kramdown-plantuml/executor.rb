@@ -26,11 +26,11 @@ module Kramdown
                  ' -nometadata'
                end
 
-        @logger.debug "PlantUML executing: #{cmd}"
+        @logger.debug "kramdown-plantuml: Executing '#{cmd}'."
 
         stdout, stderr, status = Open3.capture3 cmd, stdin_data: stdin
 
-        @logger.debug "PlantUML exit code: #{status.exitstatus}"
+        @logger.debug "kramdown-plantuml: PlantUML exit code '#{status.exitstatus}'."
 
         PlantUmlResult.new(stdout, stderr, status)
       end

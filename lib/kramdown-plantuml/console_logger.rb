@@ -34,7 +34,7 @@ module Kramdown
         return false unless write_message?(level)
 
         pipe = pipe_for(level)
-        pipe.write("\n#{message}")
+        pipe.write("#{message}\n")
       end
 
       def write_message?(level_of_message)
