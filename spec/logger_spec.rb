@@ -4,27 +4,37 @@ require 'rspec/its'
 require 'kramdown-plantuml/logger'
 require 'kramdown-plantuml/console_logger'
 
-describe Kramdown::PlantUml::Logger do
-  describe '#new' do
-    subject { Kramdown::PlantUml::Logger }
+Logger = ::Kramdown::PlantUml::Logger
 
+describe Logger do
+  describe '#new' do
     context 'with nil logger' do
-      it { expect { subject.new(nil) }.to raise_error(ArgumentError, 'logger cannot be nil') }
+      it { expect { Logger.new(nil) }.to raise_error(ArgumentError, 'logger cannot be nil') }
     end
 
     context 'with logger not responding to #debug' do
-      it { expect { subject.new({}) }.to raise_error(ArgumentError, 'logger must respond to #debug') }
+      it { expect { Logger.new({}) }.to raise_error(ArgumentError, 'logger must respond to #debug') }
+    end
+
+    [:debug, :info, :warn, :error].each do |level|
+      context "with logger having level: #{level}" do
+        subject do
+          inner = double(debug: nil, info: nil, warn: nil, error: nil, level: level)
+          Logger.new(inner)
+        end
+        its (:level) { should eq(level) }
+      end
     end
   end
 
   describe '#init' do
-    subject { Kramdown::PlantUml::Logger.init }
-    it { is_expected.to be_a Kramdown::PlantUml::Logger }
+    subject { Logger.init }
+    it { is_expected.to be_a Logger }
   end
 
   [:debug, :info , :warn, :error].each do |level|
     describe "\##{level}" do
-      subject { Kramdown::PlantUml::Logger.init }
+      subject { Logger.init }
       it { is_expected.to respond_to(level) }
       it "receives \##{level}('test')" do
         expect_any_instance_of(Kramdown::PlantUml::ConsoleLogger).to receive(level).with('test')

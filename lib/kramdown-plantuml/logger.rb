@@ -45,6 +45,10 @@ module Kramdown
         self.class.level == :debug
       end
 
+      def level
+        @level ||= level_from_logger || self.class.env
+      end
+
       class << self
         def init
           inner = nil
@@ -71,6 +75,14 @@ module Kramdown
 
           :warn
         end
+      end
+
+      private
+
+      def level_from_logger
+        return @logger.level if @logger.respond_to? :level
+
+        nil
       end
     end
   end
