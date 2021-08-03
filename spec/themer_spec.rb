@@ -1,6 +1,5 @@
 # frozen_string_literal: false
 
-require 'rspec/its'
 require 'kramdown-plantuml/themer'
 
 describe Kramdown::PlantUml::Themer do
