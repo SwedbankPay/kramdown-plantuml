@@ -10,7 +10,7 @@ module Kramdown
       attr_reader :theme_name, :theme_directory
 
       def initialize(options = {})
-        options = options.symbolize_keys
+        options = options.symbolize_keys unless options.nil?
         @logger = Logger.init
         @logger.debug "kramdown-plantuml: Options: #{options}"
         @theme_name, @theme_directory = theme_options(options)
@@ -33,7 +33,7 @@ module Kramdown
       private
 
       def theme_options(options)
-        return nil unless options.key?(:theme)
+        return nil if options.nil? || !options.key?(:theme)
 
         theme = options[:theme] || {}
         theme_name = theme.key?(:name) ? theme[:name] : nil
