@@ -4,11 +4,11 @@
 class ::Hash
   # Via https://stackoverflow.com/a/25835016/2257038
   def symbolize_keys
-    h = map do |k, v|
-      v_sym = v.instance_of?(Hash) ? v.symbolize_keys : v
-      [k.to_sym, v_sym]
+    array = map do |key, value|
+      value = value.instance_of?(Hash) ? value.symbolize_keys : value
+      [key.to_sym, value]
     end
 
-    h.to_h
+    array.to_h
   end
 end
