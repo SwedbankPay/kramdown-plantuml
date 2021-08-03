@@ -17,19 +17,28 @@ module Kramdown
       end
 
       def debug(message)
-        @logger.debug(message)
+        @logger.debug message
+      end
+
+      def debug_with_prefix(prefix, string)
+        return if string.nil? || string.empty?
+
+        lines = string.lines
+        lines.each do |line|
+          @logger.debug "#{prefix}#{line.rstrip}"
+        end
       end
 
       def info(message)
-        @logger.info(message)
+        @logger.info message
       end
 
       def warn(message)
-        @logger.warn(message)
+        @logger.warn message
       end
 
       def error(message)
-        @logger.error(message)
+        @logger.error message
       end
 
       def debug?
@@ -44,10 +53,10 @@ module Kramdown
             require 'jekyll'
             inner = Jekyll.logger
           rescue LoadError
-            inner = ConsoleLogger.new(level)
+            inner = ConsoleLogger.new level
           end
 
-          Logger.new(inner)
+          Logger.new inner
         end
 
         def level

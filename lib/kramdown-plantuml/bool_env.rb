@@ -9,8 +9,8 @@ module Kramdown
 
       def initialize(name)
         @name = name
-        @value = ENV.key?(name) ? ENV[name] : nil
-        @value = @value.to_s.downcase unless @value.nil?
+        value = ENV.fetch(name, nil)
+        @value = value.to_s.downcase unless value.nil?
       end
 
       def true?
