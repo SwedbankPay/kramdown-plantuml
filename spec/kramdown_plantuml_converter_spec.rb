@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
 require 'kramdown-plantuml/converter'
 
 describe Kramdown::PlantUml::Converter do
