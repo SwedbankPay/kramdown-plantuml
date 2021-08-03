@@ -18,15 +18,31 @@ module Kramdown
 
       def apply_theme(plantuml)
         if plantuml.nil? || plantuml.empty?
-          @logger.debug "kramdown-plantuml: Empty diagram."
+          @logger.debug 'kramdown-plantuml: Empty diagram.'
           return plantuml
         end
 
         if @theme_name.nil? || @theme_name.empty?
-          @logger.debug "kramdown-plantuml: No theme to apply."
+          @logger.debug 'kramdown-plantuml: No theme to apply.'
           return plantuml
         end
 
+        theme(plantuml)
+      end
+
+      private
+
+      def theme_options(options)
+        return nil unless options.key?(:theme)
+
+        theme = options[:theme] || {}
+        theme_name = theme.key?(:name) ? theme[:name] : nil
+        theme_directory = theme.key?(:directory) ? theme[:directory] : nil
+
+        [theme_name, theme_directory]
+      end
+
+      def theme(plantuml)
         startuml = '@startuml'
         startuml_index = plantuml.index(startuml) + startuml.length
 
@@ -42,18 +58,6 @@ module Kramdown
         end
 
         plantuml
-      end
-
-      private
-
-      def theme_options(options)
-        return nil unless options.key?(:theme)
-
-        theme = options[:theme] || {}
-        theme_name = theme.key?(:name) ? theme[:name] : nil
-        theme_directory = theme.key?(:directory) ? theme[:directory] : nil
-
-        [theme_name, theme_directory]
       end
     end
   end
