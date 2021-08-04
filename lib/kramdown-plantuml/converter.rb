@@ -18,7 +18,7 @@ module Kramdown
 
       def convert_plantuml_to_svg(plantuml)
         if plantuml.nil? || plantuml.empty?
-          @logger.warn 'kramdown-plantuml: PlantUML diagram is empty'
+          @logger.warn ' kramdown-plantuml: PlantUML diagram is empty'
           return plantuml
         end
 
@@ -44,8 +44,8 @@ module Kramdown
       end
 
       def log(plantuml)
-        @logger.debug 'kramdown-plantuml: PlantUML converting diagram:'
-        @logger.debug_with_prefix 'kramdown-plantuml: ', plantuml
+        @logger.debug ' kramdown-plantuml: PlantUML converting diagram:'
+        @logger.debug_with_prefix ' kramdown-plantuml: ', plantuml
       end
     end
   end

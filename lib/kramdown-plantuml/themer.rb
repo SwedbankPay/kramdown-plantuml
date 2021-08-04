@@ -1,6 +1,5 @@
 # frozen_string_literal: false
 
-require_relative 'hash'
 require_relative 'logger'
 
 module Kramdown
@@ -10,20 +9,18 @@ module Kramdown
       attr_reader :theme_name, :theme_directory
 
       def initialize(options = {})
-        options = options.symbolize_keys unless options.nil?
         @logger = Logger.init
-        @logger.debug "kramdown-plantuml: Options: #{options}"
         @theme_name, @theme_directory = theme_options(options)
       end
 
       def apply_theme(plantuml)
         if plantuml.nil? || plantuml.empty?
-          @logger.debug 'kramdown-plantuml: Empty diagram.'
+          @logger.debug ' kramdown-plantuml: Empty diagram.'
           return plantuml
         end
 
         if @theme_name.nil? || @theme_name.empty?
-          @logger.debug 'kramdown-plantuml: No theme to apply.'
+          @logger.debug ' kramdown-plantuml: No theme to apply.'
           return plantuml
         end
 
@@ -33,6 +30,10 @@ module Kramdown
       private
 
       def theme_options(options)
+        options = symbolize_keys(options)
+
+        @logger.debug " kramdown-plantuml: Options: #{options}"
+
         return nil if options.nil? || !options.key?(:theme)
 
         theme = options[:theme] || {}
@@ -40,6 +41,17 @@ module Kramdown
         theme_directory = theme.key?(:directory) ? theme[:directory] : nil
 
         [theme_name, theme_directory]
+      end
+
+      def symbolize_keys(options)
+        return options if options.nil?
+
+        array = options.map do |key, value|
+          value = value.is_a?(Hash) ? symbolize_keys(value) : value
+          [key.to_sym, value]
+        end
+
+        array.to_h
       end
 
       def theme(plantuml)
@@ -51,7 +63,7 @@ module Kramdown
         theme_string = "\n!theme #{@theme_name}"
         theme_string << " from #{@theme_directory}" unless @theme_directory.nil?
 
-        @logger.debug "kramdown-plantuml: Applying #{theme_string}"
+        @logger.debug " kramdown-plantuml: Applying #{theme_string.strip}"
 
         /@startuml.*/.match(plantuml) do |match|
           return plantuml.insert match.end(0), theme_string
