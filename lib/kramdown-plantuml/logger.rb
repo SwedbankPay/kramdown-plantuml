@@ -4,7 +4,7 @@ require_relative 'console_logger'
 
 module Kramdown
   module PlantUml
-    # Provides theming support for PlantUML
+    # Logs stuff
     class Logger
       def initialize(logger)
         raise ArgumentError, 'logger cannot be nil' if logger.nil?

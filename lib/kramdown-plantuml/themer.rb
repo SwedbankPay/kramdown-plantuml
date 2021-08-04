@@ -1,6 +1,5 @@
 # frozen_string_literal: false
 
-require_relative 'hash'
 require_relative 'logger'
 
 module Kramdown
@@ -31,7 +30,7 @@ module Kramdown
       private
 
       def theme_options(options)
-        options = options.symbolize_keys unless options.nil?
+        options = symbolize_keys(options)
 
         @logger.debug " kramdown-plantuml: Options: #{options}"
 
@@ -44,6 +43,17 @@ module Kramdown
         [theme_name, theme_directory]
       end
 
+      def symbolize_keys(options)
+        return options if options.nil?
+
+        array = options.map do |key, value|
+          value = value.is_a?(Hash) ? symbolize_keys(value) : value
+          [key.to_sym, value]
+        end
+
+        array.to_h
+      end
+
       def theme(plantuml)
         startuml = '@startuml'
         startuml_index = plantuml.index(startuml) + startuml.length
@@ -53,7 +63,7 @@ module Kramdown
         theme_string = "\n!theme #{@theme_name}"
         theme_string << " from #{@theme_directory}" unless @theme_directory.nil?
 
-        @logger.debug " kramdown-plantuml: Applying #{theme_string}"
+        @logger.debug " kramdown-plantuml: Applying #{theme_string.strip}"
 
         /@startuml.*/.match(plantuml) do |match|
           return plantuml.insert match.end(0), theme_string
