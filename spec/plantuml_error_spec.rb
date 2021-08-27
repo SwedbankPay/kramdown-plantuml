@@ -4,23 +4,55 @@ require 'rspec/its'
 require 'kramdown-plantuml/plantuml_error'
 
 describe Kramdown::PlantUml::PlantUmlError do
-  describe '#new' do
+  describe '#initialize' do
+    let(:plantuml) { 'some plantuml' }
+    let(:options) { {} }
+    let(:exitcode) { 1 }
+
     subject {
-      diagram = ::Kramdown::PlantUml::Diagram.new(plantuml)
+      diagram = ::Kramdown::PlantUml::Diagram.new(plantuml, options)
       result = ::Kramdown::PlantUml::PlantUmlResult.new(diagram, '', stderr, exitcode)
       Kramdown::PlantUml::PlantUmlError.new(result)
     }
 
     context 'message is expected' do
-      let (:plantuml) { 'some plantuml' }
-      let (:stderr) { 'some stderr' }
-      let (:exitcode) { 1 }
+      let(:stderr) { 'some stderr' }
 
-      it { is_expected.to be_a Kramdown::PlantUml::PlantUmlError }
       its(:message) {
         is_expected.to match(/some plantuml/)
         is_expected.to match(/some stderr/)
         is_expected.to match(/Exit code: 1/)
+      }
+    end
+
+    context 'non-existent theme' do
+      let(:options) { { theme: { name: 'xyz', directory: 'assets' } } }
+      let(:stderr) { <<~STDERR
+        java.lang.NullPointerException
+          at java.base/java.io.Reader.<init>(Reader.java:167)
+          at java.base/java.io.BufferedReader.<init>(BufferedReader.java:101)
+          at java.base/java.io.BufferedReader.<init>(BufferedReader.java:116)
+          at net.sourceforge.plantuml.preproc.ReadLineReader.<init>(ReadLineReader.java:57)
+          at net.sourceforge.plantuml.preproc.ReadLineReader.create(ReadLineReader.java:73)
+          at net.sourceforge.plantuml.tim.EaterTheme.getTheme(EaterTheme.java:97)
+          at net.sourceforge.plantuml.tim.TContext.executeTheme(TContext.java:575)
+          at net.sourceforge.plantuml.tim.TContext.executeOneLineNotSafe(TContext.java:289)
+          at net.sourceforge.plantuml.tim.TContext.executeOneLineSafe(TContext.java:270)
+          at net.sourceforge.plantuml.tim.TContext.executeLines(TContext.java:241)
+          at net.sourceforge.plantuml.tim.TimLoader.load(TimLoader.java:66)
+          at net.sourceforge.plantuml.BlockUml.<init>(BlockUml.java:124)
+          at net.sourceforge.plantuml.BlockUmlBuilder.init(BlockUmlBuilder.java:123)
+          at net.sourceforge.plantuml.BlockUmlBuilder.<init>(BlockUmlBuilder.java:74)
+          at net.sourceforge.plantuml.SourceStringReader.<init>(SourceStringReader.java:88)
+          at net.sourceforge.plantuml.Pipe.managePipe(Pipe.java:84)
+          at net.sourceforge.plantuml.Run.managePipe(Run.java:356)
+          at net.sourceforge.plantuml.Run.main(Run.java:176)
+        STDERR
+      }
+
+      its(:message) {
+        is_expected.to match(/theme 'xyz' can't be found in the directory 'assets'/)
+        is_expected.to match(/The error received from PlantUML was:/)
       }
     end
   end
