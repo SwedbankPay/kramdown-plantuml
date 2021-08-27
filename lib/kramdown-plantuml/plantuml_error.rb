@@ -1,32 +1,69 @@
 # frozen_string_literal: true
 
+require_relative 'plantuml_result'
+
 module Kramdown
   module PlantUml
     # PlantUML Error
     class PlantUmlError < StandardError
-      def initialize(plantuml, stderr, exitcode)
+      def initialize(result)
+        raise ArgumentError, 'result cannot be nil' if result.nil?
+        raise ArgumentError, "result must be a #{PlantUmlResult}" unless result.is_a?(PlantUmlResult)
+
+        super create_message(result)
+      end
+
+      private
+
+      def create_message(result)
+        header = header(result).gsub("\n", ' ').strip
+        plantuml = plantuml(result)
+        result = result(result)
         message = <<~MESSAGE
-          Conversion of the following PlantUML diagram failed:
+          #{header}
 
           #{plantuml}
 
-          The error received from PlantUML was:
-
-          Exit code: #{exitcode}
-          #{stderr}
+          #{result}
         MESSAGE
 
-        super message
+        message.strip
       end
 
-      def self.should_raise?(exitcode, stderr)
-        return false if exitcode.zero?
+      def header(result)
+        if theme_not_found?(result) && !result.diagram.nil? && !result.diagram.theme.nil?
+          return <<~HEADER
+            Conversion of the following PlantUML result failed because the
+            theme '#{result.diagram.theme.name}' can't be found in the directory
+            '#{result.diagram.theme.directory}':
+          HEADER
+        end
 
-        !stderr.nil? && !stderr.empty? && \
-          # If stderr is not empty, but contains the string 'CoreText note:',
-          # the error is caused by a bug in Java, and should be ignored.
-          # Circumvents https://bugs.openjdk.java.net/browse/JDK-8244621
-          !stderr.include?('CoreText note:')
+        'Conversion of the following PlantUML result failed:'
+      end
+
+      def theme_not_found?(result)
+        !result.nil? \
+        && !result.stderr.nil? \
+        && result.stderr.include?('NullPointerException') \
+        && result.stderr.include?('getTheme')
+      end
+
+      def plantuml(result)
+        return nil if result.nil? || result.diagram.nil?
+
+        result.diagram.plantuml
+      end
+
+      def result(result)
+        return nil if result.nil?
+
+        <<~RESULT
+          The error received from PlantUML was:
+
+          Exit code: #{result.exitcode}
+          #{result.stderr}
+        RESULT
       end
     end
   end

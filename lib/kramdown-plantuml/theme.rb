@@ -5,21 +5,21 @@ require_relative 'logger'
 module Kramdown
   module PlantUml
     # Provides theming support for PlantUML
-    class Themer
-      attr_reader :theme_name, :theme_directory
+    class Theme
+      attr_reader :name, :directory
 
       def initialize(options = {})
         @logger = Logger.init
-        @theme_name, @theme_directory = theme_options(options)
+        @name, @directory = theme_options(options)
       end
 
-      def apply_theme(plantuml)
-        if plantuml.nil? || plantuml.empty?
-          @logger.debug ' kramdown-plantuml: Empty diagram.'
+      def apply(plantuml)
+        if plantuml.nil? || !plantuml.is_a?(String) || plantuml.empty?
+          @logger.debug ' kramdown-plantuml: Empty diagram or not a String.'
           return plantuml
         end
 
-        if @theme_name.nil? || @theme_name.empty?
+        if @name.nil? || @name.empty?
           @logger.debug ' kramdown-plantuml: No theme to apply.'
           return plantuml
         end
@@ -37,10 +37,10 @@ module Kramdown
         return nil if options.nil? || !options.key?(:theme)
 
         theme = options[:theme] || {}
-        theme_name = theme.key?(:name) ? theme[:name] : nil
-        theme_directory = theme.key?(:directory) ? theme[:directory] : nil
+        name = theme.key?(:name) ? theme[:name] : nil
+        directory = theme.key?(:directory) ? theme[:directory] : nil
 
-        [theme_name, theme_directory]
+        [name, directory]
       end
 
       def symbolize_keys(options)
@@ -60,8 +60,8 @@ module Kramdown
 
         return plantuml if startuml_index.nil?
 
-        theme_string = "\n!theme #{@theme_name}"
-        theme_string << " from #{@theme_directory}" unless @theme_directory.nil?
+        theme_string = "\n!theme #{@name}"
+        theme_string << " from #{@directory}" unless @directory.nil?
 
         @logger.debug " kramdown-plantuml: Applying #{theme_string.strip}"
 

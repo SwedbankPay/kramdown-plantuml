@@ -2,9 +2,9 @@
 
 require 'kramdown'
 require 'kramdown-parser-gfm'
-require_relative 'kramdown-plantuml/converter'
 require_relative 'kramdown-plantuml/logger'
 require_relative 'kramdown-plantuml/plantuml_error'
+require_relative 'kramdown-plantuml/diagram'
 
 module Kramdown
   module Converter
@@ -18,9 +18,8 @@ module Kramdown
 
         plantuml = element.value
         plantuml_options = @options.key?(:plantuml) ? @options[:plantuml] : {}
-        converter = ::Kramdown::PlantUml::Converter.new(plantuml_options || {})
-
-        converter.convert_plantuml_to_svg(plantuml)
+        diagram = ::Kramdown::PlantUml::Diagram.new(plantuml, plantuml_options)
+        diagram.convert_to_svg
       end
     end
   end
