@@ -1,13 +1,12 @@
 # Kramdown::PlantUml
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c4454d2ede924ee782611e3cd3588b25)](https://app.codacy.com/gh/SwedbankPay/kramdown-plantuml?utm_source=github.com&utm_medium=referral&utm_content=SwedbankPay/kramdown-plantuml&utm_campaign=Badge_Grade_Settings)
-
 [![Gem Version][gem-badge]][gem-url]
 [![Ruby Gem][ruby-badge]][ruby-workflow]
 [![No Java][no-java-badge]][no-java-workflow]
 [![No PlantUML][no-plantuml-badge]][no-plantuml-workflow]
 [![Shell][shell-badge]][shell-workflow]
 [![Codecov][codecov-badge]][codecov]
+[![Codacy Badge][codacy-badge]][codacy]
 [![License][license-badge]][license]
 [![CLA assistant][cla-badge]][cla]
 [![Contributor Covenant][coc-badge]][coc]
@@ -182,6 +181,8 @@ agreement][cla].
 [clone]:                https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/cloning-a-repository
 [coc-badge]:            https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg
 [coc]:                  ./CODE_OF_CONDUCT.md
+[codacy-badge]:         https://app.codacy.com/project/badge/Grade/de72385f4ca444c18819a3ce8a506638
+[codacy]:               https://www.codacy.com/gh/SwedbankPay/kramdown-plantuml/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=SwedbankPay/kramdown-plantuml&amp;utm_campaign=Badge_Grade
 [codecov-badge]:        https://codecov.io/gh/SwedbankPay/kramdown-plantuml/branch/main/graph/badge.svg?token=U3QJLVG3HY
 [codecov]:              https://codecov.io/gh/SwedbankPay/kramdown-plantuml/
 [diagram-svg]:          ./spec/examples/diagram.svg
