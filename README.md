@@ -1,5 +1,7 @@
 # Kramdown::PlantUml
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c4454d2ede924ee782611e3cd3588b25)](https://app.codacy.com/gh/SwedbankPay/kramdown-plantuml?utm_source=github.com&utm_medium=referral&utm_content=SwedbankPay/kramdown-plantuml&utm_campaign=Badge_Grade_Settings)
+
 [![Gem Version][gem-badge]][gem-url]
 [![Ruby Gem][ruby-badge]][ruby-workflow]
 [![No Java][no-java-badge]][no-java-workflow]
