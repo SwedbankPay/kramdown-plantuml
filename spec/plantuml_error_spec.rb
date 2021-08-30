@@ -8,12 +8,9 @@ describe Kramdown::PlantUml::PlantUmlError do
     let(:plantuml) { 'some plantuml' }
     let(:options) { {} }
     let(:exitcode) { 1 }
-
-    subject {
-      diagram = ::Kramdown::PlantUml::Diagram.new(plantuml, options)
-      result = ::Kramdown::PlantUml::PlantUmlResult.new(diagram, '', stderr, exitcode)
-      Kramdown::PlantUml::PlantUmlError.new(result)
-    }
+    let(:diagram) { ::Kramdown::PlantUml::Diagram.new(plantuml, options) }
+    let(:result) { ::Kramdown::PlantUml::PlantUmlResult.new(diagram, '', stderr, exitcode) }
+    subject { ::Kramdown::PlantUml::PlantUmlError.new(result) }
 
     context 'message is expected' do
       let(:stderr) { 'some stderr' }
@@ -23,6 +20,16 @@ describe Kramdown::PlantUml::PlantUmlError do
         is_expected.to match(/some stderr/)
         is_expected.to match(/Exit code: 1/)
       }
+    end
+
+    context 'nil result' do
+      let(:result) { nil }
+      it { expect { subject }.to raise_error(ArgumentError, 'result cannot be nil') }
+    end
+
+    context "result is not a #{::Kramdown::PlantUml::PlantUmlResult}" do
+      let(:result) { {} }
+      it { expect { subject }.to raise_error(ArgumentError, "result must be a #{::Kramdown::PlantUml::PlantUmlResult}") }
     end
 
     context 'non-existent theme' do
