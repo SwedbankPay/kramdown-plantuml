@@ -20,10 +20,10 @@ module Kramdown
         @logger.debug message
       end
 
-      def debug_with_prefix(prefix, string)
-        return if string.nil? || string.empty?
+      def debug_with_prefix(prefix, multiline_string)
+        return if multiline_string.nil? || multiline_string.empty?
 
-        lines = string.lines
+        lines = multiline_string.lines
         lines.each do |line|
           @logger.debug "#{prefix}#{line.rstrip}"
         end

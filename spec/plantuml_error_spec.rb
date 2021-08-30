@@ -4,59 +4,62 @@ require 'rspec/its'
 require 'kramdown-plantuml/plantuml_error'
 
 describe Kramdown::PlantUml::PlantUmlError do
-  describe '#should_raise?' do
-    let (:exitcode) { 1 }
-    let (:stderr) { nil }
-
-    subject {
-      Kramdown::PlantUml::PlantUmlError.should_raise?(exitcode, stderr)
-    }
-
-    context 'when stderr is nil' do
-      let(:stderr) { nil }
-      it { is_expected.to be false }
-    end
-
-    context 'when stderr is empty' do
-      let(:stderr) { '' }
-      it { is_expected.to be false }
-    end
-
-    context 'when stderr is not empty' do
-      let(:stderr) { 'some stderr' }
-      it { is_expected.to be true }
-    end
-
-    context 'when stderr is CoreText bug' do
-      let(:stderr) { 'CoreText note:' }
-      it { is_expected.to be false }
-    end
-
-    context 'when exitcode is 0' do
-      it { is_expected.to be false }
-    end
-
-    context 'when exitcode is 1' do
-      let(:stderr) { 'error' }
-      it { is_expected.to be true }
-    end
-  end
-
-  describe '#new' do
-    subject {
-      Kramdown::PlantUml::PlantUmlError.new(plantuml, stderr, exitcode)
-    }
+  describe '#initialize' do
+    let(:plantuml) { 'some plantuml' }
+    let(:options) { {} }
+    let(:exitcode) { 1 }
+    let(:diagram) { ::Kramdown::PlantUml::Diagram.new(plantuml, options) }
+    let(:result) { ::Kramdown::PlantUml::PlantUmlResult.new(diagram, '', stderr, exitcode) }
+    subject { ::Kramdown::PlantUml::PlantUmlError.new(result) }
 
     context 'message is expected' do
-      let (:plantuml) { 'some plantuml' }
-      let (:stderr) { 'some stderr' }
-      let (:exitcode) { 1 }
+      let(:stderr) { 'some stderr' }
 
-      it { is_expected.to be_a Kramdown::PlantUml::PlantUmlError }
       its(:message) {
         is_expected.to match(/some plantuml/)
         is_expected.to match(/some stderr/)
         is_expected.to match(/Exit code: 1/)
+      }
+    end
+
+    context 'nil result' do
+      let(:result) { nil }
+      it { expect { subject }.to raise_error(ArgumentError, 'result cannot be nil') }
+    end
+
+    context "result is not a #{::Kramdown::PlantUml::PlantUmlResult}" do
+      let(:result) { {} }
+      it { expect { subject }.to raise_error(ArgumentError, "result must be a #{::Kramdown::PlantUml::PlantUmlResult}") }
+    end
+
+    context 'non-existent theme' do
+      let(:options) { { theme: { name: 'xyz', directory: 'assets' } } }
+      let(:stderr) { <<~STDERR
+        java.lang.NullPointerException
+          at java.base/java.io.Reader.<init>(Reader.java:167)
+          at java.base/java.io.BufferedReader.<init>(BufferedReader.java:101)
+          at java.base/java.io.BufferedReader.<init>(BufferedReader.java:116)
+          at net.sourceforge.plantuml.preproc.ReadLineReader.<init>(ReadLineReader.java:57)
+          at net.sourceforge.plantuml.preproc.ReadLineReader.create(ReadLineReader.java:73)
+          at net.sourceforge.plantuml.tim.EaterTheme.getTheme(EaterTheme.java:97)
+          at net.sourceforge.plantuml.tim.TContext.executeTheme(TContext.java:575)
+          at net.sourceforge.plantuml.tim.TContext.executeOneLineNotSafe(TContext.java:289)
+          at net.sourceforge.plantuml.tim.TContext.executeOneLineSafe(TContext.java:270)
+          at net.sourceforge.plantuml.tim.TContext.executeLines(TContext.java:241)
+          at net.sourceforge.plantuml.tim.TimLoader.load(TimLoader.java:66)
+          at net.sourceforge.plantuml.BlockUml.<init>(BlockUml.java:124)
+          at net.sourceforge.plantuml.BlockUmlBuilder.init(BlockUmlBuilder.java:123)
+          at net.sourceforge.plantuml.BlockUmlBuilder.<init>(BlockUmlBuilder.java:74)
+          at net.sourceforge.plantuml.SourceStringReader.<init>(SourceStringReader.java:88)
+          at net.sourceforge.plantuml.Pipe.managePipe(Pipe.java:84)
+          at net.sourceforge.plantuml.Run.managePipe(Run.java:356)
+          at net.sourceforge.plantuml.Run.main(Run.java:176)
+        STDERR
+      }
+
+      its(:message) {
+        is_expected.to match(/theme 'xyz' can't be found in the directory 'assets'/)
+        is_expected.to match(/The error received from PlantUML was:/)
       }
     end
   end

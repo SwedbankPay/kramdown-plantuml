@@ -91,13 +91,19 @@ jobs:
     - name: rubocop
       run: bundle exec rubocop --fail-level warning --display-only-fail-level-offenses
 
-    - name: Test with Rake
-      run: bundle exec rake
-
     - name: RSPec (debug)
       env:
         DEBUG: 1
       run: bundle exec rspec --tag debug
+
+    - name: Test with Rake
+      run: bundle exec rake
+
+    - name: Upload code coverage
+      uses: actions/upload-artifact@v2
+      with:
+        name: coverage
+        path: ./coverage
 
     - name: Codecov upload
       run: bundle exec rake codecov:upload || echo 'Codecov upload failed'

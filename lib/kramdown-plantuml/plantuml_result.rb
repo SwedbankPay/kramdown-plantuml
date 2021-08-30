@@ -2,17 +2,24 @@
 
 require_relative 'logger'
 require_relative 'plantuml_error'
+require_relative 'diagram'
 
 module Kramdown
   module PlantUml
     # Executes the PlantUML Java application.
     class PlantUmlResult
-      attr_reader :stdout, :stderr, :exitcode
+      attr_reader :diagram, :stdout, :stderr, :exitcode
 
-      def initialize(stdout, stderr, status)
+      def initialize(diagram, stdout, stderr, exitcode)
+        raise ArgumentError, 'diagram cannot be nil' if diagram.nil?
+        raise ArgumentError, "diagram must be a #{Diagram}" unless diagram.is_a?(Diagram)
+        raise ArgumentError, 'exitcode cannot be nil' if exitcode.nil?
+        raise ArgumentError, "exitcode must be a #{Integer}" unless exitcode.is_a?(Integer)
+
+        @diagram = diagram
         @stdout = stdout
         @stderr = stderr
-        @exitcode = status.exitstatus
+        @exitcode = exitcode
         @logger = Logger.init
       end
 
@@ -37,8 +44,17 @@ module Kramdown
         @stdout
       end
 
-      def validate(plantuml)
-        raise PlantUmlError.new(plantuml, @stderr, @exitcode) if PlantUmlError.should_raise?(@exitcode, @stderr)
+      def valid?
+        return true if @exitcode.zero? || @stderr.nil? || @stderr.empty?
+
+        # If stderr is not empty, but contains the string 'CoreText note:',
+        # the error is caused by a bug in Java, and should be ignored.
+        # Circumvents https://bugs.openjdk.java.net/browse/JDK-8244621
+        @stderr.include?('CoreText note:')
+      end
+
+      def validate
+        raise PlantUmlError, self unless valid?
 
         return if @stderr.nil? || @stderr.empty?
 
