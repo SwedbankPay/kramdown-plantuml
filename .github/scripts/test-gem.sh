@@ -101,8 +101,6 @@ test_gem() {
 
     cd "${workdir}"
 
-    gem install bundler
-
     if [[ -n "${token}" ]]; then
         # A non-empty $token means we should install the Gem from GPR
         repository="https://rubygems.pkg.github.com/swedbankpay"
