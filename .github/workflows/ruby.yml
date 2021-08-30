@@ -99,6 +99,12 @@ jobs:
         DEBUG: 1
       run: bundle exec rspec --tag debug
 
+    - name: Upload code coverage
+      uses: actions/upload-artifact@v2
+      with:
+        name: coverage
+        path: ./coverage
+
     - name: Codecov upload
       run: bundle exec rake codecov:upload || echo 'Codecov upload failed'
 
