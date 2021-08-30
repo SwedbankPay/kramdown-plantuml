@@ -115,7 +115,6 @@ test_gem() {
         jekyll_build_args+=(--verbose)
     fi
 
-    rm -rf lib
     bundle install
     bundle exec jekyll build "${jekyll_build_args[@]}"
 
