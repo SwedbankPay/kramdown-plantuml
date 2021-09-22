@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'console_logger'
+require_relative 'jekyll_provider'
 
 module Kramdown
   module PlantUml
@@ -51,15 +52,7 @@ module Kramdown
 
       class << self
         def init
-          inner = nil
-
-          begin
-            require 'jekyll'
-            inner = Jekyll.logger
-          rescue LoadError
-            inner = ConsoleLogger.new level
-          end
-
+          inner = JekyllProvider.jekyll ? JekyllProvider.jekyll.logger : nil || ConsoleLogger.new(level)
           Logger.new inner
         end
 

@@ -17,15 +17,12 @@ module Kramdown
         @theme = Theme.new(options || {})
         @logger = Logger.init
         @executor = Executor.new
+        @logger.warn ' kramdown-plantuml: PlantUML diagram is empty' if @plantuml.nil? || @plantuml.empty?
       end
 
       def convert_to_svg
         return @svg unless @svg.nil?
-
-        if @plantuml.nil? || @plantuml.empty?
-          @logger.warn ' kramdown-plantuml: PlantUML diagram is empty'
-          return @plantuml
-        end
+        return @plantuml if @plantuml.nil? || @plantuml.empty?
 
         @plantuml = @theme.apply(@plantuml)
         @plantuml = plantuml.strip
