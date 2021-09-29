@@ -122,7 +122,7 @@ jobs:
       run: .github/scripts/inspect-gem.sh --gem "${{ github.workspace }}/${{ steps.gem.outputs.name }}" --verbose
 
     - name: Test gem
-      run: .github/scripts/test-gem.sh --workdir "${{ github.workspace }}/spec/fixture" --gemdir "${{ github.workspace }}" --verbose
+      run: .github/scripts/test-gem.sh --workdir "${{ github.workspace }}/spec/examples" --gemdir "${{ github.workspace }}" --verbose
 
   publish-dev:
     needs: [version, gem]
@@ -156,15 +156,21 @@ jobs:
     - name: Publish to GPR
       run: .github/scripts/publish-gem.sh --gem ${{ needs.gem.outputs.name }} --token "${{ secrets.GPR_TOKEN }}" --owner SwedbankPay --verbose
 
-    - name: Test gem
-      run: .github/scripts/test-gem.sh --workdir "${{ github.workspace }}/spec/fixture" --version ${{ needs.version.outputs.version }} --token "${{ secrets.GPR_TOKEN }}" --verbose
+    - name: Test gem (no theme)
+      run: .github/scripts/test-gem.sh --workdir "${{ github.workspace }}/spec/examples" --version ${{ needs.version.outputs.version }} --token "${{ secrets.GPR_TOKEN }}" --verbose
+
+    - name: Test gem (built-in theme)
+      run: .github/scripts/test-gem.sh --workdir "${{ github.workspace }}/spec/examples" --version ${{ needs.version.outputs.version }} --token "${{ secrets.GPR_TOKEN }}" --verbose --theme-name spacelab
+
+    - name: Test gem (custom theme)
+      run: .github/scripts/test-gem.sh --workdir "${{ github.workspace }}/spec/examples" --version ${{ needs.version.outputs.version }} --token "${{ secrets.GPR_TOKEN }}" --verbose --theme-name c2a3b0 --theme-directory "${{ github.workspace }}/spec/examples"
 
     - name: Upload Jekyll site
       uses: actions/upload-artifact@v2-preview
       if: always()
       with:
         name: site
-        path: ${{ github.workspace }}/spec/fixture/_site
+        path: ${{ github.workspace }}/spec/examples/_site
 
   publish-prod:
     needs: [version, gem]
