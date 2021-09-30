@@ -129,7 +129,7 @@ test_gem() {
     cd "${workdir}"
 
     # Recreate Gemfile
-    printf "# frozen_string_literal: true\nsource 'https://rubygems.org'\ngem 'jekyll'\n" > Gemfile
+    printf "# frozen_string_literal: true\nsource 'https://rubygems.org'\ngem 'jekyll'\ngem 'simplecov'\n" > Gemfile
 
     if [[ -n "${token}" ]]; then
         # A non-empty $token means we should install the Gem from GPR

@@ -119,7 +119,7 @@ jobs:
 
     - name: Build gem
       id: gem
-      run: .github/scripts/build-gem.sh
+      run: .github/scripts/build-gem.sh --ref ${{ github.ref }} --verbose
 
     - name: Upload gem
       uses: actions/upload-artifact@v2-preview
