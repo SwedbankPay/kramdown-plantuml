@@ -96,13 +96,22 @@ jobs:
         DEBUG: 1
       run: bundle exec rspec --tag debug
 
+    - name: Upload code coverage (debug)
+      uses: actions/upload-artifact@v2
+      with:
+        name: rspec-debug-coverage
+        path: ./coverage
+
+    - name: Codecov upload (debug)
+      run: bundle exec rake codecov:upload || echo 'Codecov upload failed'
+
     - name: Test with Rake
       run: bundle exec rake
 
     - name: Upload code coverage
       uses: actions/upload-artifact@v2
       with:
-        name: coverage
+        name: rspec-coverage
         path: ./coverage
 
     - name: Codecov upload
@@ -123,6 +132,15 @@ jobs:
 
     - name: Test gem
       run: .github/scripts/test-gem.sh --workdir "${{ github.workspace }}/spec/examples" --gemdir "${{ github.workspace }}" --verbose
+
+    - name: Upload code coverage (gem)
+      uses: actions/upload-artifact@v2
+      with:
+        name: gem-coverage
+        path: ./coverage
+
+    - name: Codecov upload (gem)
+      run: bundle exec rake codecov:upload || echo 'Codecov upload failed'
 
   publish-dev:
     needs: [version, gem]
