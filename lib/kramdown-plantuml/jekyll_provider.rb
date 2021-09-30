@@ -7,7 +7,7 @@ require_relative 'diagram'
 
 module Kramdown
   module PlantUml
-    # Provides an instance of Jekyll if is available.
+    # Provides an instance of Jekyll if available.
     module JekyllProvider
       class << self
         def jekyll
