@@ -15,12 +15,12 @@ module Kramdown
 
       def apply(plantuml)
         if plantuml.nil? || !plantuml.is_a?(String) || plantuml.empty?
-          @logger.debug ' kramdown-plantuml: Empty diagram or not a String.'
+          @logger.debug 'Empty diagram or not a String.'
           return plantuml
         end
 
         if @name.nil? || @name.empty?
-          @logger.debug ' kramdown-plantuml: No theme to apply.'
+          @logger.debug 'No theme to apply.'
           return plantuml
         end
 
@@ -32,7 +32,7 @@ module Kramdown
       def theme_options(options)
         options = symbolize_keys(options)
 
-        @logger.debug " kramdown-plantuml: Options: #{options}"
+        @logger.debug "Options: #{options}"
 
         return nil if options.nil? || !options.key?(:theme)
 
@@ -63,7 +63,7 @@ module Kramdown
         theme_string = "\n!theme #{@name}"
         theme_string << " from #{@directory}" unless @directory.nil?
 
-        @logger.debug " kramdown-plantuml: Applying #{theme_string.strip}"
+        @logger.debug "Applying #{theme_string.strip}"
 
         /@startuml.*/.match(plantuml) do |match|
           return plantuml.insert match.end(0), theme_string

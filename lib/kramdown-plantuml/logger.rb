@@ -18,28 +18,28 @@ module Kramdown
       end
 
       def debug(message)
-        @logger.debug message
+        write :debug, message
       end
 
-      def debug_with_prefix(prefix, multiline_string)
+      def debug_multiline(multiline_string)
         return if multiline_string.nil? || multiline_string.empty?
 
         lines = multiline_string.lines
         lines.each do |line|
-          @logger.debug "#{prefix}#{line.rstrip}"
+          write :debug, line.rstrip
         end
       end
 
       def info(message)
-        @logger.info message
+        write :info, message
       end
 
       def warn(message)
-        @logger.warn message
+        write :warn, message
       end
 
       def error(message)
-        @logger.error message
+        write :error, message
       end
 
       def debug?
@@ -71,6 +71,10 @@ module Kramdown
       end
 
       private
+
+      def write(level, message)
+        @logger.public_send(level, " kramdown-plantuml: #{message}")
+      end
 
       def level_from_logger
         return @logger.level if @logger.respond_to? :level

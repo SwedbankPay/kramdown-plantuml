@@ -37,7 +37,7 @@ describe Logger do
       subject { Logger.init }
       it { is_expected.to respond_to(level) }
       it "receives \##{level}('test')" do
-        expect_any_instance_of(Kramdown::PlantUml::ConsoleLogger).to receive(level).with('test')
+        expect_any_instance_of(Kramdown::PlantUml::ConsoleLogger).to receive(level).with(' kramdown-plantuml: test')
         subject.public_send(level, 'test')
       end
     end

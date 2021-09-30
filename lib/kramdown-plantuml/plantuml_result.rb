@@ -58,8 +58,8 @@ module Kramdown
 
         return if @stderr.nil? || @stderr.empty?
 
-        @logger.debug ' kramdown-plantuml: PlantUML log:'
-        @logger.debug_with_prefix ' kramdown-plantuml: ', @stderr
+        @logger.debug 'PlantUML log:'
+        @logger.debug_multiline @stderr
       end
     end
   end

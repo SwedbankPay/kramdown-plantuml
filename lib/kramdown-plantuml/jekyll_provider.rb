@@ -19,10 +19,10 @@ module Kramdown
         def install
           return @installed = false if jekyll.nil?
 
-          logger.debug(' kramdown-plantuml: Jekyll detected, hooking into :site:post_render')
+          logger.debug 'Jekyll detected, hooking into :site:post_render'
 
-          Jekyll::Hooks.register :site, :post_render do |site, x|
-            logger.debug(" kramdown-plantuml: :site:post_render triggered: #{site.source}, #{x.class}")
+          Jekyll::Hooks.register :site, :post_render do |site|
+            logger.debug ':site:post_render triggered.'
 
             site.pages.each do |page|
               page.output = replace_needles(page.output)
