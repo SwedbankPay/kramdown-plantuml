@@ -24,11 +24,11 @@ module Kramdown
 
         cmd = "java -Djava.awt.headless=true -jar #{@plantuml_jar_file} -tsvg -failfast -pipe #{debug_args}"
 
-        @logger.debug " kramdown-plantuml: Executing '#{cmd}'."
+        @logger.debug "Executing '#{cmd}'."
 
         stdout, stderr, status = Open3.capture3 cmd, stdin_data: diagram.plantuml
 
-        @logger.debug " kramdown-plantuml: PlantUML exit code '#{status.exitstatus}'."
+        @logger.debug "PlantUML exit code '#{status.exitstatus}'."
 
         PlantUmlResult.new(diagram, stdout, stderr, status.exitstatus)
       end

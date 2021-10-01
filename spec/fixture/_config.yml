@@ -1,6 +1,0 @@
-plugins:
-- kramdown-plantuml
-kramdown:
-  plantuml:
-    theme:
-      name: spacelab
