@@ -2,7 +2,7 @@
 
 require 'kramdown'
 require 'kramdown-parser-gfm'
-require_relative 'kramdown-plantuml/logger'
+require_relative 'kramdown-plantuml/log_wrapper'
 require_relative 'kramdown-plantuml/plantuml_error'
 require_relative 'kramdown-plantuml/diagram'
 require_relative 'kramdown-plantuml/jekyll_provider'

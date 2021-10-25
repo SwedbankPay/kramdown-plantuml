@@ -2,7 +2,7 @@
 
 require 'open3'
 require_relative '../which'
-require_relative 'logger'
+require_relative 'log_wrapper'
 require_relative 'plantuml_result'
 
 module Kramdown

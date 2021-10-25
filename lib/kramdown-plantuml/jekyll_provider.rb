@@ -2,7 +2,7 @@
 
 require 'json'
 require 'English'
-require_relative 'logger'
+require_relative 'log_wrapper'
 require_relative 'diagram'
 
 module Kramdown

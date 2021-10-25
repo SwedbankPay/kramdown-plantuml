@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'rspec/its'
-require 'kramdown-plantuml/logger'
+require 'kramdown-plantuml/log_wrapper'
 require 'kramdown-plantuml/console_logger'
 
 Logger = ::Kramdown::PlantUml::Logger

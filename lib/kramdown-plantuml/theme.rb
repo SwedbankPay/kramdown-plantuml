@@ -1,6 +1,6 @@
 # frozen_string_literal: false
 
-require_relative 'logger'
+require_relative 'log_wrapper'
 
 module Kramdown
   module PlantUml
