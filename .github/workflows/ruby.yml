@@ -94,7 +94,7 @@ jobs:
     - name: RSPec (debug)
       env:
         DEBUG: 1
-      run: bundle exec rspec --tag debug
+      run: bundle exec rspec --format documentation --tag debug
 
     - name: Upload code coverage (debug)
       uses: actions/upload-artifact@v2
@@ -115,6 +115,22 @@ jobs:
         path: ./coverage
 
     - name: Codecov upload
+      run: bundle exec rake codecov:upload || echo 'Codecov upload failed'
+
+    - name: RSPec (Jekyll)
+      run: |
+        echo "gem 'jekyll', require: false, group: :test" >> Gemfile
+        bundle install
+        bundle exec rspec --format documentation --tag jekyll
+        git checkout HEAD -- Gemfile
+
+    - name: Upload code coverage (Jekyll)
+      uses: actions/upload-artifact@v2
+      with:
+        name: rspec-jekyll-coverage
+        path: ./coverage
+
+    - name: Codecov upload (Jekyll)
       run: bundle exec rake codecov:upload || echo 'Codecov upload failed'
 
     - name: Build gem

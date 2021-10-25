@@ -2,6 +2,7 @@
 
 require 'json'
 require 'English'
+require 'rexml/document'
 require_relative 'log_wrapper'
 require_relative 'diagram'
 
@@ -53,11 +54,16 @@ module Kramdown
           html.gsub(/<!--#kramdown-plantuml\.start#-->(?<json>.*?)<!--#kramdown-plantuml\.end#-->/m) do
             json = $LAST_MATCH_INFO[:json]
             hash = JSON.parse(json)
-            plantuml = hash['plantuml']
+            plantuml = decode_html_entities(hash['plantuml'])
             options = hash['options']
             diagram = ::Kramdown::PlantUml::Diagram.new(plantuml, options)
             return diagram.convert_to_svg
           end
+        end
+
+        def decode_html_entities(encoded_plantuml)
+          doc = REXML::Document.new "<plantuml>#{encoded_plantuml}</plantuml>"
+          doc.root.text
         end
 
         def load_jekyll
