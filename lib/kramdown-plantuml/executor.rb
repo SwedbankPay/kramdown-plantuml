@@ -14,7 +14,6 @@ module Kramdown
         @plantuml_jar_file = find_plantuml_jar_file
 
         raise IOError, 'Java can not be found' unless Which.which('java')
-        raise IOError, "No 'plantuml.jar' file could be found" if @plantuml_jar_file.nil?
         raise IOError, "'#{@plantuml_jar_file}' does not exist" unless File.exist? @plantuml_jar_file
       end
 
@@ -37,9 +36,13 @@ module Kramdown
 
       def find_plantuml_jar_file
         dir = File.dirname __dir__
-        jar_glob = File.join dir, '../bin/**/plantuml*.jar'
+        bin_dir = File.expand_path File.join dir, '../bin'
+        jar_glob = File.join bin_dir, '/**/plantuml*.jar'
         first_jar = Dir[jar_glob].first
-        File.expand_path first_jar unless first_jar.nil?
+
+        raise IOError, "No 'plantuml.jar' file could be found within the '#{bin_dir}' directory." if first_jar.nil?
+
+        File.expand_path first_jar
       end
 
       def debug_args
