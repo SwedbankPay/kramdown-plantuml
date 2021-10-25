@@ -68,7 +68,7 @@ module Kramdown
         end
 
         def logger
-          @logger ||= ::Kramdown::PlantUml::Logger.init
+          @logger ||= ::Kramdown::PlantUml::LogWrapper.init
         end
       end
     end

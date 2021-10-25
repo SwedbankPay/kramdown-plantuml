@@ -9,7 +9,7 @@ module Kramdown
       attr_reader :name, :directory
 
       def initialize(options = {})
-        @logger = Logger.init
+        @logger = LogWrapper.init
         @name, @directory = theme_options(options)
       end
 

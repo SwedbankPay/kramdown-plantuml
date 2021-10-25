@@ -6,7 +6,7 @@ require_relative 'jekyll_provider'
 module Kramdown
   module PlantUml
     # Logs stuff
-    class Logger
+    class LogWrapper
       def initialize(logger)
         raise ArgumentError, 'logger cannot be nil' if logger.nil?
         raise ArgumentError, 'logger must respond to #debug' unless logger.respond_to? :debug
@@ -52,8 +52,9 @@ module Kramdown
 
       class << self
         def init
-          inner = JekyllProvider.jekyll ? JekyllProvider.jekyll.logger : nil || ConsoleLogger.new(level)
-          Logger.new inner
+          inner = JekyllProvider.jekyll ? JekyllProvider.jekyll.logger : nil
+          inner ||= ConsoleLogger.new(level)
+          new inner
         end
 
         def level

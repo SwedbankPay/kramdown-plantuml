@@ -10,7 +10,7 @@ module Kramdown
     # Executes the PlantUML Java application.
     class Executor
       def initialize
-        @logger = Logger.init
+        @logger = LogWrapper.init
         @plantuml_jar_file = find_plantuml_jar_file
 
         raise IOError, 'Java can not be found' unless Which.which('java')

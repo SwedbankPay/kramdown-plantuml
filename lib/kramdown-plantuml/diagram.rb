@@ -15,7 +15,7 @@ module Kramdown
       def initialize(plantuml, options = {})
         @plantuml = plantuml
         @theme = Theme.new(options || {})
-        @logger = Logger.init
+        @logger = LogWrapper.init
         @executor = Executor.new
         @logger.warn 'PlantUML diagram is empty' if @plantuml.nil? || @plantuml.empty?
       end

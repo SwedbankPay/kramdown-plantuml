@@ -20,7 +20,7 @@ module Kramdown
         @stdout = stdout
         @stderr = stderr
         @exitcode = exitcode
-        @logger = Logger.init
+        @logger = LogWrapper.init
       end
 
       def without_xml_prologue
