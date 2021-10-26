@@ -5,7 +5,7 @@ require 'kramdown-plantuml/log_wrapper'
 require 'kramdown-plantuml/console_logger'
 
 LogWrapper = ::Kramdown::PlantUml::LogWrapper
-ConsoleLogger = ::Kramdown::PlantUml::ConsoleLogger
+ConsoleLogger ||= ::Kramdown::PlantUml::ConsoleLogger
 
 describe LogWrapper do
   describe '#new' do
