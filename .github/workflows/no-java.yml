@@ -18,5 +18,7 @@ jobs:
     - name: Bundle install
       run: bundle install --jobs 4 --retry 3
 
+    - run: which java || echo "Java not found"
+
     - name: RSpec
       run: bundle exec rspec --tag no_java
