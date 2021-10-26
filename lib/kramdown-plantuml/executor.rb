@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'open3'
-require_relative '../which'
+require_relative 'which'
 require_relative 'log_wrapper'
 require_relative 'plantuml_result'
 
