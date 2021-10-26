@@ -17,9 +17,11 @@ module Kramdown
 
         raise IOError, 'Java can not be found' if java_location.nil?
 
-        @logger.debug("Java found: #{java_location}")
+        @logger.debug "Java found: #{java_location}"
 
         raise IOError, "'#{@plantuml_jar_file}' does not exist" unless File.exist? @plantuml_jar_file
+
+        @logger.debug "plantuml.jar found: #{@plantuml_jar_file}"
       end
 
       def execute(diagram)
