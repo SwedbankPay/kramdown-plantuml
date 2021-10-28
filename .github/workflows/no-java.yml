@@ -19,6 +19,4 @@ jobs:
       run: bundle install --jobs 4 --retry 3
 
     - name: RSpec
-      env:
-        DEBUG: true
       run: bundle exec rspec --tag no_java

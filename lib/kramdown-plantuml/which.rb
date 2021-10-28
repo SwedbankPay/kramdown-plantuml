@@ -10,6 +10,7 @@ class Which
         return exe if File.executable?(exe) && !File.directory?(exe)
       end
     end
+
     nil
   end
 end

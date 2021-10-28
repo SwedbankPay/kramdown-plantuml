@@ -11,13 +11,13 @@ module Kramdown
     class Executor
       def initialize
         @logger = LogWrapper.init
-        @plantuml_jar_file = find_plantuml_jar_file
 
         java_location = Which.which('java')
 
         raise IOError, 'Java can not be found' if java_location.nil?
 
         @logger.debug "Java found: #{java_location}"
+        @plantuml_jar_file = find_plantuml_jar_file
 
         raise IOError, "'#{@plantuml_jar_file}' does not exist" unless File.exist? @plantuml_jar_file
 
