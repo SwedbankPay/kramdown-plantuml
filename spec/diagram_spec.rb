@@ -1,5 +1,6 @@
 # frozen_string_literal: false
 
+require 'rspec/its'
 require 'kramdown-plantuml/diagram'
 
 Diagram = ::Kramdown::PlantUml::Diagram
@@ -67,10 +68,8 @@ describe Diagram do
     context 'with invalid PlantUML' do
       let(:plantuml) { 'INVALID!' }
 
-      it do
-        expect do
-          subject.convert_to_svg.to_s
-        end.to raise_error(Kramdown::PlantUml::PlantUmlError, /INVALID!/)
+      its(:convert_to_svg) do
+        will raise_error(Kramdown::PlantUml::PlantUmlError, /INVALID!/)
       end
     end
 
@@ -78,30 +77,24 @@ describe Diagram do
       let(:plantuml) { "@startuml\n@enduml" }
       let(:options) { { theme: { name: 'xyz', directory: 'assets' } } }
 
-      it do
-        expect do
-          subject.convert_to_svg.to_s
-        end.to raise_error(Kramdown::PlantUml::PlantUmlError, /theme 'xyz' can't be found in the directory 'assets'/)
+      its(:convert_to_svg) do
+        will raise_error(Kramdown::PlantUml::PlantUmlError, /theme 'xyz' can't be found in the directory 'assets'/)
       end
     end
 
     context 'if plantuml.jar is not present', :no_plantuml do
       let(:plantuml) { plantuml_content }
 
-      it do
-        expect do
-          subject.convert_to_svg.to_s
-        end.to raise_error(IOError, /No 'plantuml.jar' file could be found/)
+      its(:convert_to_svg) do
+        will raise_error(IOError, /No 'plantuml.jar' file could be found/)
       end
     end
 
     context 'if Java is not installed', :no_java do
       let(:plantuml) { plantuml_content }
 
-      it do
-        expect do
-          subject.convert_to_svg.to_s
-        end.to raise_error(IOError, 'Java can not be found')
+      its(:convert_to_svg) do
+        will raise_error(IOError, 'Java can not be found')
       end
     end
   end
