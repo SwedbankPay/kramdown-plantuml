@@ -81,21 +81,5 @@ describe Diagram do
         will raise_error(Kramdown::PlantUml::PlantUmlError, /theme 'xyz' can't be found in the directory 'assets'/)
       end
     end
-
-    context 'if plantuml.jar is not present', :no_plantuml do
-      let(:plantuml) { plantuml_content }
-
-      its(:convert_to_svg) do
-        will raise_error(IOError, /No 'plantuml.jar' file could be found/)
-      end
-    end
-
-    context 'if Java is not installed', :no_java do
-      let(:plantuml) { plantuml_content }
-
-      its(:convert_to_svg) do
-        will raise_error(IOError, 'Java can not be found')
-      end
-    end
   end
 end
