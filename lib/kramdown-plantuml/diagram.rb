@@ -31,6 +31,8 @@ module Kramdown
         @result.validate
         @svg = wrap(@result.without_xml_prologue)
         @svg
+      rescue StandardError => e
+        @logger.error e.to_s
       end
 
       private

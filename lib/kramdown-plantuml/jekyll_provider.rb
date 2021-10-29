@@ -46,6 +46,10 @@ module Kramdown
             #{hash.to_json}
             <!--#kramdown-plantuml.end#-->
           NEEDLE
+        rescue StandardError => e
+          logger.error 'Error while placing needle.'
+          logger.error e.to_s
+          logger.debug_multiline plantuml
         end
 
         private
@@ -53,12 +57,19 @@ module Kramdown
         def replace_needles(html)
           html.gsub(/<!--#kramdown-plantuml\.start#-->(?<json>.*?)<!--#kramdown-plantuml\.end#-->/m) do
             json = $LAST_MATCH_INFO[:json]
-            hash = JSON.parse(json)
-            plantuml = decode_html_entities(hash['plantuml'])
-            options = hash['options']
-            diagram = ::Kramdown::PlantUml::Diagram.new(plantuml, options)
-            return diagram.convert_to_svg
+            return replace_needle(json)
+          rescue StandardError => e
+            logger.error "Error while replacing needle: #{e}"
           end
+        end
+
+        def replace_needle(json)
+          hash = JSON.parse(json)
+          encoded_plantuml = hash['plantuml']
+          plantuml = decode_html_entities(encoded_plantuml)
+          options = hash['options']
+          diagram = ::Kramdown::PlantUml::Diagram.new(plantuml, options)
+          diagram.convert_to_svg
         end
 
         def decode_html_entities(encoded_plantuml)
