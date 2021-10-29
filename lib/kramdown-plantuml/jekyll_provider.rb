@@ -38,8 +38,7 @@ module Kramdown
         end
 
         def needle(plantuml, options)
-          plantuml_options = !options.nil? && options.key?(:plantuml) ? options[:plantuml] : nil
-          hash = { 'plantuml' => plantuml, 'options' => plantuml_options }
+          hash = { 'plantuml' => plantuml, 'options' => options.to_h }
 
           <<~NEEDLE
             <!--#kramdown-plantuml.start#-->
@@ -47,6 +46,9 @@ module Kramdown
             <!--#kramdown-plantuml.end#-->
           NEEDLE
         rescue StandardError => e
+          raise e if options.raise_errors?
+
+          puts e
           logger.error 'Error while placing needle.'
           logger.error e.to_s
           logger.debug_multiline plantuml
@@ -59,7 +61,9 @@ module Kramdown
             json = $LAST_MATCH_INFO[:json]
             return replace_needle(json)
           rescue StandardError => e
-            logger.error "Error while replacing needle: #{e}"
+            raise e if options.raise_errors?
+
+            logger.error "Error while replacing needle: #{e.inspect}"
           end
         end
 
@@ -67,7 +71,7 @@ module Kramdown
           hash = JSON.parse(json)
           encoded_plantuml = hash['plantuml']
           plantuml = decode_html_entities(encoded_plantuml)
-          options = hash['options']
+          options = ::Kramdown::PlantUml::Options.new({ plantuml: hash['options'] })
           diagram = ::Kramdown::PlantUml::Diagram.new(plantuml, options)
           diagram.convert_to_svg
         end

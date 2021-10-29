@@ -1,14 +1,16 @@
 # frozen_string_literal: true
 
 require 'rspec/its'
+require 'kramdown-plantuml/options'
 require 'kramdown-plantuml/jekyll_provider'
 
+Options = Kramdown::PlantUml::Options
 JekyllProvider = ::Kramdown::PlantUml::JekyllProvider
 
 describe JekyllProvider do
   let (:plantuml_file_contents) { File.read(File.join(__dir__, 'examples', 'diagram.plantuml')) }
   let (:plantuml) { nil }
-  let (:options) { nil }
+  let (:options) { Options.new }
   subject { JekyllProvider }
 
   context 'without jekyll' do
@@ -29,7 +31,7 @@ describe JekyllProvider do
       end
 
       context 'when options has theme' do
-        let (:options) { { plantuml: { theme: 'spacelab' } } }
+        let (:options) { Options.new({ plantuml: { theme: { name: 'spacelab'} } }) }
         it { is_expected.to match(/<!--#kramdown-plantuml\.start#-->.*spacelab.*<!--#kramdown-plantuml\.end#-->/m) }
       end
     end

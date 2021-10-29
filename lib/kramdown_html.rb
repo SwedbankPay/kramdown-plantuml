@@ -4,6 +4,7 @@ require 'kramdown'
 require 'kramdown-parser-gfm'
 require_relative 'kramdown-plantuml/log_wrapper'
 require_relative 'kramdown-plantuml/plantuml_error'
+require_relative 'kramdown-plantuml/options'
 require_relative 'kramdown-plantuml/diagram'
 require_relative 'kramdown-plantuml/jekyll_provider'
 
@@ -24,7 +25,8 @@ module Kramdown
         # be copied to the assets directory before the PlantUML conversion can
         # be performed. We therefore place a needle in the haystack that we will
         # convert in the :site:pre_render hook.
-        return jekyll.needle(element.value, @options) if jekyll.installed?
+        options = ::Kramdown::PlantUml::Options.new(@options)
+        return jekyll.needle(element.value, options) if jekyll.installed?
 
         convert_plantuml(element.value)
       end
@@ -36,9 +38,8 @@ module Kramdown
       end
 
       def convert_plantuml(plantuml)
-        plantuml_options = @options.key?(:plantuml) ? @options[:plantuml] : {}
-
-        diagram = ::Kramdown::PlantUml::Diagram.new(plantuml, plantuml_options)
+        options = ::Kramdown::PlantUml::Options.new(@options)
+        diagram = ::Kramdown::PlantUml::Diagram.new(plantuml, options)
         diagram.convert_to_svg
       end
     end

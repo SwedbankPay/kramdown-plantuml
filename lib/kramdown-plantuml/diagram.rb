@@ -2,6 +2,7 @@
 
 require_relative 'version'
 require_relative 'theme'
+require_relative 'options'
 require_relative 'plantuml_error'
 require_relative 'log_wrapper'
 require_relative 'executor'
@@ -12,9 +13,13 @@ module Kramdown
     class Diagram
       attr_reader :theme, :plantuml, :result
 
-      def initialize(plantuml, options = {})
+      def initialize(plantuml, options)
+        raise ArgumentError, 'options cannot be nil' if options.nil?
+        raise ArgumentError, "options must be a '#{Options}'." unless options.is_a?(Options)
+
         @plantuml = plantuml
-        @theme = Theme.new(options || {})
+        @options = options
+        @theme = Theme.new(options)
         @logger = LogWrapper.init
         @executor = Executor.new
         @logger.warn 'PlantUML diagram is empty' if @plantuml.nil? || @plantuml.empty?
@@ -25,13 +30,13 @@ module Kramdown
         return @plantuml if @plantuml.nil? || @plantuml.empty?
 
         @plantuml = @theme.apply(@plantuml)
-        @plantuml = plantuml.strip
         log(plantuml)
         @result = @executor.execute(self)
         @result.validate
         @svg = wrap(@result.without_xml_prologue)
-        @svg
       rescue StandardError => e
+        raise e if @options.raise_errors?
+
         @logger.error e.to_s
       end
 

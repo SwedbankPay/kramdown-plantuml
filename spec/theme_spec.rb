@@ -1,37 +1,41 @@
 # frozen_string_literal: false
 
 require 'rspec/its'
+require 'kramdown-plantuml/options'
 require 'kramdown-plantuml/theme'
 
-describe Kramdown::PlantUml::Theme do
+Theme = Kramdown::PlantUml::Theme
+Options = Kramdown::PlantUml::Options
+
+describe Theme do
   describe '#initialize' do
-    let(:options) { nil }
-    subject { Kramdown::PlantUml::Theme.new(options) }
+    let(:options) { Options.new }
+    subject { Theme.new(options) }
 
     context 'with symbolic option keys' do
-      let(:options) { { theme: { name: 'custom', directory: 'path/to/themes' } } }
+      let(:options) { Options.new({ plantuml: { theme: { name: 'custom', directory: 'path/to/themes' } } }) }
       its(:name) { is_expected.to eq('custom') }
       its(:directory) { is_expected.to eq('path/to/themes') }
     end
 
     context 'with mixed option keys' do
-      let(:options) { { theme: { 'name' => 'custom', 'directory' => 'path/to/themes' } } }
+      let(:options) { Options.new({ plantuml: { theme: { 'name' => 'custom', 'directory' => 'path/to/themes' } } }) }
       its(:name) { is_expected.to eq('custom') }
       its(:directory) { is_expected.to eq('path/to/themes') }
     end
 
     context 'with string option keys' do
-      let(:options) { { 'theme' => { 'name' => 'custom', 'directory' => 'path/to/themes' } } }
+      let(:options) { Options.new({ 'plantuml' => { 'theme' => { 'name' => 'custom', 'directory' => 'path/to/themes' } } }) }
       its(:name) { is_expected.to eq('custom') }
       its(:directory) { is_expected.to eq('path/to/themes') }
     end
   end
 
   describe '#apply' do
-    let(:options) { nil }
+    let(:options) { Options.new }
     let(:plantuml) { nil }
 
-    subject { Kramdown::PlantUml::Theme.new(options).apply(plantuml) }
+    subject { Theme.new(options).apply(plantuml) }
 
     context 'with nil plantuml' do
       it { is_expected.to be_nil }
@@ -48,13 +52,13 @@ describe Kramdown::PlantUml::Theme do
     end
 
     context 'with built-in theme' do
-      let(:options) { { theme: { name: 'spacelab' } } }
+      let(:options) { Options.new({ plantuml: { theme: { name: 'spacelab' } } }) }
       let(:plantuml) { "@startuml\nactor A\nend" }
       it { is_expected.to eq("@startuml\n!theme spacelab\nactor A\nend") }
     end
 
     context 'with custom theme' do
-      let(:options) { { theme: { name: 'custom', directory: 'path/to/themes' } } }
+      let(:options) { Options.new({ plantuml: { theme: { name: 'custom', directory: 'path/to/themes' } } }) }
       let(:plantuml) { "@startuml\nactor A\nend" }
       it { is_expected.to eq("@startuml\n!theme custom from path/to/themes\nactor A\nend") }
     end
