@@ -130,6 +130,20 @@ kramdown:
       directory: path/to/themes
 ```
 
+### Errors
+
+By default, `kramdown-plantuml` will raise an error and crash if something goes
+wrong during processing. This can be circumvented by setting the `raise_errors`
+configuration key to `false`:
+
+```yaml
+kramdown:
+  plantuml:
+    raise_errors: false
+```
+
+The default value of `raise_errors` is `true`.
+
 ## Contributing
 
 Bug reports and pull requests are welcome on [GitHub][github]. This project is
