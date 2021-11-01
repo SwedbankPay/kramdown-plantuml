@@ -35,6 +35,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
+  spec.add_dependency 'htmlentities', '~> 4'
   spec.add_dependency 'kramdown', '~> 2.3'
   spec.add_dependency 'kramdown-parser-gfm', '~> 1.1'
   spec.add_dependency 'open3', '~> 0.1'

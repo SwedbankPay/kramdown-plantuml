@@ -28,7 +28,7 @@ module Kramdown
         options = ::Kramdown::PlantUml::Options.new(@options)
         return jekyll.needle(element.value, options) if jekyll.installed?
 
-        convert_plantuml(element.value)
+        convert_plantuml(element.value, options)
       end
 
       private
@@ -37,10 +37,13 @@ module Kramdown
         element.attr['class'] == 'language-plantuml'
       end
 
-      def convert_plantuml(plantuml)
-        options = ::Kramdown::PlantUml::Options.new(@options)
+      def convert_plantuml(plantuml, options)
         diagram = ::Kramdown::PlantUml::Diagram.new(plantuml, options)
         diagram.convert_to_svg
+      rescue StandardError => e
+        raise e if options.raise_errors?
+
+        logger.error "Error while replacing needle: #{e.inspect}"
       end
     end
   end
