@@ -57,6 +57,8 @@ module Kramdown
         private
 
         def replace_needles(html)
+          return html if html.nil? || html.empty? || !html.is_a?(String)
+
           html.gsub(/<!--#kramdown-plantuml\.start#-->(?<json>.*?)<!--#kramdown-plantuml\.end#-->/m) do
             json = $LAST_MATCH_INFO[:json]
             return replace_needle(json)
