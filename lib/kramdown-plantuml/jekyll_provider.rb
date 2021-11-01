@@ -2,7 +2,7 @@
 
 require 'json'
 require 'English'
-require 'rexml/document'
+require 'htmlentities'
 require_relative 'log_wrapper'
 require_relative 'diagram'
 
@@ -51,7 +51,7 @@ module Kramdown
           puts e
           logger.error 'Error while placing needle.'
           logger.error e.to_s
-          logger.debug_multiline plantuml
+          logger.plantuml
         end
 
         private
@@ -67,16 +67,25 @@ module Kramdown
 
         def replace_needle(json)
           hash = JSON.parse(json)
-          encoded_plantuml = hash['plantuml']
-          plantuml = decode_html_entities(encoded_plantuml)
-          options = ::Kramdown::PlantUml::Options.new({ plantuml: hash['options'] })
-          diagram = ::Kramdown::PlantUml::Diagram.new(plantuml, options)
-          diagram.convert_to_svg
+          options_hash = hash['options']
+          options = ::Kramdown::PlantUml::Options.new({ plantuml: options_hash })
+
+          begin
+            decode_and_convert(hash, options)
+          rescue StandardError => e
+            raise e if options.raise_errors?
+
+            logger.error 'Error while replacing needle.'
+            logger.error e.to_s
+            logger.debug_multiline json
+          end
         end
 
-        def decode_html_entities(encoded_plantuml)
-          doc = REXML::Document.new "<plantuml>#{encoded_plantuml}</plantuml>"
-          doc.root.text
+        def decode_and_convert(hash, options)
+          encoded_plantuml = hash['plantuml']
+          plantuml = HTMLEntities.new.decode encoded_plantuml
+          diagram = ::Kramdown::PlantUml::Diagram.new(plantuml, options)
+          diagram.convert_to_svg
         end
 
         def load_jekyll
