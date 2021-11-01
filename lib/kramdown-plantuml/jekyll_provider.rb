@@ -51,7 +51,7 @@ module Kramdown
           puts e
           logger.error 'Error while placing needle.'
           logger.error e.to_s
-          logger.plantuml
+          logger.debug_multiline plantuml
         end
 
         private
