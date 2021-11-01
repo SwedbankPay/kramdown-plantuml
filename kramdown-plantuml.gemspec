@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'lib/which'
+require_relative 'lib/kramdown-plantuml/which'
 require_relative 'lib/kramdown-plantuml/version'
 
 Gem::Specification.new do |spec|

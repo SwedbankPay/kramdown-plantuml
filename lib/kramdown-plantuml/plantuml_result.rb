@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'logger'
+require_relative 'log_wrapper'
 require_relative 'plantuml_error'
 require_relative 'diagram'
 
@@ -20,7 +20,7 @@ module Kramdown
         @stdout = stdout
         @stderr = stderr
         @exitcode = exitcode
-        @logger = Logger.init
+        @logger = LogWrapper.init
       end
 
       def without_xml_prologue

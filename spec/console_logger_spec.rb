@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 require 'rspec/its'
-require 'kramdown-plantuml/logger'
+require 'kramdown-plantuml/log_wrapper'
 require 'kramdown-plantuml/console_logger'
 
-ConsoleLogger = ::Kramdown::PlantUml::ConsoleLogger
+ConsoleLogger ||= ::Kramdown::PlantUml::ConsoleLogger
 
 describe ConsoleLogger do
   describe '#new' do
@@ -15,7 +15,7 @@ describe ConsoleLogger do
 
         describe "\##{level}" do
           it "receives \##{level}('test')" do
-            expect_any_instance_of(Kramdown::PlantUml::ConsoleLogger).to receive(level).with('test')
+            expect_any_instance_of(ConsoleLogger).to receive(level).with('test')
             subject.public_send(level, 'test')
           end
         end

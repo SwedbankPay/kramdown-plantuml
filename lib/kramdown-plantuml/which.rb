@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Wraps the `which` Unix utility
+# Mimics the `which` Unix utility
 class Which
   def self.which(cmd)
     exts = ENV['PATHEXT'] ? ENV['PATHEXT'].split(';') : ['']
@@ -10,6 +10,7 @@ class Which
         return exe if File.executable?(exe) && !File.directory?(exe)
       end
     end
+
     nil
   end
 end

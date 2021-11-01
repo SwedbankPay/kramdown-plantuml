@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'rspec/its'
 require 'kramdown_html'
 
 describe Kramdown::Converter::Html do
@@ -71,10 +72,14 @@ describe Kramdown::Converter::Html do
 
   context 'invalid PlantUML' do
     let(:plantuml) { "```plantuml\n@startuml\n###INVALID###\n@enduml\n```" }
+    let(:options) { { input: 'GFM' } }
+    subject { Kramdown::Document.new(plantuml, options) }
 
-    it {
-      expect { Kramdown::Document.new(plantuml, input: 'GFM').to_html }.to \
-        raise_error(Kramdown::PlantUml::PlantUmlError, /###INVALID###/)
-    }
+    its(:to_html) { will raise_error(Kramdown::PlantUml::PlantUmlError, /###INVALID###/) }
+
+    context ('with raise_errors: false') do
+      let(:options) { { input: 'GFM', plantuml: { raise_errors: false } } }
+      its(:to_html) { will_not raise_error }
+    end
   end
 end

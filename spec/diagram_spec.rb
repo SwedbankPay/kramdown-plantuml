@@ -1,5 +1,6 @@
 # frozen_string_literal: false
 
+require 'rspec/its'
 require 'kramdown-plantuml/diagram'
 
 Diagram = ::Kramdown::PlantUml::Diagram
@@ -9,7 +10,7 @@ describe Diagram do
 
   describe '#convert_to_svg' do
     context 'gracefully fails' do
-      subject { Diagram.new(plantuml).convert_to_svg }
+      subject { Diagram.new(plantuml, Options.new).convert_to_svg }
 
       context 'with nil plantuml' do
         let(:plantuml) { nil }
@@ -23,7 +24,7 @@ describe Diagram do
     end
 
     context 'successfully converts' do
-      before(:all) { @converted_svg = Diagram.new(plantuml_content).convert_to_svg }
+      before(:all) { @converted_svg = Diagram.new(plantuml_content, Options.new).convert_to_svg }
       subject { @converted_svg }
 
       it {
@@ -62,46 +63,33 @@ describe Diagram do
 
   context 'fails properly' do
     subject { Diagram.new(plantuml, options) }
-    let(:options) { {} }
+    let(:hash) { nil }
+    let(:options) { Options.new(hash) }
 
     context 'with invalid PlantUML' do
       let(:plantuml) { 'INVALID!' }
 
-      it do
-        expect do
-          subject.convert_to_svg.to_s
-        end.to raise_error(Kramdown::PlantUml::PlantUmlError, /INVALID!/)
+      its(:convert_to_svg) do
+        will raise_error(Kramdown::PlantUml::PlantUmlError, /INVALID!/)
+      end
+
+      context ('with raise_errors: false') do
+        let(:hash) {  { plantuml: { raise_errors: false } } }
+        its(:convert_to_svg) { will_not raise_error }
       end
     end
 
     context 'with non-existing theme' do
       let(:plantuml) { "@startuml\n@enduml" }
-      let(:options) { { theme: { name: 'xyz', directory: 'assets' } } }
+      let(:hash) { { plantuml: { theme: { name: 'xyz', directory: 'assets' } } } }
 
-      it do
-        expect do
-          subject.convert_to_svg.to_s
-        end.to raise_error(Kramdown::PlantUml::PlantUmlError, /theme 'xyz' can't be found in the directory 'assets'/)
+      its(:convert_to_svg) do
+        will raise_error(Kramdown::PlantUml::PlantUmlError, /theme 'xyz' can't be found in the directory 'assets'/)
       end
-    end
 
-    context 'if plantuml.jar is not present', :no_plantuml do
-      let(:plantuml) { plantuml_content }
-
-      it do
-        expect do
-          subject.convert_to_svg.to_s
-        end.to raise_error(IOError, /No 'plantuml.jar' file could be found/)
-      end
-    end
-
-    context 'if Java is not installed', :no_java do
-      let(:plantuml) { plantuml_content }
-
-      it do
-        expect do
-          subject.convert_to_svg.to_s
-        end.to raise_error(IOError, 'Java can not be found')
+      context ('with raise_errors: false') do
+        let(:hash) {  { plantuml: { raise_errors: false } } }
+        its(:convert_to_svg) { will_not raise_error }
       end
     end
   end

@@ -1,6 +1,7 @@
 # frozen_string_literal: false
 
-require_relative 'logger'
+require_relative 'options'
+require_relative 'log_wrapper'
 
 module Kramdown
   module PlantUml
@@ -8,9 +9,13 @@ module Kramdown
     class Theme
       attr_reader :name, :directory
 
-      def initialize(options = {})
-        @logger = Logger.init
-        @name, @directory = theme_options(options)
+      def initialize(options)
+        raise ArgumentError, 'options cannot be nil' if options.nil?
+        raise ArgumentError, "options must be a '#{Options}'." unless options.is_a?(Options)
+
+        @logger = LogWrapper.init
+        @name = options.theme_name
+        @directory = options.theme_directory
       end
 
       def apply(plantuml)
@@ -21,38 +26,13 @@ module Kramdown
 
         if @name.nil? || @name.empty?
           @logger.debug 'No theme to apply.'
-          return plantuml
+          return plantuml.strip
         end
 
         theme(plantuml)
       end
 
       private
-
-      def theme_options(options)
-        options = symbolize_keys(options)
-
-        @logger.debug "Options: #{options}"
-
-        return nil if options.nil? || !options.key?(:theme)
-
-        theme = options[:theme] || {}
-        name = theme.key?(:name) ? theme[:name] : nil
-        directory = theme.key?(:directory) ? theme[:directory] : nil
-
-        [name, directory]
-      end
-
-      def symbolize_keys(options)
-        return options if options.nil?
-
-        array = options.map do |key, value|
-          value = value.is_a?(Hash) ? symbolize_keys(value) : value
-          [key.to_sym, value]
-        end
-
-        array.to_h
-      end
 
       def theme(plantuml)
         startuml = '@startuml'
@@ -69,7 +49,7 @@ module Kramdown
           return plantuml.insert match.end(0), theme_string
         end
 
-        plantuml
+        plantuml.strip
       end
     end
   end

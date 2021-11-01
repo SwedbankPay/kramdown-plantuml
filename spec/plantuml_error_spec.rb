@@ -1,16 +1,22 @@
 # frozen_string_literal: true
 
 require 'rspec/its'
+require 'kramdown-plantuml/options'
 require 'kramdown-plantuml/plantuml_error'
 
-describe Kramdown::PlantUml::PlantUmlError do
+Options = ::Kramdown::PlantUml::Options
+Diagram = ::Kramdown::PlantUml::Diagram
+PlantUmlError = ::Kramdown::PlantUml::PlantUmlError
+PlantUmlResult = ::Kramdown::PlantUml::PlantUmlResult
+
+describe PlantUmlError do
   describe '#initialize' do
     let(:plantuml) { 'some plantuml' }
-    let(:options) { {} }
+    let(:options) { Options.new }
     let(:exitcode) { 1 }
-    let(:diagram) { ::Kramdown::PlantUml::Diagram.new(plantuml, options) }
-    let(:result) { ::Kramdown::PlantUml::PlantUmlResult.new(diagram, '', stderr, exitcode) }
-    subject { ::Kramdown::PlantUml::PlantUmlError.new(result) }
+    let(:diagram) { Diagram.new(plantuml, options) }
+    let(:result) { PlantUmlResult.new(diagram, '', stderr, exitcode) }
+    subject { PlantUmlError.new(result) }
 
     context 'message is expected' do
       let(:stderr) { 'some stderr' }
@@ -27,13 +33,13 @@ describe Kramdown::PlantUml::PlantUmlError do
       it { expect { subject }.to raise_error(ArgumentError, 'result cannot be nil') }
     end
 
-    context "result is not a #{::Kramdown::PlantUml::PlantUmlResult}" do
+    context "result is not a #{PlantUmlResult}" do
       let(:result) { {} }
-      it { expect { subject }.to raise_error(ArgumentError, "result must be a #{::Kramdown::PlantUml::PlantUmlResult}") }
+      it { expect { subject }.to raise_error(ArgumentError, "result must be a #{PlantUmlResult}") }
     end
 
     context 'non-existent theme' do
-      let(:options) { { theme: { name: 'xyz', directory: 'assets' } } }
+      let(:options) { Options.new({ plantuml: { theme: { name: 'xyz', directory: 'assets' } }}) }
       let(:stderr) { <<~STDERR
         java.lang.NullPointerException
           at java.base/java.io.Reader.<init>(Reader.java:167)

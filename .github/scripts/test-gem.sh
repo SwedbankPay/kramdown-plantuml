@@ -165,7 +165,6 @@ test_gem() {
     bundle install
     bundle exec jekyll build "${jekyll_build_args[@]}"
 
-
     file="${workdir}/_site/index.html"
 
     file_contains "${file}" "class=\"${class}\""

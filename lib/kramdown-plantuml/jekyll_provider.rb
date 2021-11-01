@@ -2,7 +2,8 @@
 
 require 'json'
 require 'English'
-require_relative 'logger'
+require 'rexml/document'
+require_relative 'log_wrapper'
 require_relative 'diagram'
 
 module Kramdown
@@ -37,14 +38,20 @@ module Kramdown
         end
 
         def needle(plantuml, options)
-          plantuml_options = !options.nil? && options.key?(:plantuml) ? options[:plantuml] : nil
-          hash = { 'plantuml' => plantuml, 'options' => plantuml_options }
+          hash = { 'plantuml' => plantuml, 'options' => options.to_h }
 
           <<~NEEDLE
             <!--#kramdown-plantuml.start#-->
             #{hash.to_json}
             <!--#kramdown-plantuml.end#-->
           NEEDLE
+        rescue StandardError => e
+          raise e if options.raise_errors?
+
+          puts e
+          logger.error 'Error while placing needle.'
+          logger.error e.to_s
+          logger.debug_multiline plantuml
         end
 
         private
@@ -52,12 +59,26 @@ module Kramdown
         def replace_needles(html)
           html.gsub(/<!--#kramdown-plantuml\.start#-->(?<json>.*?)<!--#kramdown-plantuml\.end#-->/m) do
             json = $LAST_MATCH_INFO[:json]
-            hash = JSON.parse(json)
-            plantuml = hash['plantuml']
-            options = hash['options']
-            diagram = ::Kramdown::PlantUml::Diagram.new(plantuml, options)
-            return diagram.convert_to_svg
+            return replace_needle(json)
+          rescue StandardError => e
+            raise e if options.raise_errors?
+
+            logger.error "Error while replacing needle: #{e.inspect}"
           end
+        end
+
+        def replace_needle(json)
+          hash = JSON.parse(json)
+          encoded_plantuml = hash['plantuml']
+          plantuml = decode_html_entities(encoded_plantuml)
+          options = ::Kramdown::PlantUml::Options.new({ plantuml: hash['options'] })
+          diagram = ::Kramdown::PlantUml::Diagram.new(plantuml, options)
+          diagram.convert_to_svg
+        end
+
+        def decode_html_entities(encoded_plantuml)
+          doc = REXML::Document.new "<plantuml>#{encoded_plantuml}</plantuml>"
+          doc.root.text
         end
 
         def load_jekyll
@@ -68,7 +89,7 @@ module Kramdown
         end
 
         def logger
-          @logger ||= ::Kramdown::PlantUml::Logger.init
+          @logger ||= ::Kramdown::PlantUml::LogWrapper.init
         end
       end
     end

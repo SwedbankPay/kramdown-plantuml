@@ -9,7 +9,7 @@ describe Kramdown::PlantUml::PlantUmlResult do
     let (:stderr) { nil }
 
     subject {
-      diagram = ::Kramdown::PlantUml::Diagram.new("@startuml\n@enduml")
+      diagram = ::Kramdown::PlantUml::Diagram.new("@startuml\n@enduml", Options.new)
       result = ::Kramdown::PlantUml::PlantUmlResult.new(diagram, '', stderr, exitcode)
       result.valid?
     }
@@ -46,7 +46,7 @@ describe Kramdown::PlantUml::PlantUmlResult do
 
   describe '#initialize' do
     subject {
-      diagram = ::Kramdown::PlantUml::Diagram.new("@startuml\n@enduml")
+      diagram = ::Kramdown::PlantUml::Diagram.new("@startuml\n@enduml", Options.new)
       ::Kramdown::PlantUml::PlantUmlResult.new(diagram, stdout, stderr, exitcode)
     }
 
