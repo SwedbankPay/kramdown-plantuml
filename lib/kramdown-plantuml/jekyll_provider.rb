@@ -62,10 +62,6 @@ module Kramdown
           html.gsub(/<!--#kramdown-plantuml\.start#-->(?<json>.*?)<!--#kramdown-plantuml\.end#-->/m) do
             json = $LAST_MATCH_INFO[:json]
             return replace_needle(json)
-          rescue StandardError => e
-            raise e if options.raise_errors?
-
-            logger.error "Error while replacing needle: #{e.inspect}"
           end
         end
 
