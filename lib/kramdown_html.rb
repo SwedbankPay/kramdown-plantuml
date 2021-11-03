@@ -43,6 +43,7 @@ module Kramdown
       rescue StandardError => e
         raise e if options.raise_errors?
 
+        logger = ::Kramdown::PlantUml::LogWrapper.init
         logger.error "Error while replacing needle: #{e.inspect}"
       end
     end
