@@ -11,6 +11,8 @@ module Kramdown
     # Provides an instance of Jekyll if available.
     module JekyllProvider
       class << self
+        attr_reader :site_destination_dir
+
         def jekyll
           return @jekyll if defined? @jekyll
 
@@ -20,16 +22,8 @@ module Kramdown
         def install
           return @installed = false if jekyll.nil?
 
-          logger.debug 'Jekyll detected, hooking into :site:post_render'
-
-          Jekyll::Hooks.register :site, :post_render do |site|
-            logger.debug ':site:post_render triggered.'
-
-            site.pages.each do |page|
-              page.output = replace_needles(page.output)
-            end
-          end
-
+          find_site_destination_dir
+          register_hook
           @installed = true
         end
 
@@ -56,7 +50,34 @@ module Kramdown
 
         private
 
-        def replace_needles(html)
+        def find_site_destination_dir
+          if jekyll.sites.nil? || jekyll.sites.empty?
+            logger.debug 'Jekyll detected, hooking into :site:post_write.'
+            return nil
+          end
+
+          @site_destination_dir = jekyll.sites.first.dest
+          logger.debug "Jekyll detected, hooking into :site:post_write of '#{@site_destination_dir}'."
+          @site_destination_dir
+        end
+
+        def register_hook
+          Jekyll::Hooks.register :site, :post_write do |site|
+            logger.debug ':site:post_write triggered.'
+
+            @site_destination_dir ||= site.dest
+
+            site.pages.each do |page|
+              page.output = replace_needles(page)
+              page.write(@site_destination_dir)
+            end
+          end
+        end
+
+        def replace_needles(page)
+          logger.debug "Replacing Jekyll needle in #{page.path}"
+
+          html = page.output
           return html if html.nil? || html.empty? || !html.is_a?(String)
 
           html.gsub(/<!--#kramdown-plantuml\.start#-->(?<json>.*?)<!--#kramdown-plantuml\.end#-->/m) do
@@ -66,16 +87,19 @@ module Kramdown
         end
 
         def replace_needle(json)
-          hash = JSON.parse(json)
-          options_hash = hash['options']
+          logger.debug 'Replacing Jekyll needle.'
+
+          needle_hash = JSON.parse(json)
+          options_hash = needle_hash['options']
+          options_hash[:site_destination_dir] = @site_destination_dir
           options = ::Kramdown::PlantUml::Options.new({ plantuml: options_hash })
 
           begin
-            decode_and_convert(hash, options)
+            decode_and_convert(needle_hash, options)
           rescue StandardError => e
             raise e if options.raise_errors?
 
-            logger.error 'Error while replacing needle.'
+            logger.error 'Error while replacing Jekyll needle.'
             logger.error e.to_s
             logger.debug_multiline json
           end
