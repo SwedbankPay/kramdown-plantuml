@@ -2,6 +2,7 @@
 
 require_relative 'options'
 require_relative 'log_wrapper'
+require_relative 'jekyll_provider'
 
 module Kramdown
   module PlantUml
@@ -13,9 +14,10 @@ module Kramdown
         raise ArgumentError, 'options cannot be nil' if options.nil?
         raise ArgumentError, "options must be a '#{Options}'." unless options.is_a?(Options)
 
+        @raise_errors = options.raise_errors?
         @logger = LogWrapper.init
         @name = options.theme_name
-        @directory = options.theme_directory
+        @directory = resolve options.theme_directory
       end
 
       def apply(plantuml)
@@ -33,6 +35,28 @@ module Kramdown
       end
 
       private
+
+      def resolve(directory)
+        jekyll = JekyllProvider
+
+        return directory if directory.nil? || directory.empty? || !jekyll.installed?
+
+        directory = File.absolute_path(directory, jekyll.site_destination_dir)
+
+        log_or_raise "The theme directory '#{directory}' cannot be found" unless Dir.exist?(directory)
+
+        theme_path = File.join(directory, "puml-theme-#{@name}.puml")
+
+        log_or_raise "The theme '#{theme_path}' cannot be found" unless File.exist?(theme_path)
+
+        directory
+      end
+
+      def log_or_raise(message)
+        raise IOError, message if @raise_errors
+
+        logger.warn message
+      end
 
       def theme(plantuml)
         startuml = '@startuml'
