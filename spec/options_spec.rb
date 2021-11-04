@@ -24,9 +24,22 @@ describe Options do
     its(:to_h) { is_expected.to eq({ }) }
   end
 
+  context 'nil :plantuml' do
+    let(:hash) { { plantuml: nil } }
+    its(:theme_name) { is_expected.to be_nil }
+    its(:theme_directory) { is_expected.to be_nil }
+    its(:raise_errors?) { is_expected.to be true }
+    its(:to_h) { is_expected.to eq({ }) }
+  end
+
   context 'empty :plantuml' do
     let(:hash) { { plantuml: { } } }
     its(:to_h) { is_expected.to eq({ }) }
+  end
+
+  context 'nil :theme' do
+    let(:hash) { { plantuml: { theme: nil } } }
+    its(:to_h) { is_expected.to eq({ theme: nil }) }
   end
 
   context 'empty :theme' do
@@ -34,12 +47,27 @@ describe Options do
     its(:to_h) { is_expected.to eq({ theme: { } }) }
   end
 
+  context 'with nil :name' do
+    let(:hash) { { plantuml: { theme: { name: nil } } } }
+    its(:to_h) { is_expected.to eq({ theme: { name: nil } }) }
+  end
+
   context 'with :theme :name' do
     let(:hash) { { plantuml: { theme: { name: 'custom' } } } }
     its(:to_h) { is_expected.to eq({ theme: { name: 'custom' } }) }
   end
 
-  context 'invalid :raise_errors' do
+  context 'with nil :directory' do
+    let(:hash) { { plantuml: { theme: { name: 'custom', directory: nil } } } }
+    its(:to_h) { is_expected.to eq({ theme: { name: 'custom', directory: nil } }) }
+  end
+
+  context 'with nil :raise_errors' do
+    let(:hash) { { plantuml: { theme: { }, raise_errors: nil } } }
+    its(:raise_errors?) { is_expected.to be true }
+  end
+
+  context 'with invalid :raise_errors' do
     let(:hash) { { plantuml: { theme: { }, raise_errors: 'xyz' } } }
     its(:raise_errors?) { is_expected.to be true }
   end

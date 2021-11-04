@@ -10,7 +10,7 @@ module Kramdown
 
       def initialize(options_hash = {})
         @logger = LogWrapper.init
-        @options = massage(options_hash)
+        @options = massage(options_hash) || {}
         @raise_errors = extract_raise_errors(@options)
         extract_theme_options(@options)
       end
@@ -44,9 +44,9 @@ module Kramdown
       end
 
       def extract_theme_options(options)
-        return if options.empty? || !options.key?(:theme)
+        return if options.nil? || options.empty? || !options.key?(:theme)
 
-        theme = options[:theme] || {}
+        theme = options[:theme]
 
         unless theme.is_a?(Hash)
           @logger.warn ":theme is not a Hash: #{theme}"
@@ -58,12 +58,10 @@ module Kramdown
       end
 
       def extract_raise_errors(options)
-        if options.key?(:raise_errors)
-          raise_errors = options[:raise_errors]
-          return boolean(raise_errors, true)
-        end
+        return true if options.nil? || options.empty? || !options.key?(:raise_errors)
 
-        true
+        raise_errors = options[:raise_errors]
+        boolean(raise_errors, true)
       end
 
       def massage(options_hash)
