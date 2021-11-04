@@ -24,6 +24,14 @@ describe Options do
     its(:to_h) { is_expected.to eq({ }) }
   end
 
+  context 'nil :plantuml' do
+    let(:hash) { { plantuml: nil } }
+    its(:theme_name) { is_expected.to be_nil }
+    its(:theme_directory) { is_expected.to be_nil }
+    its(:raise_errors?) { is_expected.to be true }
+    its(:to_h) { is_expected.to eq({ }) }
+  end
+
   context 'empty :plantuml' do
     let(:hash) { { plantuml: { } } }
     its(:to_h) { is_expected.to eq({ }) }
