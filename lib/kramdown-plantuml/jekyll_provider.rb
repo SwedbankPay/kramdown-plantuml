@@ -42,7 +42,6 @@ module Kramdown
         rescue StandardError => e
           raise e if options.raise_errors?
 
-          puts e
           logger.error 'Error while placing needle.'
           logger.error e.to_s
           logger.debug_multiline plantuml
@@ -63,26 +62,44 @@ module Kramdown
 
         def register_hook
           Jekyll::Hooks.register :site, :post_write do |site|
-            logger.debug ':site:post_write triggered.'
-
-            @site_destination_dir ||= site.dest
-
-            site.pages.each do |page|
-              page.output = replace_needles(page)
-              page.write(@site_destination_dir)
-            end
+            site_post_write(site)
           end
         end
 
+        def site_post_write(site)
+          logger.debug 'Jekyll:site:post_write triggered.'
+          @site_destination_dir ||= site.dest
+
+          site.pages.each do |page|
+            next unless should_process? page
+
+            page.output = replace_needles(page)
+            page.data[:kramdown_plantuml_needle_replaced] = true
+            page.write(site.dest)
+          end
+        end
+
+        def should_process?(page)
+          return false unless page.output_ext == '.html'
+
+          if !page.data.nil? && page.data.key?(:kramdown_plantuml_needle_replaced) && page.data[:kramdown_plantuml_needle_replaced]
+            logger.debug "Skipping #{page.path} because it has already been processed."
+            return false
+          end
+
+          true
+        end
+
         def replace_needles(page)
-          logger.debug "Replacing Jekyll needle in #{page.path}"
+          logger.debug "Replacing Jekyll needles in #{page.path}"
 
           html = page.output
+
           return html if html.nil? || html.empty? || !html.is_a?(String)
 
           html.gsub(/<!--#kramdown-plantuml\.start#-->(?<json>.*?)<!--#kramdown-plantuml\.end#-->/m) do
             json = $LAST_MATCH_INFO[:json]
-            return replace_needle(json)
+            replace_needle(json)
           end
         end
 

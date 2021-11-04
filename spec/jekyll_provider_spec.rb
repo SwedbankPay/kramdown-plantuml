@@ -51,7 +51,7 @@ describe JekyllProvider do
           'config' => File.join(jekyll_source, '_config.yml'),
           'incremental' => false,
           'source' => jekyll_source,
-          'verbose' => false,
+          'verbose' => ENV.fetch('DEBUG', false),
           'destination' => jekyll_destination
         })
       end
@@ -60,6 +60,7 @@ describe JekyllProvider do
 
       context 'when plantuml contains HTML entities', :jekyll do
         it { is_expected.to match(/<div class="plantuml"><svg.*<\/svg><\/div>/m) }
+        it { is_expected.to match(/<h1.*>This is a fixture<\/h1>/m) }
       end
     end
   end

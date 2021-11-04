@@ -167,6 +167,7 @@ test_gem() {
 
     file="${workdir}/_site/index.html"
 
+    file_contains "${file}" "This is a fixture"
     file_contains "${file}" "class=\"${class}\""
     file_contains "${file}" "<svg"
     file_contains "${file}" "<ellipse"
