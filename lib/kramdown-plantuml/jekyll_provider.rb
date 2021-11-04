@@ -91,7 +91,6 @@ module Kramdown
 
           needle_hash = JSON.parse(json)
           options_hash = needle_hash['options']
-          options_hash[:site_destination_dir] = @site_destination_dir
           options = ::Kramdown::PlantUml::Options.new({ plantuml: options_hash })
 
           begin
