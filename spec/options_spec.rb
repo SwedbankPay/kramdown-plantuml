@@ -37,6 +37,11 @@ describe Options do
     its(:to_h) { is_expected.to eq({ }) }
   end
 
+  context 'nil :theme' do
+    let(:hash) { { plantuml: { theme: nil } } }
+    its(:to_h) { is_expected.to eq({ theme: nil }) }
+  end
+
   context 'empty :theme' do
     let(:hash) { { plantuml: { theme: {  } } } }
     its(:to_h) { is_expected.to eq({ theme: { } }) }
