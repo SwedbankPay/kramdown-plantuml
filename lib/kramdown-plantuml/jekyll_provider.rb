@@ -1,10 +1,7 @@
 # frozen_string_literal: true
 
-require 'json'
-require 'English'
-require 'htmlentities'
 require_relative 'log_wrapper'
-require_relative 'diagram'
+require_relative 'jekyll_page_processor'
 
 module Kramdown
   module PlantUml
@@ -32,20 +29,7 @@ module Kramdown
         end
 
         def needle(plantuml, options)
-          hash = { 'plantuml' => plantuml, 'options' => options.to_h }
-
-          <<~NEEDLE
-            <!--#kramdown-plantuml.start#-->
-            #{hash.to_json}
-            <!--#kramdown-plantuml.end#-->
-          NEEDLE
-        rescue StandardError => e
-          raise e if options.raise_errors?
-
-          puts e
-          logger.error 'Error while placing needle.'
-          logger.error e.to_s
-          logger.debug_multiline plantuml
+          JekyllPageProcessor.needle(plantuml, options)
         end
 
         private
@@ -63,52 +47,21 @@ module Kramdown
 
         def register_hook
           Jekyll::Hooks.register :site, :post_write do |site|
-            logger.debug ':site:post_write triggered.'
-
-            @site_destination_dir ||= site.dest
-
-            site.pages.each do |page|
-              page.output = replace_needles(page)
-              page.write(@site_destination_dir)
-            end
+            site_post_write(site)
           end
         end
 
-        def replace_needles(page)
-          logger.debug "Replacing Jekyll needle in #{page.path}"
+        def site_post_write(site)
+          logger.debug 'Jekyll:site:post_write triggered.'
+          @site_destination_dir ||= site.dest
 
-          html = page.output
-          return html if html.nil? || html.empty? || !html.is_a?(String)
+          site.pages.each do |page|
+            processor = JekyllPageProcessor.new(page)
 
-          html.gsub(/<!--#kramdown-plantuml\.start#-->(?<json>.*?)<!--#kramdown-plantuml\.end#-->/m) do
-            json = $LAST_MATCH_INFO[:json]
-            return replace_needle(json)
+            next unless processor.should_process?
+
+            processor.process(site.dest)
           end
-        end
-
-        def replace_needle(json)
-          logger.debug 'Replacing Jekyll needle.'
-
-          needle_hash = JSON.parse(json)
-          options_hash = needle_hash['options']
-          options = ::Kramdown::PlantUml::Options.new({ plantuml: options_hash })
-
-          begin
-            decode_and_convert(needle_hash, options)
-          rescue StandardError => e
-            raise e if options.raise_errors?
-
-            logger.error 'Error while replacing Jekyll needle.'
-            logger.error e.to_s
-            logger.debug_multiline json
-          end
-        end
-
-        def decode_and_convert(hash, options)
-          encoded_plantuml = hash['plantuml']
-          plantuml = HTMLEntities.new.decode encoded_plantuml
-          diagram = ::Kramdown::PlantUml::Diagram.new(plantuml, options)
-          diagram.convert_to_svg
         end
 
         def load_jekyll
