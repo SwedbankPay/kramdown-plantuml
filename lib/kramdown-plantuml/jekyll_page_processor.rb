@@ -1,27 +1,33 @@
 # frozen_string_literal: true
 
 require 'htmlentities'
+require 'json'
 require_relative 'log_wrapper'
 
 module Kramdown
   module PlantUml
     # Processes Jekyll pages.
     class JekyllPageProcessor
+      PROCESSED_KEY = :kramdown_plantuml_processed
+
       def initialize(page)
-        @processed_key = :kramdown_plantuml_processed
+        raise ArgumentError, 'page cannot be nil' if page.nil?
+
+        puts page.class
+
         @page = page
       end
 
       def process(site_destination_directory)
         @page.output = do_process
-        @page.data[@processed_key] = true
+        @page.data[PROCESSED_KEY] = true
         @page.write(site_destination_directory)
       end
 
       def should_process?
         return false unless @page.output_ext == '.html'
 
-        if !@page.data.nil? && @page.data.key?(@processed_key) && @page.data[@processed_key]
+        if !@page.data.nil? && @page.data.key?(PROCESSED_KEY) && @page.data[PROCESSED_KEY]
           logger.debug "Skipping #{@page.path} because it has already been processed."
           return false
         end
@@ -39,7 +45,7 @@ module Kramdown
             <!--#kramdown-plantuml.end#-->
           NEEDLE
         rescue StandardError => e
-          raise e if options.raise_errors?
+          raise e if options.nil? || options.raise_errors?
 
           logger.error 'Error while placing needle.'
           logger.error e.to_s
@@ -61,8 +67,8 @@ module Kramdown
         return html if html.nil? || html.empty? || !html.is_a?(String)
 
         html.gsub(/<!--#kramdown-plantuml\.start#-->(?<json>.*?)<!--#kramdown-plantuml\.end#-->/m) do
-          json = $LAST_MATCH_INFO[:json]
-          replace_needle(json)
+          json = $LAST_MATCH_INFO ? $LAST_MATCH_INFO[:json] : nil
+          replace_needle(json) unless json.nil?
         end
       end
 
