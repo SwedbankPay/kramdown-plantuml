@@ -13,8 +13,6 @@ module Kramdown
       def initialize(page)
         raise ArgumentError, 'page cannot be nil' if page.nil?
 
-        puts page.class
-
         @page = page
       end
 
