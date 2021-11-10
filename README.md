@@ -199,7 +199,7 @@ agreement][cla].
 [codacy]:               https://www.codacy.com/gh/SwedbankPay/kramdown-plantuml/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=SwedbankPay/kramdown-plantuml&amp;utm_campaign=Badge_Grade
 [codecov-badge]:        https://codecov.io/gh/SwedbankPay/kramdown-plantuml/branch/main/graph/badge.svg?token=U3QJLVG3HY
 [codecov]:              https://codecov.io/gh/SwedbankPay/kramdown-plantuml/
-[diagram-svg]:          ./spec/examples/diagram.svg
+[diagram-svg]:          ./spec/examples/network-diagram.svg
 [fenced]:               https://www.markdownguide.org/extended-syntax/#syntax-highlighting
 [fork]:                 https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github/fork-a-repo
 [gem-badge]:            https://badge.fury.io/rb/kramdown-plantuml.svg

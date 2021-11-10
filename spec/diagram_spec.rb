@@ -6,7 +6,7 @@ require 'kramdown-plantuml/diagram'
 Diagram = ::Kramdown::PlantUml::Diagram
 
 describe Diagram do
-  plantuml_content = File.read(File.join(__dir__, 'examples', 'diagram.plantuml'))
+  plantuml_content = File.read(File.join(__dir__, 'examples', 'network-diagram.puml'))
 
   describe '#convert_to_svg' do
     context 'gracefully fails' do

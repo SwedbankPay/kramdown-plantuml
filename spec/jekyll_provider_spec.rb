@@ -8,7 +8,7 @@ Options = Kramdown::PlantUml::Options
 JekyllProvider = ::Kramdown::PlantUml::JekyllProvider
 
 describe JekyllProvider do
-  let (:plantuml_file_contents) { File.read(File.join(__dir__, 'examples', 'diagram.plantuml')) }
+  let (:plantuml_file_contents) { File.read(File.join(__dir__, 'examples', 'network-diagram.puml')) }
   let (:plantuml) { nil }
   let (:options) { Options.new }
   subject { JekyllProvider }
