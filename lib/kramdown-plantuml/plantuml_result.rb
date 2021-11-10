@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'rexml/document'
 require_relative 'log_wrapper'
 require_relative 'plantuml_error'
 require_relative 'diagram'
@@ -26,22 +27,8 @@ module Kramdown
       def without_xml_prologue
         return @stdout if @stdout.nil? || @stdout.empty?
 
-        xml_prologue_start = '<?xml'
-        xml_prologue_end = '?>'
-
-        start_index = @stdout.index(xml_prologue_start)
-
-        return @stdout if start_index.nil?
-
-        end_index = @stdout.index(xml_prologue_end, xml_prologue_start.length)
-
-        return @stdout if end_index.nil?
-
-        end_index += xml_prologue_end.length
-
-        @stdout.slice! start_index, end_index
-
-        @stdout
+        doc = REXML::Document.new @stdout
+        doc.root.to_s
       end
 
       def valid?
