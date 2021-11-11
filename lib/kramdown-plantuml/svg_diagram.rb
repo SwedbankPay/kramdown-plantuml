@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 require 'rexml/document'
+require_relative 'none_s'
+require_relative 'style_builder'
 require_relative 'plantuml_diagram'
 
 module Kramdown
   module PlantUml
     # A diagram in SVG format.
     class SvgDiagram
-      attr_accessor :width, :height, :style
-
       def initialize(plantuml_result)
         raise ArgumentError, 'plantuml_result cannot be nil' if plantuml_result.nil?
         raise ArgumentError, "plantuml_result must be a #{PlantUmlResult}" unless plantuml_result.is_a?(PlantUmlResult)
@@ -17,14 +17,97 @@ module Kramdown
         svg = plantuml_result.stdout
         @doc = REXML::Document.new svg
         @source = plantuml_result.plantuml_diagram
+        @style_builder = StyleBuilder.new
+        transfer_options(%i[style width height], plantuml_result)
       end
 
       def to_s
-        root = tweak_attributes(@doc.root)
-        wrap(root.to_s)
+        wrap(@doc.root.to_s)
+      end
+
+      def width
+        get_xml_attribute(:width)
+      end
+
+      def height
+        get_xml_attribute(:height)
+      end
+
+      def style
+        get_xml_attribute(:style)
       end
 
       private
+
+      def get_xml_attribute(attribute_name)
+        return nil if @doc.root.nil?
+
+        name = attribute_name.to_s
+        value = @doc.root.attributes[name]
+        value.nil? || value.none_s? ? :none : value
+      end
+
+      def manipulate_xml_attribute(attribute_name, value)
+        puts "Setting '#{attribute_name}' to '#{value}' from '#{send(attribute_name)}.'"
+
+        if value.none_s?
+          @doc.root.attributes.get_attribute(attribute_name.to_s).remove
+        elsif !value.nil? && value.is_a?(String) && !value.strip.empty?
+          set_xml_attribute(attribute_name, value)
+        end
+      end
+
+      def set_xml_attribute(attribute_name, value)
+        name = attribute_name.to_s
+        @doc.root.attributes[name] = value
+        @style_builder.set(attribute_name, value)
+
+        return if attribute_name == :style || style == :none
+
+        style = @style_builder.to_s
+
+        puts "Setting 'style' to '#{style}' from '#{self.style}.'"
+
+        set_xml_attribute(:style, style)
+      end
+
+      def build_style(attribute_name, value)
+        style = self.style
+        styles = []
+        styles << "width:#{width}" unless width.none_s?
+        styles << "height:#{height}" unless height.none_s?
+
+        return styles.join(';') if style.nil? || style.strip.empty?
+
+        styles << style
+
+        return styles.join(';') unless style.include?(attribute_name)
+
+        replacement = "#{attribute_name}:#{value}px;"
+        regex = /#{attribute_name}\s?:\s?[^;]*;/
+        style.gsub(regex, replacement)
+      end
+
+      def transfer_options(attributes, plantuml_result)
+        return if @doc.root.nil? \
+          || plantuml_result.nil? \
+          || plantuml_result.plantuml_diagram.nil? \
+          || plantuml_result.plantuml_diagram.options.nil?
+
+        options = plantuml_result.plantuml_diagram.options
+
+        attributes.each do |attribute|
+          options.public_send(attribute).tap do |option_value|
+            next if option_value.nil?
+
+            option_value = option_value.to_s
+
+            next if option_value.strip.empty?
+
+            manipulate_xml_attribute(attribute, option_value)
+          end
+        end
+      end
 
       def wrap(svg)
         return svg if svg.nil? || svg.empty?
@@ -37,17 +120,6 @@ module Kramdown
         wrapper_element_end = '</div>'
 
         "#{wrapper_element_start}#{svg}#{wrapper_element_end}"
-      end
-
-      def tweak_attributes(element)
-        return element
-        # return element if element.nil? || !element.is_a?(REXML::Element)
-
-        # TODO: Figure out how to configure removal of the attributes, we can't use nil
-        element.attributes.get_attribute('width').remove if @width.nil?
-        element.attributes.get_attribute('height').remove if @height.nil?
-        element.attributes.get_attribute('style').remove if @style.nil?
-        element
       end
     end
   end
