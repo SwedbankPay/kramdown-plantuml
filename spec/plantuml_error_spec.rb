@@ -4,10 +4,10 @@ require 'rspec/its'
 require 'kramdown-plantuml/options'
 require 'kramdown-plantuml/plantuml_error'
 
-Options = ::Kramdown::PlantUml::Options
+Options ||= Kramdown::PlantUml::Options
 PlantUmlDiagram ||= Kramdown::PlantUml::PlantUmlDiagram
-PlantUmlError = ::Kramdown::PlantUml::PlantUmlError
-PlantUmlResult = ::Kramdown::PlantUml::PlantUmlResult
+PlantUmlError = Kramdown::PlantUml::PlantUmlError
+PlantUmlResult = Kramdown::PlantUml::PlantUmlResult
 
 describe PlantUmlError do
   describe '#initialize' do

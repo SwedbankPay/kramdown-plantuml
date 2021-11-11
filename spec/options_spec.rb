@@ -3,7 +3,7 @@
 require 'rspec/its'
 require 'kramdown-plantuml/options'
 
-Options = Kramdown::PlantUml::Options
+Options ||= Kramdown::PlantUml::Options
 
 describe Options do
   let(:hash) { {} }

@@ -4,7 +4,7 @@ require 'rspec/its'
 require 'kramdown-plantuml/options'
 require 'kramdown-plantuml/jekyll_provider'
 
-Options = Kramdown::PlantUml::Options
+Options ||= Kramdown::PlantUml::Options
 JekyllProvider = ::Kramdown::PlantUml::JekyllProvider
 
 describe JekyllProvider do

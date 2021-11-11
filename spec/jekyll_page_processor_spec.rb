@@ -4,7 +4,7 @@ require 'rspec/its'
 require 'kramdown-plantuml/options'
 require 'kramdown-plantuml/jekyll_page_processor'
 
-Options = Kramdown::PlantUml::Options
+Options ||= Kramdown::PlantUml::Options
 JekyllPageProcessor = ::Kramdown::PlantUml::JekyllPageProcessor
 
 describe JekyllPageProcessor do
