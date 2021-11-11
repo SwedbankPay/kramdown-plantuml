@@ -5,7 +5,7 @@ require 'kramdown-plantuml/options'
 require 'kramdown-plantuml/plantuml_error'
 
 Options = ::Kramdown::PlantUml::Options
-Diagram = ::Kramdown::PlantUml::Diagram
+PlantUmlDiagram ||= Kramdown::PlantUml::PlantUmlDiagram
 PlantUmlError = ::Kramdown::PlantUml::PlantUmlError
 PlantUmlResult = ::Kramdown::PlantUml::PlantUmlResult
 
@@ -14,7 +14,7 @@ describe PlantUmlError do
     let(:plantuml) { 'some plantuml' }
     let(:options) { Options.new }
     let(:exitcode) { 1 }
-    let(:diagram) { Diagram.new(plantuml, options) }
+    let(:diagram) { PlantUmlDiagram.new(plantuml, options) }
     let(:result) { PlantUmlResult.new(diagram, '', stderr, exitcode) }
     subject { PlantUmlError.new(result) }
 

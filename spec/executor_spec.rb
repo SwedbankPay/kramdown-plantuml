@@ -30,7 +30,7 @@ describe Executor do
     end
 
     context 'diagram is not Diagram' do
-      it { expect { subject.execute('') }.to raise_error(ArgumentError, "diagram must be a #{Diagram}") }
+      it { expect { subject.execute('') }.to raise_error(ArgumentError, "diagram must be a #{Kramdown::PlantUml::PlantUmlDiagram}") }
     end
   end
 end
