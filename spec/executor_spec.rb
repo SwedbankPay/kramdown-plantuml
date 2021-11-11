@@ -1,7 +1,7 @@
 # frozen_string_literal: false
 
 require 'rspec/its'
-require 'kramdown-plantuml/diagram'
+require 'kramdown-plantuml/plantuml_diagram'
 
 Executor = ::Kramdown::PlantUml::Executor
 
