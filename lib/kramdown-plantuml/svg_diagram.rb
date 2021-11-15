@@ -64,22 +64,27 @@ module Kramdown
 
       def manipulate_xml_attribute(attribute_name, value)
         if value.none_s?
-          @doc.root.attributes.get_attribute(attribute_name.to_s).remove
+          remove_xml_attribute(attribute_name)
         elsif !value.nil? && value.is_a?(String) && !value.strip.empty?
-          set_xml_attribute_value(attribute_name, value)
+          set_xml_attribute(attribute_name, value)
         end
+
+        update_style unless attribute_name == :style || style == :none
       end
 
-      def set_xml_attribute_value(attribute_name, value)
+      def remove_xml_attribute(attribute_name)
+        @doc.root.attributes.get_attribute(attribute_name.to_s).remove
+      end
+
+      def set_xml_attribute(attribute_name, value)
         name = attribute_name.to_s
         @doc.root.attributes[name] = value
         @style_builder[attribute_name] = value
+      end
 
-        return if attribute_name == :style || style == :none
-
+      def update_style
         style = @style_builder.to_s
-
-        set_xml_attribute_value(:style, style)
+        set_xml_attribute(:style, style)
       end
 
       def transfer_options(plantuml_result)

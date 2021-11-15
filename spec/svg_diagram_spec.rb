@@ -55,7 +55,7 @@ describe SvgDiagram do
       }
     end
 
-    context 'with none' do
+    context 'with all none' do
       before(:all) {
         options = Options.new(plantuml: { width: 'none', height: 'none', style: 'none' })
         @svg = Kramdown::PlantUml::PlantUmlDiagram.new("@startuml\n@enduml", options).svg
@@ -65,14 +65,15 @@ describe SvgDiagram do
       its(:width) { is_expected.to eq :none }
       its(:height) { is_expected.to eq :none }
       its(:style) { is_expected.to eq :none }
-      its(:to_s) {
-        is_expected.not_to have_tag('svg[width]')
-        is_expected.not_to have_tag('svg[height]')
-        is_expected.not_to have_tag('svg[style]')
-      }
+      describe '#to_s' do
+        subject { @svg.to_s }
+        it { is_expected.not_to have_tag('svg[width]') }
+        it { is_expected.not_to have_tag('svg[height]') }
+        it { is_expected.not_to have_tag('svg[style]') }
+      end
     end
 
-    context 'with :none' do
+    context 'with all :none' do
       before(:all) {
         options = Options.new(plantuml: { width: :none, height: :none, style: :none })
         @svg = Kramdown::PlantUml::PlantUmlDiagram.new("@startuml\n@enduml", options).svg
@@ -82,11 +83,32 @@ describe SvgDiagram do
       its(:width) { is_expected.to eq :none }
       its(:height) { is_expected.to eq :none }
       its(:style) { is_expected.to eq :none }
-      its(:to_s) {
-        is_expected.not_to have_tag('svg[width]')
-        is_expected.not_to have_tag('svg[height]')
-        is_expected.not_to have_tag('svg[style]')
+      describe '#to_s' do
+        subject { @svg.to_s }
+        it { is_expected.not_to have_tag('svg[width]') }
+        it { is_expected.not_to have_tag('svg[height]') }
+        it { is_expected.not_to have_tag('svg[style]') }
+      end
+    end
+
+    context 'with :none width and height' do
+      before(:all) {
+        options = Options.new(plantuml: { width: :none, height: :none })
+        @svg = Kramdown::PlantUml::PlantUmlDiagram.new("@startuml\n@enduml", options).svg
       }
+      subject { @svg }
+
+      its(:width) { is_expected.to eq :none }
+      its(:height) { is_expected.to eq :none }
+      its(:style) { is_expected.not_to be_nil }
+      describe '#to_s' do
+        subject { @svg.to_s }
+        it { is_expected.to have_tag('svg[style]') }
+        it { is_expected.not_to have_tag('svg[width]') }
+        it { is_expected.not_to have_tag('svg[height]') }
+        it { is_expected.not_to include 'width' }
+        it { is_expected.not_to include 'height' }
+      end
     end
 
     context 'fails properly' do
