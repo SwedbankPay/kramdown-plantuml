@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative 'none_s'
+
 module Kramdown
   module PlantUml
     # Builds a CSS style string from a hash of style properties.
@@ -8,20 +10,38 @@ module Kramdown
         @hash = {}
       end
 
-      def set(key, value)
+      def []=(key, value)
+        return if key.nil?
+
         case key
         when :width, :height
-          @hash[key] = value
+          if none(value)
+            puts "Deleting :#{key}."
+            @hash.delete(key)
+          else
+            puts "Setting :#{key} to '#{value}'."
+            @hash[key] = value
+          end
         else
           self.style = value
         end
       end
 
       def to_s
-        @hash.map { |key, value| "#{key}:#{value}" }.join(';')
+        @hash.sort_by { |key, _| key }.map { |key, value| "#{key}:#{value}" }.join(';')
       end
 
       private
+
+      def none(value)
+        return true if value.nil?
+
+        value_s = value.to_s.strip
+
+        return true if value_s.empty? || value.none_s?
+
+        false
+      end
 
       def style=(style)
         return if style.nil? || style.strip.empty?

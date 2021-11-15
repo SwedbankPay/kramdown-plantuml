@@ -26,12 +26,12 @@ describe SvgDiagram do
 
       its(:width) { is_expected.to eq '1337px' }
       its(:height) { is_expected.to eq '1234px' }
-      its(:style) { is_expected.to eq 'border:7px solid red;width:1337px;height:1234px' }
+      its(:style) { is_expected.to eq 'border:7px solid red;height:1234px;width:1337px' }
       its(:to_s) {
         is_expected.to have_tag('svg', with: {
           width: '1337px',
           height: '1234px',
-          style: 'border:7px solid red;width:1337px;height:1234px'
+          style: 'border:7px solid red;height:1234px;width:1337px'
         })
       }
     end
@@ -45,12 +45,12 @@ describe SvgDiagram do
 
       its(:width) { is_expected.to eq '100' }
       its(:height) { is_expected.to eq '200' }
-      its(:style) { is_expected.to eq 'width:100;height:200' }
+      its(:style) { is_expected.to eq 'height:200;width:100' }
       its(:to_s) {
         is_expected.to have_tag('svg', with: {
           width: '100',
           height: '200',
-          style: 'width:100;height:200'
+          style: 'height:200;width:100'
         })
       }
     end

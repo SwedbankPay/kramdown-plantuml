@@ -48,8 +48,6 @@ module Kramdown
       end
 
       def manipulate_xml_attribute(attribute_name, value)
-        puts "Setting '#{attribute_name}' to '#{value}' from '#{send(attribute_name)}.'"
-
         if value.none_s?
           @doc.root.attributes.get_attribute(attribute_name.to_s).remove
         elsif !value.nil? && value.is_a?(String) && !value.strip.empty?
@@ -60,7 +58,7 @@ module Kramdown
       def set_xml_attribute(attribute_name, value)
         name = attribute_name.to_s
         @doc.root.attributes[name] = value
-        @style_builder.set(attribute_name, value)
+        @style_builder[attribute_name] = value
 
         return if attribute_name == :style || style == :none
 
