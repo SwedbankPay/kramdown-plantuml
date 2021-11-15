@@ -18,28 +18,43 @@ module Kramdown
         @doc = REXML::Document.new svg
         @source = plantuml_result.plantuml_diagram
         @style_builder = StyleBuilder.new
-        transfer_options(%i[style width height], plantuml_result)
+        transfer_options(plantuml_result)
       end
 
       def to_s
-        wrap(@doc.root.to_s)
+        return '' if @doc.root.nil?
+
+        wrapper_doc = REXML::Document.new
+        wrapper_doc.context[:attribute_quote] = :quote
+        wrapper_element = REXML::Element.new('div').tap do |div|
+          div.add_attribute 'class', wrapper_class_name
+          div.add_element @doc.root
+        end
+
+        wrapper_doc.add_element wrapper_element
+        wrapper_doc.to_s
       end
 
       def width
-        get_xml_attribute(:width)
+        get_xml_attribute_value(:width)
       end
 
       def height
-        get_xml_attribute(:height)
+        get_xml_attribute_value(:height)
       end
 
       def style
-        get_xml_attribute(:style)
+        get_xml_attribute_value(:style)
       end
 
       private
 
-      def get_xml_attribute(attribute_name)
+      def wrapper_class_name
+        theme_class = @source.theme.name ? "theme-#{@source.theme.name}" : ''
+        "plantuml #{theme_class}".strip
+      end
+
+      def get_xml_attribute_value(attribute_name)
         return nil if @doc.root.nil?
 
         name = attribute_name.to_s
@@ -51,11 +66,11 @@ module Kramdown
         if value.none_s?
           @doc.root.attributes.get_attribute(attribute_name.to_s).remove
         elsif !value.nil? && value.is_a?(String) && !value.strip.empty?
-          set_xml_attribute(attribute_name, value)
+          set_xml_attribute_value(attribute_name, value)
         end
       end
 
-      def set_xml_attribute(attribute_name, value)
+      def set_xml_attribute_value(attribute_name, value)
         name = attribute_name.to_s
         @doc.root.attributes[name] = value
         @style_builder[attribute_name] = value
@@ -64,19 +79,19 @@ module Kramdown
 
         style = @style_builder.to_s
 
-        set_xml_attribute(:style, style)
+        set_xml_attribute_value(:style, style)
       end
 
-      def transfer_options(attributes, plantuml_result)
+      def transfer_options(plantuml_result)
         return if (options = options(plantuml_result)).nil?
 
-        attributes.each do |attribute|
+        %i[style width height].each do |attribute|
           options.public_send(attribute).tap do |option_value|
             next if option_value.nil?
 
-            option_value = option_value.to_s
+            option_value = option_value.to_s.strip
 
-            next if option_value.strip.empty?
+            next if option_value.empty?
 
             manipulate_xml_attribute(attribute, option_value)
           end
@@ -89,19 +104,6 @@ module Kramdown
           || plantuml_result.plantuml_diagram.nil?
 
         plantuml_result.plantuml_diagram.options
-      end
-
-      def wrap(svg)
-        return svg if svg.nil? || svg.empty?
-
-        # TODO: Replace with proper XML DOM operations.
-        theme_class = @source.theme.name ? "theme-#{@source.theme.name}" : ''
-        class_name = "plantuml #{theme_class}".strip
-
-        wrapper_element_start = "<div class=\"#{class_name}\">"
-        wrapper_element_end = '</div>'
-
-        "#{wrapper_element_start}#{svg}#{wrapper_element_end}"
       end
     end
   end

@@ -14,9 +14,7 @@ describe Kramdown::Converter::Html do
     end
 
     context 'clean' do
-      it {
-        is_expected.to include('class="plantuml">')
-      }
+      it { is_expected.to have_tag('div', with: { class: 'plantuml' }) }
     end
 
     context 'built-in theme' do
@@ -31,9 +29,7 @@ describe Kramdown::Converter::Html do
         }
       }
 
-      it {
-        is_expected.to include('class="plantuml theme-spacelab">')
-      }
+      it { is_expected.to have_tag('div', with: { class: 'plantuml theme-spacelab' }) }
 
       it 'has theme metadata', :debug do
         is_expected.to include("!theme spacelab")
@@ -55,9 +51,7 @@ describe Kramdown::Converter::Html do
         }
       }
 
-      it {
-        is_expected.to include('class="plantuml theme-c2a3b0">')
-      }
+      it { is_expected.to have_tag('div', with: { class: 'plantuml theme-c2a3b0' }) }
 
       it 'has theme metadata', :debug do
         is_expected.to include("!theme c2a3b0 from #{examples_dir}")

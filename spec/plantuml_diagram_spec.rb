@@ -32,32 +32,16 @@ describe PlantUmlDiagram do
       }
 
       it {
-        is_expected.to include('<ellipse')
-      }
-
-      it {
-        is_expected.to include('<polygon')
-      }
-
-      it {
-        is_expected.to include('<path')
-      }
-
-      it {
-        is_expected.to include('<div')
-      }
-
-      it {
-        is_expected.to include('</div>')
-      }
-
-      it {
         is_expected.not_to include('<?xml version=')
       }
 
-      it {
-        is_expected.to include('class="plantuml"')
-      }
+      it do
+        is_expected.to have_tag('div', with: { class: 'plantuml' }) do
+          with_tag('ellipse')
+          with_tag('polygon')
+          with_tag('path')
+        end
+      end
     end
   end
 
