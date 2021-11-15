@@ -72,10 +72,6 @@ module Kramdown
         set_instance_property(:width, options)
         set_instance_property(:height, options)
         set_instance_property(:style, options)
-
-        # @width = options.key?(:width) ? options[:width] : nil
-        # @height = options.key?(:height) ? options[:height] : nil
-        # @style = options.key?(:style) ? options[:style] : nil
       end
 
       def set_instance_property(name, options)
