@@ -130,6 +130,31 @@ kramdown:
       directory: path/to/themes
 ```
 
+### Dimensions and Styling
+
+It's possible to customize the dimensions of the diagram by providing the
+`width` and `height` configuration keys. It's also possible to add arbitrary
+styling with the `style` key.
+
+```yaml
+kramdown:
+  plantuml:
+    width: 200px
+    height: 100px
+    style: "border: 1px solid black"
+```
+
+To remove the `width`, `height` and `style` attributes from the `<svg />`
+element, set the key's value to `none`.
+
+```yaml
+kramdown:
+  plantuml:
+    width: none
+    height: none
+    style: none
+```
+
 ### Errors
 
 By default, `kramdown-plantuml` will raise an error and crash if something goes
@@ -199,7 +224,7 @@ agreement][cla].
 [codacy]:               https://www.codacy.com/gh/SwedbankPay/kramdown-plantuml/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=SwedbankPay/kramdown-plantuml&amp;utm_campaign=Badge_Grade
 [codecov-badge]:        https://codecov.io/gh/SwedbankPay/kramdown-plantuml/branch/main/graph/badge.svg?token=U3QJLVG3HY
 [codecov]:              https://codecov.io/gh/SwedbankPay/kramdown-plantuml/
-[diagram-svg]:          ./spec/examples/diagram.svg
+[diagram-svg]:          ./spec/examples/network-diagram.svg
 [fenced]:               https://www.markdownguide.org/extended-syntax/#syntax-highlighting
 [fork]:                 https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github/fork-a-repo
 [gem-badge]:            https://badge.fury.io/rb/kramdown-plantuml.svg

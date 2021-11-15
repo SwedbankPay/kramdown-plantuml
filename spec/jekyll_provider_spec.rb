@@ -4,11 +4,11 @@ require 'rspec/its'
 require 'kramdown-plantuml/options'
 require 'kramdown-plantuml/jekyll_provider'
 
-Options = Kramdown::PlantUml::Options
+Options ||= Kramdown::PlantUml::Options
 JekyllProvider = ::Kramdown::PlantUml::JekyllProvider
 
 describe JekyllProvider do
-  let (:plantuml_file_contents) { File.read(File.join(__dir__, 'examples', 'diagram.plantuml')) }
+  let (:plantuml_file_contents) { File.read(File.join(__dir__, 'examples', 'network-diagram.puml')) }
   let (:plantuml) { nil }
   let (:options) { Options.new }
   subject { JekyllProvider }
@@ -59,8 +59,13 @@ describe JekyllProvider do
       subject { File.read(File.join(jekyll_destination, 'index.html')) }
 
       context 'when plantuml contains HTML entities', :jekyll do
-        it { is_expected.to match(/<div class="plantuml"><svg.*<\/svg><\/div>/m) }
-        it { is_expected.to match(/<h1.*>This is a fixture<\/h1>/m) }
+        it do
+          is_expected.to have_tag('div', with: { class: 'plantuml' }) do
+            with_tag('svg')
+          end
+        end
+
+        it { is_expected.to have_tag('h1', text: 'This is a fixture') }
       end
     end
   end

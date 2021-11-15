@@ -1,18 +1,20 @@
 # frozen_string_literal: true
 
+require_relative 'none_s'
 require_relative 'log_wrapper'
 
 module Kramdown
   module PlantUml
     # Options for PlantUML processing
     class Options
-      attr_reader :theme_name, :theme_directory
+      attr_reader :theme_name, :theme_directory, :width, :height, :style
 
       def initialize(options_hash = {})
         @logger = LogWrapper.init
         @options = massage(options_hash) || {}
         @raise_errors = extract_raise_errors(@options)
         extract_theme_options(@options)
+        extract_style_options(@options)
       end
 
       def raise_errors?
@@ -62,6 +64,23 @@ module Kramdown
 
         raise_errors = options[:raise_errors]
         boolean(raise_errors, true)
+      end
+
+      def extract_style_options(options)
+        return if options.nil? || options.empty?
+
+        set_instance_property(:width, options)
+        set_instance_property(:height, options)
+        set_instance_property(:style, options)
+      end
+
+      def set_instance_property(name, options)
+        return unless options.key? name
+
+        value = options[name]
+        value = :none if value.none_s?
+        prop_name = "@#{name}".to_sym
+        instance_variable_set(prop_name, value)
       end
 
       def massage(options_hash)

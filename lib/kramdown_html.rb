@@ -5,7 +5,7 @@ require 'kramdown-parser-gfm'
 require_relative 'kramdown-plantuml/log_wrapper'
 require_relative 'kramdown-plantuml/plantuml_error'
 require_relative 'kramdown-plantuml/options'
-require_relative 'kramdown-plantuml/diagram'
+require_relative 'kramdown-plantuml/plantuml_diagram'
 require_relative 'kramdown-plantuml/jekyll_provider'
 
 module Kramdown
@@ -38,8 +38,8 @@ module Kramdown
       end
 
       def convert_plantuml(plantuml, options)
-        diagram = ::Kramdown::PlantUml::Diagram.new(plantuml, options)
-        diagram.convert_to_svg
+        diagram = ::Kramdown::PlantUml::PlantUmlDiagram.new(plantuml, options)
+        diagram.svg.to_s
       rescue StandardError => e
         raise e if options.raise_errors?
 

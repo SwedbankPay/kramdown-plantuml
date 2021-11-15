@@ -5,7 +5,7 @@ require 'kramdown-plantuml/options'
 require 'kramdown-plantuml/theme'
 
 Theme = Kramdown::PlantUml::Theme
-Options = Kramdown::PlantUml::Options
+Options ||= Kramdown::PlantUml::Options
 
 describe Theme do
   describe '#initialize' do

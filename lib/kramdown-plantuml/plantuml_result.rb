@@ -2,46 +2,29 @@
 
 require_relative 'log_wrapper'
 require_relative 'plantuml_error'
-require_relative 'diagram'
+require_relative 'svg_diagram'
 
 module Kramdown
   module PlantUml
     # Executes the PlantUML Java application.
     class PlantUmlResult
-      attr_reader :diagram, :stdout, :stderr, :exitcode
+      attr_reader :plantuml_diagram, :stdout, :stderr, :exitcode
 
-      def initialize(diagram, stdout, stderr, exitcode)
-        raise ArgumentError, 'diagram cannot be nil' if diagram.nil?
-        raise ArgumentError, "diagram must be a #{Diagram}" unless diagram.is_a?(Diagram)
+      def initialize(plantuml_diagram, stdout, stderr, exitcode)
+        raise ArgumentError, 'diagram cannot be nil' if plantuml_diagram.nil?
+        raise ArgumentError, "diagram must be a #{PlantUmlDiagram}" unless plantuml_diagram.is_a?(PlantUmlDiagram)
         raise ArgumentError, 'exitcode cannot be nil' if exitcode.nil?
         raise ArgumentError, "exitcode must be a #{Integer}" unless exitcode.is_a?(Integer)
 
-        @diagram = diagram
+        @plantuml_diagram = plantuml_diagram
         @stdout = stdout
         @stderr = stderr
         @exitcode = exitcode
         @logger = LogWrapper.init
       end
 
-      def without_xml_prologue
-        return @stdout if @stdout.nil? || @stdout.empty?
-
-        xml_prologue_start = '<?xml'
-        xml_prologue_end = '?>'
-
-        start_index = @stdout.index(xml_prologue_start)
-
-        return @stdout if start_index.nil?
-
-        end_index = @stdout.index(xml_prologue_end, xml_prologue_start.length)
-
-        return @stdout if end_index.nil?
-
-        end_index += xml_prologue_end.length
-
-        @stdout.slice! start_index, end_index
-
-        @stdout
+      def svg_diagram
+        @plantuml_diagram.svg
       end
 
       def valid?
@@ -53,7 +36,7 @@ module Kramdown
         @stderr.include?('CoreText note:')
       end
 
-      def validate
+      def validate!
         raise PlantUmlError, self unless valid?
 
         return if @stderr.nil? || @stderr.empty?

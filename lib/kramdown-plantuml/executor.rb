@@ -26,7 +26,7 @@ module Kramdown
 
       def execute(diagram)
         raise ArgumentError, 'diagram cannot be nil' if diagram.nil?
-        raise ArgumentError, "diagram must be a #{Diagram}" unless diagram.is_a?(Diagram)
+        raise ArgumentError, "diagram must be a #{PlantUmlDiagram}" unless diagram.is_a?(PlantUmlDiagram)
 
         cmd = "java -Djava.awt.headless=true -jar #{@plantuml_jar_file} -tsvg -failfast -pipe #{debug_args}"
 

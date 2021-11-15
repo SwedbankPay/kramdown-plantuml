@@ -1,2 +1,1 @@
-plugins:
-  - kramdown-plantuml
+plugins: [kramdown-plantuml]

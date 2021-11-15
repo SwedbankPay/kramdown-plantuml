@@ -31,11 +31,11 @@ module Kramdown
       end
 
       def header(result)
-        if theme_not_found?(result) && !result.diagram.nil? && !result.diagram.theme.nil?
+        if theme_not_found?(result) && !result.plantuml_diagram.nil? && !result.plantuml_diagram.theme.nil?
           return <<~HEADER
             Conversion of the following PlantUML result failed because the
-            theme '#{result.diagram.theme.name}' can't be found in the directory
-            '#{result.diagram.theme.directory}':
+            theme '#{result.plantuml_diagram.theme.name}' can't be found in the directory
+            '#{result.plantuml_diagram.theme.directory}':
           HEADER
         end
 
@@ -50,9 +50,9 @@ module Kramdown
       end
 
       def plantuml(result)
-        return nil if result.nil? || result.diagram.nil?
+        return nil if result.nil? || result.plantuml_diagram.nil?
 
-        result.diagram.plantuml
+        result.plantuml_diagram.plantuml
       end
 
       def result(result)

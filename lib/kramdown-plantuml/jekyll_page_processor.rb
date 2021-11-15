@@ -91,8 +91,8 @@ module Kramdown
       def decode_and_convert(hash, options)
         encoded_plantuml = hash['plantuml']
         plantuml = HTMLEntities.new.decode encoded_plantuml
-        diagram = ::Kramdown::PlantUml::Diagram.new(plantuml, options)
-        diagram.convert_to_svg
+        diagram = ::Kramdown::PlantUml::PlantUmlDiagram.new(plantuml, options)
+        diagram.svg
       end
 
       def logger
