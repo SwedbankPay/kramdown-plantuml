@@ -130,6 +130,31 @@ kramdown:
       directory: path/to/themes
 ```
 
+### Dimensions and Styling
+
+It's possible to customize the dimensions of the diagram by providing the
+`width` and `height` configuration keys. It's also possible to add arbitrary
+styling with the `style` key.
+
+```yaml
+kramdown:
+  plantuml:
+    width: 200px
+    height: 100px
+    style: "border: 1px solid black"
+```
+
+To remove the `width`, `height` and `style` attributes from the `<svg />`
+element, set the key's value to `none`.
+
+```yaml
+kramdown:
+  plantuml:
+    width: none
+    height: none
+    style: none
+```
+
 ### Errors
 
 By default, `kramdown-plantuml` will raise an error and crash if something goes
