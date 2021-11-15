@@ -16,10 +16,8 @@ module Kramdown
         case key
         when :width, :height
           if none(value)
-            puts "Deleting :#{key}."
             @hash.delete(key)
           else
-            puts "Setting :#{key} to '#{value}'."
             @hash[key] = value
           end
         else
