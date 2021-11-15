@@ -13,7 +13,7 @@ module Kramdown
         when :width, :height
           @hash[key] = value
         else
-          set_style(value)
+          self.style = value
         end
       end
 
@@ -23,7 +23,7 @@ module Kramdown
 
       private
 
-      def set_style(style)
+      def style=(style)
         return if style.nil? || style.strip.empty?
 
         style.split(';').each do |pair|

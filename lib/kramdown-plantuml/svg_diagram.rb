@@ -66,35 +66,11 @@ module Kramdown
 
         style = @style_builder.to_s
 
-        puts "Setting 'style' to '#{style}' from '#{self.style}.'"
-
         set_xml_attribute(:style, style)
       end
 
-      def build_style(attribute_name, value)
-        style = self.style
-        styles = []
-        styles << "width:#{width}" unless width.none_s?
-        styles << "height:#{height}" unless height.none_s?
-
-        return styles.join(';') if style.nil? || style.strip.empty?
-
-        styles << style
-
-        return styles.join(';') unless style.include?(attribute_name)
-
-        replacement = "#{attribute_name}:#{value}px;"
-        regex = /#{attribute_name}\s?:\s?[^;]*;/
-        style.gsub(regex, replacement)
-      end
-
       def transfer_options(attributes, plantuml_result)
-        return if @doc.root.nil? \
-          || plantuml_result.nil? \
-          || plantuml_result.plantuml_diagram.nil? \
-          || plantuml_result.plantuml_diagram.options.nil?
-
-        options = plantuml_result.plantuml_diagram.options
+        return if (options = options(plantuml_result)).nil?
 
         attributes.each do |attribute|
           options.public_send(attribute).tap do |option_value|
@@ -107,6 +83,14 @@ module Kramdown
             manipulate_xml_attribute(attribute, option_value)
           end
         end
+      end
+
+      def options(plantuml_result)
+        return nil if @doc.root.nil? \
+          || plantuml_result.nil? \
+          || plantuml_result.plantuml_diagram.nil?
+
+        plantuml_result.plantuml_diagram.options
       end
 
       def wrap(svg)
