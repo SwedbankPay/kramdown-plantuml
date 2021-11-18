@@ -13,21 +13,24 @@ describe Theme do
     subject { Theme.new(options) }
 
     context 'with symbolic option keys' do
-      let(:options) { Options.new({ plantuml: { theme: { name: 'custom', directory: 'path/to/themes' } } }) }
+      let(:options) { Options.new({ plantuml: { theme: { name: 'custom', directory: 'path/to/themes' }, scale: 0.8 } }) }
       its(:name) { is_expected.to eq('custom') }
       its(:directory) { is_expected.to eq('path/to/themes') }
+      its(:scale) { is_expected.to eq(0.8) }
     end
 
     context 'with mixed option keys' do
-      let(:options) { Options.new({ plantuml: { theme: { 'name' => 'custom', 'directory' => 'path/to/themes' } } }) }
+      let(:options) { Options.new({ plantuml: { theme: { 'name' => 'custom', 'directory' => 'path/to/themes' }, scale: '0.8' } }) }
       its(:name) { is_expected.to eq('custom') }
       its(:directory) { is_expected.to eq('path/to/themes') }
+      its(:scale) { is_expected.to eq('0.8') }
     end
 
     context 'with string option keys' do
-      let(:options) { Options.new({ 'plantuml' => { 'theme' => { 'name' => 'custom', 'directory' => 'path/to/themes' } } }) }
+      let(:options) { Options.new({ 'plantuml' => { 'theme' => { 'name' => 'custom', 'directory' => 'path/to/themes' }, 'scale' => '0.8' } }) }
       its(:name) { is_expected.to eq('custom') }
       its(:directory) { is_expected.to eq('path/to/themes') }
+      its(:scale) { is_expected.to eq('0.8') }
     end
   end
 
@@ -47,20 +50,26 @@ describe Theme do
     end
 
     context 'with simple plantuml' do
-      let(:plantuml) { "@startuml\nactor A\nend" }
-      it { is_expected.to eq("@startuml\nactor A\nend") }
+      let(:plantuml) { "@startuml\nactor A\n@enduml" }
+      it { is_expected.to eq("@startuml\nactor A\n@enduml") }
     end
 
     context 'with built-in theme' do
       let(:options) { Options.new({ plantuml: { theme: { name: 'spacelab' } } }) }
-      let(:plantuml) { "@startuml\nactor A\nend" }
-      it { is_expected.to eq("@startuml\n!theme spacelab\nactor A\nend") }
+      let(:plantuml) { "@startuml\nactor A\n@enduml" }
+      it { is_expected.to eq("@startuml\n!theme spacelab\nactor A\n@enduml") }
     end
 
     context 'with custom theme' do
       let(:options) { Options.new({ plantuml: { theme: { name: 'custom', directory: 'path/to/themes' } } }) }
-      let(:plantuml) { "@startuml\nactor A\nend" }
-      it { is_expected.to eq("@startuml\n!theme custom from path/to/themes\nactor A\nend") }
+      let(:plantuml) { "@startuml\nactor A\n@enduml" }
+      it { is_expected.to eq("@startuml\n!theme custom from path/to/themes\nactor A\n@enduml") }
+    end
+
+    context 'with scale' do
+      let(:options) { Options.new({ plantuml: { scale: 0.8 } }) }
+      let(:plantuml) { "@startuml\nactor A\n@enduml" }
+      it { is_expected.to eq("@startuml\nscale 0.8\nactor A\n@enduml") }
     end
   end
 end
