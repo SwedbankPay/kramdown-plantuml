@@ -132,20 +132,26 @@ kramdown:
 
 ### Dimensions and Styling
 
-It's possible to customize the dimensions of the diagram by providing the
-`width` and `height` configuration keys. It's also possible to add arbitrary
-styling with the `style` key.
+It's possible to customize the dimensions and scale of the diagram by providing
+the `width`, `height` and `scale` configuration keys. It's also possible to add
+arbitrary styling with the `style` key.
+
+`scale` is applied before the diagram is generated, while `width` and `height`
+are applied after, meaning they can be combined (to most likely detrimental
+results, but YOLO).
 
 ```yaml
 kramdown:
   plantuml:
     width: 200px
     height: 100px
+    scale: 2
     style: "border: 1px solid black"
 ```
 
 To remove the `width`, `height` and `style` attributes from the `<svg />`
-element, set the key's value to `none`.
+element, set the key's value to `none`. `scale` does not support a value of
+`none` as it does not need to be removed.
 
 ```yaml
 kramdown:
