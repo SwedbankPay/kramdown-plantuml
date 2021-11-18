@@ -55,11 +55,6 @@ module Kramdown
       end
 
       def theme(plantuml)
-        startuml = '@startuml'
-        startuml_index = plantuml.index(startuml) + startuml.length
-
-        return plantuml if startuml_index.nil?
-
         theme_string = build_theme_string
 
         if theme_string.empty?
