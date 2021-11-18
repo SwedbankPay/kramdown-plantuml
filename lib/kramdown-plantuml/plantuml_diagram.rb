@@ -30,7 +30,7 @@ module Kramdown
         return @svg_diagram unless @svg_diagram.nil?
 
         @plantuml = @theme.apply(@plantuml)
-        log(plantuml)
+        log(@plantuml)
         @result = @executor.execute(self)
         @svg_diagram = SvgDiagram.new(@result)
       rescue StandardError => e
