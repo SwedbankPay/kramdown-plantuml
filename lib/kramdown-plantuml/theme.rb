@@ -8,7 +8,7 @@ module Kramdown
   module PlantUml
     # Provides theming support for PlantUML
     class Theme
-      attr_reader :name, :directory
+      attr_reader :name, :directory, :scale
 
       def initialize(options)
         raise ArgumentError, 'options cannot be nil' if options.nil?
@@ -17,6 +17,7 @@ module Kramdown
         @raise_errors = options.raise_errors?
         @logger = LogWrapper.init
         @name = options.theme_name
+        @scale = options.scale
         @directory = resolve options.theme_directory
       end
 
@@ -24,11 +25,6 @@ module Kramdown
         if plantuml.nil? || !plantuml.is_a?(String) || plantuml.empty?
           @logger.debug 'Empty diagram or not a String.'
           return plantuml
-        end
-
-        if @name.nil? || @name.empty?
-          @logger.debug 'No theme to apply.'
-          return plantuml.strip
         end
 
         theme(plantuml)
@@ -64,8 +60,12 @@ module Kramdown
 
         return plantuml if startuml_index.nil?
 
-        theme_string = "\n!theme #{@name}"
-        theme_string << " from #{@directory}" unless @directory.nil?
+        theme_string = build_theme_string
+
+        if theme_string.empty?
+          @logger.debug 'No theme to apply.'
+          return plantuml
+        end
 
         @logger.debug "Applying #{theme_string.strip}"
 
@@ -74,6 +74,18 @@ module Kramdown
         end
 
         plantuml.strip
+      end
+
+      def build_theme_string
+        theme_string = ''
+
+        unless @name.nil? || @name.empty?
+          theme_string << "\n!theme #{@name}"
+          theme_string << " from #{@directory}" unless @directory.nil?
+        end
+
+        theme_string << "\nscale #{@scale}" unless @scale.nil?
+        theme_string
       end
     end
   end

@@ -7,7 +7,7 @@ module Kramdown
   module PlantUml
     # Options for PlantUML processing
     class Options
-      attr_reader :theme_name, :theme_directory, :width, :height, :style
+      attr_reader :theme_name, :theme_directory, :width, :height, :style, :scale
 
       def initialize(options_hash = {})
         @logger = LogWrapper.init
@@ -72,14 +72,15 @@ module Kramdown
         set_instance_property(:width, options)
         set_instance_property(:height, options)
         set_instance_property(:style, options)
+        set_instance_property(:scale, options)
       end
 
-      def set_instance_property(name, options)
-        return unless options.key? name
+      def set_instance_property(key, options)
+        return unless options.key? key
 
-        value = options[name]
+        value = options[key]
         value = :none if value.none_s?
-        prop_name = "@#{name}".to_sym
+        prop_name = "@#{key}".to_sym
         instance_variable_set(prop_name, value)
       end
 
