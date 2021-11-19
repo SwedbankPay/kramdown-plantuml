@@ -62,6 +62,14 @@ module Kramdown
 
             processor.process(site.dest)
           end
+
+          site.posts.each do |post|
+            processor = JekyllPageProcessor.new(post)
+
+            next unless processor.should_process?
+
+            processor.process(site.dest)
+          end
         end
 
         def load_jekyll
