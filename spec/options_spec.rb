@@ -56,13 +56,13 @@ describe Options do
   end
 
   context 'with :theme :name' do
-    let(:hash) { { plantuml: { theme: { name: 'custom' } } } }
-    its(:to_h) { is_expected.to eq({ theme: { name: 'custom' } }) }
+    let(:hash) { { plantuml: { theme: { name: 'c2a3b0' } } } }
+    its(:to_h) { is_expected.to eq({ theme: { name: 'c2a3b0' } }) }
   end
 
   context 'with nil :directory' do
-    let(:hash) { { plantuml: { theme: { name: 'custom', directory: nil } } } }
-    its(:to_h) { is_expected.to eq({ theme: { name: 'custom', directory: nil } }) }
+    let(:hash) { { plantuml: { theme: { name: 'c2a3b0', directory: nil } } } }
+    its(:to_h) { is_expected.to eq({ theme: { name: 'c2a3b0', directory: nil } }) }
   end
 
   context 'with nil :raise_errors' do
@@ -76,29 +76,29 @@ describe Options do
   end
 
   context 'with symbolic option keys' do
-    let(:hash) { { plantuml: { theme: { name: 'custom', directory: 'path/to/themes' }, raise_errors: false, scale: 0.8 } } }
-    its(:theme_name) { is_expected.to eq 'custom' }
-    its(:theme_directory) { is_expected.to eq 'path/to/themes' }
+    let(:hash) { { plantuml: { theme: { name: 'c2a3b0', directory: 'spec/examples' }, raise_errors: false, scale: 0.8 } } }
+    its(:theme_name) { is_expected.to eq 'c2a3b0' }
+    its(:theme_directory) { is_expected.to eq 'spec/examples' }
     its(:raise_errors?) { is_expected.to be false }
     its(:scale) { is_expected.to eq 0.8 }
-    its(:to_h) { is_expected.to eq({ theme: { name: 'custom', directory: 'path/to/themes'}, raise_errors: false, scale: 0.8 }) }
+    its(:to_h) { is_expected.to eq({ theme: { name: 'c2a3b0', directory: 'spec/examples'}, raise_errors: false, scale: 0.8 }) }
   end
 
   context 'with mixed option keys' do
-    let(:hash) { { plantuml: { theme: { 'name' => 'custom', 'directory' => 'path/to/themes' }, 'raise_errors' => false, scale: '0.8' } } }
-    its(:theme_name) { is_expected.to eq 'custom' }
-    its(:theme_directory) { is_expected.to eq 'path/to/themes' }
+    let(:hash) { { plantuml: { theme: { 'name' => 'c2a3b0', 'directory' => 'spec/examples' }, 'raise_errors' => false, scale: '0.8' } } }
+    its(:theme_name) { is_expected.to eq 'c2a3b0' }
+    its(:theme_directory) { is_expected.to eq 'spec/examples' }
     its(:raise_errors?) { is_expected.to be false }
     its(:scale) { is_expected.to eq '0.8' }
-    its(:to_h) { is_expected.to eq({ theme: { name: 'custom', directory: 'path/to/themes'}, raise_errors: false, scale: '0.8' }) }
+    its(:to_h) { is_expected.to eq({ theme: { name: 'c2a3b0', directory: 'spec/examples'}, raise_errors: false, scale: '0.8' }) }
   end
 
   context 'with string option keys' do
-    let(:hash) { { 'plantuml' => { 'theme' => { 'name' => 'custom', 'directory' => 'path/to/themes' }, 'raise_errors' => false, 'scale' => '0.8' } } }
-    its(:theme_name) { is_expected.to eq 'custom' }
-    its(:theme_directory) { is_expected.to eq 'path/to/themes' }
+    let(:hash) { { 'plantuml' => { 'theme' => { 'name' => 'c2a3b0', 'directory' => 'spec/examples' }, 'raise_errors' => false, 'scale' => '0.8' } } }
+    its(:theme_name) { is_expected.to eq 'c2a3b0' }
+    its(:theme_directory) { is_expected.to eq 'spec/examples' }
     its(:raise_errors?) { is_expected.to be false }
     its(:scale) { is_expected.to eq '0.8' }
-    its(:to_h) { is_expected.to eq({ theme: { name: 'custom', directory: 'path/to/themes' }, raise_errors: false, scale: '0.8' })}
+    its(:to_h) { is_expected.to eq({ theme: { name: 'c2a3b0', directory: 'spec/examples' }, raise_errors: false, scale: '0.8' })}
   end
 end

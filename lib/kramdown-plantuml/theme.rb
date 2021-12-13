@@ -35,9 +35,9 @@ module Kramdown
       def resolve(directory)
         jekyll = JekyllProvider
 
-        return directory if directory.nil? || directory.empty? || !jekyll.installed?
+        return directory if directory.nil? || directory.empty?
 
-        directory = File.absolute_path(directory, jekyll.site_destination_dir)
+        directory = File.absolute_path(directory, jekyll.site_source_dir)
 
         log_or_raise "The theme directory '#{directory}' cannot be found" unless Dir.exist?(directory)
 
@@ -51,7 +51,7 @@ module Kramdown
       def log_or_raise(message)
         raise IOError, message if @raise_errors
 
-        logger.warn message
+        @logger.warn message
       end
 
       def theme(plantuml)

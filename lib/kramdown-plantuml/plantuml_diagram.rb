@@ -18,7 +18,7 @@ module Kramdown
         raise ArgumentError, 'options cannot be nil' if options.nil?
         raise ArgumentError, "options must be a '#{Options}'." unless options.is_a?(Options)
 
-        @plantuml = plantuml
+        @plantuml = plantuml.strip unless plantuml.nil?
         @options = options
         @theme = Theme.new(options)
         @logger = LogWrapper.init

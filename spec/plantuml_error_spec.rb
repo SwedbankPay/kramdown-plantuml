@@ -39,7 +39,7 @@ describe PlantUmlError do
     end
 
     context 'non-existent theme' do
-      let(:options) { Options.new({ plantuml: { theme: { name: 'xyz', directory: 'assets' } }}) }
+      let(:options) { Options.new({ plantuml: { theme: { name: 'xyz', directory: 'assets' }, raise_errors: false } }) }
       let(:stderr) { <<~STDERR
         java.lang.NullPointerException
           at java.base/java.io.Reader.<init>(Reader.java:167)
@@ -64,7 +64,7 @@ describe PlantUmlError do
       }
 
       its(:message) {
-        is_expected.to match(/theme 'xyz' can't be found in the directory 'assets'/)
+        is_expected.to match(/theme 'xyz' can't be found in the directory '.*assets'/)
         is_expected.to match(/The error received from PlantUML was:/)
       }
     end

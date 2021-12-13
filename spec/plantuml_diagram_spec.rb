@@ -63,12 +63,26 @@ describe PlantUmlDiagram do
       end
     end
 
-    context 'with non-existing theme' do
+    context 'with non-existing theme directory' do
+      let(:plantuml) { "@startuml\n@enduml" }
+      let(:hash) { { plantuml: { theme: { name: 'xyz', directory: 'spec/examples' } } } }
+
+      its(:svg) do
+        will raise_error(IOError, /The theme '.*spec\/examples\/puml-theme-xyz.puml' cannot be found/)
+      end
+
+      context ('with raise_errors: false') do
+        let(:hash) {  { plantuml: { raise_errors: false } } }
+        its(:svg) { will_not raise_error }
+      end
+    end
+
+    context 'with non-existing theme directory' do
       let(:plantuml) { "@startuml\n@enduml" }
       let(:hash) { { plantuml: { theme: { name: 'xyz', directory: 'assets' } } } }
 
       its(:svg) do
-        will raise_error(Kramdown::PlantUml::PlantUmlError, /theme 'xyz' can't be found in the directory 'assets'/)
+        will raise_error(IOError, /The theme directory '.*\/assets' cannot be found/)
       end
 
       context ('with raise_errors: false') do

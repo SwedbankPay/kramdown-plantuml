@@ -13,23 +13,23 @@ describe Theme do
     subject { Theme.new(options) }
 
     context 'with symbolic option keys' do
-      let(:options) { Options.new({ plantuml: { theme: { name: 'custom', directory: 'path/to/themes' }, scale: 0.8 } }) }
-      its(:name) { is_expected.to eq('custom') }
-      its(:directory) { is_expected.to eq('path/to/themes') }
+      let(:options) { Options.new({ plantuml: { theme: { name: 'c2a3b0', directory: 'spec/examples' }, scale: 0.8 } }) }
+      its(:name) { is_expected.to eq('c2a3b0') }
+      its(:directory) { is_expected.to match(/spec\/examples$/) }
       its(:scale) { is_expected.to eq(0.8) }
     end
 
     context 'with mixed option keys' do
-      let(:options) { Options.new({ plantuml: { theme: { 'name' => 'custom', 'directory' => 'path/to/themes' }, scale: '0.8' } }) }
-      its(:name) { is_expected.to eq('custom') }
-      its(:directory) { is_expected.to eq('path/to/themes') }
+      let(:options) { Options.new({ plantuml: { theme: { 'name' => 'c2a3b0', 'directory' => 'spec/examples' }, scale: '0.8' } }) }
+      its(:name) { is_expected.to eq('c2a3b0') }
+      its(:directory) { is_expected.to match(/spec\/examples$/) }
       its(:scale) { is_expected.to eq('0.8') }
     end
 
     context 'with string option keys' do
-      let(:options) { Options.new({ 'plantuml' => { 'theme' => { 'name' => 'custom', 'directory' => 'path/to/themes' }, 'scale' => '0.8' } }) }
-      its(:name) { is_expected.to eq('custom') }
-      its(:directory) { is_expected.to eq('path/to/themes') }
+      let(:options) { Options.new({ 'plantuml' => { 'theme' => { 'name' => 'c2a3b0', 'directory' => 'spec/examples' }, 'scale' => '0.8' } }) }
+      its(:name) { is_expected.to eq('c2a3b0') }
+      its(:directory) { is_expected.to match(/spec\/examples$/) }
       its(:scale) { is_expected.to eq('0.8') }
     end
   end
@@ -61,9 +61,9 @@ describe Theme do
     end
 
     context 'with custom theme' do
-      let(:options) { Options.new({ plantuml: { theme: { name: 'custom', directory: 'path/to/themes' } } }) }
+      let(:options) { Options.new({ plantuml: { theme: { name: 'c2a3b0', directory: 'spec/examples' } } }) }
       let(:plantuml) { "@startuml\nactor A\n@enduml" }
-      it { is_expected.to eq("@startuml\n!theme custom from path/to/themes\nactor A\n@enduml") }
+      it { is_expected.to match(/@startuml\n!theme c2a3b0 from .*spec\/examples\nactor A\n@enduml/) }
     end
 
     context 'with scale' do

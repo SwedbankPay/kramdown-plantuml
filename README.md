@@ -127,7 +127,7 @@ kramdown:
   plantuml:
     theme:
       name: my-custom-theme
-      directory: path/to/themes
+      directory: spec/examples
 ```
 
 ### Dimensions and Styling
