@@ -6,7 +6,6 @@ require_relative 'kramdown-plantuml/log_wrapper'
 require_relative 'kramdown-plantuml/plantuml_error'
 require_relative 'kramdown-plantuml/options'
 require_relative 'kramdown-plantuml/plantuml_diagram'
-require_relative 'kramdown-plantuml/jekyll_provider'
 
 module Kramdown
   module Converter
@@ -16,19 +15,9 @@ module Kramdown
       alias super_convert_codeblock convert_codeblock
 
       def convert_codeblock(element, indent)
-        return super_convert_codeblock(element, indent) unless plantuml?(element)
+        return super_convert_codeblock(element, indent) unless plantuml? element
 
-        jekyll = ::Kramdown::PlantUml::JekyllProvider
-
-        # If Jekyll is successfully loaded, we'll wait with converting the
-        # PlantUML diagram to SVG since a theme may be configured that needs to
-        # be copied to the assets directory before the PlantUML conversion can
-        # be performed. We therefore place a needle in the haystack that we will
-        # convert in the :site:pre_render hook.
-        options = ::Kramdown::PlantUml::Options.new(@options)
-        return jekyll.needle(element.value, options) if jekyll.installed?
-
-        convert_plantuml(element.value, options)
+        convert_plantuml(element.value)
       end
 
       private
@@ -37,14 +26,15 @@ module Kramdown
         element.attr['class'] == 'language-plantuml'
       end
 
-      def convert_plantuml(plantuml, options)
-        diagram = ::Kramdown::PlantUml::PlantUmlDiagram.new(plantuml, options)
+      def convert_plantuml(plantuml)
+        puml_opts = ::Kramdown::PlantUml::Options.new(@options)
+        diagram = ::Kramdown::PlantUml::PlantUmlDiagram.new(plantuml, puml_opts)
         diagram.svg.to_s
       rescue StandardError => e
-        raise e if options.raise_errors?
+        raise e if puml_opts.nil? || puml_opts.raise_errors?
 
         logger = ::Kramdown::PlantUml::LogWrapper.init
-        logger.error "Error while replacing needle: #{e.inspect}"
+        logger.error "Error while converting diagram: #{e.inspect}"
       end
     end
   end
