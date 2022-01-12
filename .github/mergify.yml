@@ -14,7 +14,6 @@ pull_request_rules:
       - check-success=version
       - check-success=plantuml
       - check-success=gem
-      - check-success=publish-dev
       - check-success=shellcheck
       - check-success=license/cla
     actions:
