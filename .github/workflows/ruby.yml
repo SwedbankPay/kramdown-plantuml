@@ -56,7 +56,7 @@ jobs:
       run: mvn install
 
     - name: Upload plantuml.jar artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: plantuml.jar
         path: ~/.m2/repository/**/plantuml*.jar
@@ -97,7 +97,7 @@ jobs:
       run: bundle exec rspec --format documentation --tag debug
 
     - name: Upload code coverage (debug)
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: rspec-debug-coverage
         path: ./coverage
@@ -109,7 +109,7 @@ jobs:
       run: bundle exec rake
 
     - name: Upload code coverage
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: rspec-coverage
         path: ./coverage
@@ -125,7 +125,7 @@ jobs:
         git checkout HEAD -- Gemfile
 
     - name: Upload code coverage (Jekyll)
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: rspec-jekyll-coverage
         path: ./coverage
@@ -138,7 +138,7 @@ jobs:
       run: .github/scripts/build-gem.sh --ref ${{ github.ref }} --verbose
 
     - name: Upload gem
-      uses: actions/upload-artifact@v2-preview
+      uses: actions/upload-artifact@v3
       with:
         name: ${{ steps.gem.outputs.name }}
         path: ${{ steps.gem.outputs.name }}
@@ -150,7 +150,7 @@ jobs:
       run: .github/scripts/test-gem.sh --workdir "${{ github.workspace }}/spec/examples" --gemdir "${{ github.workspace }}" --verbose
 
     - name: Upload code coverage (gem)
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: gem-coverage
         path: ./coverage
@@ -200,7 +200,7 @@ jobs:
       run: .github/scripts/test-gem.sh --workdir "${{ github.workspace }}/spec/examples" --version ${{ needs.version.outputs.version }} --token "${{ secrets.GPR_TOKEN }}" --verbose --theme-name c2a3b0 --theme-directory "${{ github.workspace }}/spec/examples"
 
     - name: Upload Jekyll site
-      uses: actions/upload-artifact@v2-preview
+      uses: actions/upload-artifact@v3
       if: always()
       with:
         name: site
