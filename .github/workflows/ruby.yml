@@ -71,7 +71,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - uses: actions/download-artifact@v2
+    - uses: actions/download-artifact@v3
       with:
         name: plantuml.jar
         path: bin/
@@ -174,7 +174,7 @@ jobs:
       with:
         ref: ${{ github.event.pull_request.head.sha }}
 
-    - uses: actions/download-artifact@v2
+    - uses: actions/download-artifact@v3
       with:
         name: ${{ needs.gem.outputs.name }}
 
@@ -214,7 +214,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - uses: actions/download-artifact@v2
+    - uses: actions/download-artifact@v3
       with:
         name: ${{ needs.gem.outputs.name }}
 
